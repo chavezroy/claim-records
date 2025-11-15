@@ -35,7 +35,7 @@ export default function Navigation() {
         );
       })}
       <li className="nav-item list-none">
-        <Link href="/shop" className="nav-link px-3 py-2 text-gray-700 hover:text-primary">
+        <Link href="/cart" className="nav-link px-3 py-2 text-gray-700 hover:text-primary">
           <i className="bi bi-bag"></i>
         </Link>
       </li>
