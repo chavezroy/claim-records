@@ -128,13 +128,13 @@ export default function ArtistCard({
   // For card view (standard card layout matching ProductCard)
   return (
     <Card href={`/artists/${artist.slug}`}>
-      <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
+      <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
         <Image
           src={artist.image}
           alt={artist.name}
           fill
           unoptimized
-          sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="(max-width: 768px) 100vw, 25vw"
           className="object-cover"
           style={{ 
             position: 'absolute',

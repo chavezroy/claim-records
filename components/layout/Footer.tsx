@@ -26,9 +26,43 @@ export default function Footer() {
     <footer className="bg-dark-bg text-gray-400 py-5">
       <div className="container">
         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-          {/* Navigation Links - Left */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px' }}>
-            <ul className="nav d-flex flex-wrap gap-3 mb-3">
+          {/* Newsletter Section - Left */}
+          <div style={{ flex: '1 1 300px', minWidth: '250px', textAlign: 'left' }}>
+            <h3 className="h5 text-white mb-2">Stay Connected</h3>
+            <p className="text-sm text-gray-400 mb-4">
+              Get the latest releases, news, and exclusive content from Claim Records.
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="d-flex gap-2" style={{ maxWidth: '500px', marginRight: 'auto', justifyContent: 'flex-start' }}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="form-control"
+                style={{
+                  backgroundColor: '#ffffff',
+                  color: '#212529',
+                  border: '1px solid #ced4da',
+                  borderRadius: '0.25rem',
+                  padding: '0.5rem 0.75rem',
+                  flexGrow: 1,
+                  maxWidth: '300px',
+                }}
+              />
+              <button
+                type="submit"
+                className="btn btn-primary bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
+                style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+          {/* Navigation Links - Right */}
+          <div style={{ flex: '1 1 300px', minWidth: '250px', textAlign: 'right' }}>
+            <ul className="nav d-flex flex-wrap gap-3 mb-3" style={{ justifyContent: 'flex-end' }}>
               {footerLinks.map((link) => (
                 <li key={link.href} className="nav-item">
                   <Link
@@ -61,41 +95,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-            <p className="mb-0 text-sm">Copyright 2025. All rights reserved.</p>
-          </div>
-
-          {/* Newsletter Section - Right */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', textAlign: 'right' }}>
-            <h3 className="h5 text-white mb-2">Stay Connected</h3>
-            <p className="text-sm text-gray-400 mb-4">
-              Get the latest releases, news, and exclusive content from Claim Records.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="d-flex gap-2" style={{ maxWidth: '500px', marginLeft: 'auto', justifyContent: 'flex-end' }}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="form-control"
-                style={{
-                  backgroundColor: '#ffffff',
-                  color: '#212529',
-                  border: '1px solid #ced4da',
-                  borderRadius: '0.25rem',
-                  padding: '0.5rem 0.75rem',
-                  flexGrow: 1,
-                  maxWidth: '300px',
-                }}
-              />
-              <button
-                type="submit"
-                className="btn btn-primary bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
-                style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
-              >
-                Subscribe
-              </button>
-            </form>
+            <p className="mb-0 text-sm" style={{ textAlign: 'right' }}>Copyright 2025. All rights reserved.</p>
           </div>
         </div>
       </div>

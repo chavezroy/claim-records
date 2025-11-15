@@ -21,7 +21,7 @@ export default function ArtistDetailPage({ params }: PageProps) {
   }
 
   const releases = getReleasesByArtist(artist.id);
-  const otherArtists = artists.filter((a) => a.id !== artist.id).slice(0, 3);
+  const otherArtists = artists.filter((a) => a.id !== artist.id).slice(0, 4);
 
   return (
     <>
@@ -68,12 +68,12 @@ export default function ArtistDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Releases Section */}
-      {releases.length > 0 && (
-        <section>
-          <div className="container pt-5 releases">
-            <h2 className="text-center">Releases</h2>
-            <div className="row mb-5">
+            {/* Releases Section */}
+            {releases.length > 0 && (
+              <section>
+                <div className="container pt-5 releases">
+                  <h2 className="text-center mb-5">Releases</h2>
+                  <div className="row mb-5">
               {releases.map((release) => (
                 <div key={release.id} className="col-sm-4 mb-3 mb-sm-0">
                   <Card href="#">
@@ -135,10 +135,10 @@ export default function ArtistDetailPage({ params }: PageProps) {
       {/* Other Artists */}
       <section>
         <div className="container pt-5 others">
-          <h2 className="text-center">Check out other Artists</h2>
+          <h2 className="text-center mb-5">Check out other Artists</h2>
           <div className="row mb-5">
             {otherArtists.map((otherArtist) => (
-              <div key={otherArtist.id} className="col-sm-4 mb-3 mb-sm-0">
+              <div key={otherArtist.id} className="col-sm-3 mb-3 mb-sm-0">
                 <ArtistCard artist={otherArtist} variant="card" />
               </div>
             ))}

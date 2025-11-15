@@ -86,7 +86,7 @@ export function getReleasesByArtist(artistId: string): Release[] {
 }
 
 export function getFeaturedReleases(): Release[] {
-  const featuredIds = ['tb-southern', 'fg-last-goodbye', 'ex-shadeauxx'];
+  const featuredIds = ['tb-southern', 'fg-last-goodbye', 'ex-shadeauxx', 'tb-power'];
   return releases.filter((r) => featuredIds.includes(r.id));
 }
 

@@ -8,7 +8,7 @@ import Card from '@/components/ui/Card';
 
 export default function ShopPage() {
   const featuredProducts = getFeaturedProducts();
-  const shopByArtist = artists.slice(0, 3);
+  const shopByArtist = artists.slice(0, 4);
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function ShopPage() {
       {/* Featured Products */}
       <section>
         <div className="container pt-5">
-          <h1 className="text-center">Featured products</h1>
+          <h1 className="text-center mb-5">Featured products</h1>
           <ProductGrid products={featuredProducts} />
         </div>
       </section>
@@ -44,17 +44,17 @@ export default function ShopPage() {
       {/* Shop by Products */}
       <section>
         <div className="container pt-5">
-          <h2 className="text-center">Shop by products</h2>
+          <h2 className="text-center mb-5">Shop by products</h2>
           <div className="row mb-5 products">
-            <div className="col-sm-4 mb-3 mb-sm-0">
+            <div className="col-sm-3 mb-3 mb-sm-0">
               <Card href="/shop?category=shirt">
-                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
+                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
                   <Image
                     src="/img/shop/FG-LG-black.jpg"
                     alt="Shirts"
                     fill
                     unoptimized
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 25vw"
                     className="object-cover"
                     style={{ 
                       position: 'absolute',
@@ -73,15 +73,15 @@ export default function ShopPage() {
                 </div>
               </Card>
             </div>
-            <div className="col-sm-4 mb-3 mb-sm-0">
+            <div className="col-sm-3 mb-3 mb-sm-0">
               <Card href="/shop?category=sticker">
-                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
+                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
                   <Image
                     src="/img/shop/thepriceisriot.jpg"
                     alt="Stickers"
                     fill
                     unoptimized
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 25vw"
                     className="object-cover"
                     style={{ 
                       position: 'absolute',
@@ -100,15 +100,15 @@ export default function ShopPage() {
                 </div>
               </Card>
             </div>
-            <div className="col-sm-4 mb-3 mb-sm-0">
+            <div className="col-sm-3 mb-3 mb-sm-0">
               <Card href="/shop?category=digital">
-                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
+                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
                   <Image
                     src="/img/shop/featured_logic.png"
                     alt="Digital Content"
                     fill
                     unoptimized
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 25vw"
                     className="object-cover"
                     style={{ 
                       position: 'absolute',
@@ -127,6 +127,33 @@ export default function ShopPage() {
                 </div>
               </Card>
             </div>
+            <div className="col-sm-3 mb-3 mb-sm-0">
+              <Card href="/shop?category=accessories">
+                <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
+                  <Image
+                    src="/img/shop/belt-vcut-1.jpg"
+                    alt="Accessories"
+                    fill
+                    unoptimized
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover"
+                    style={{ 
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      left: 0,
+                      top: 0,
+                      transform: 'none'
+                    }}
+                  />
+                </div>
+                <div className="card-body p-5 min-h-44">
+                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">Accessories</p>
+                  <p className="card-subtitle mb-2 text-gray-500 text-sm">Merchandise and accessories</p>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -134,10 +161,10 @@ export default function ShopPage() {
       {/* Shop by Artist */}
       <section>
         <div className="container pt-5">
-          <h2 className="text-center">Shop by artist</h2>
+          <h2 className="text-center mb-5">Shop by artist</h2>
           <div className="row mb-5">
-            {shopByArtist.map((artist) => (
-              <div key={artist.id} className="col-sm-4 mb-3 mb-sm-0">
+            {shopByArtist.slice(0, 4).map((artist) => (
+              <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
                 <ArtistCard artist={artist} variant="card" />
               </div>
             ))}

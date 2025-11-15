@@ -12,26 +12,14 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-dark text-white py-20">
+      <section className="bg-dark text-white py-16">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <h1 className="display-4 mb-4 font-electric">Claim Records</h1>
-              <p className="lead mb-4">Claim Your Stake!</p>
-              <p className="fs-5 mb-0">
-                An independent record label dedicated to amplifying authentic voices and groundbreaking music.
-              </p>
-            </div>
-            <div className="col-lg-6 text-center">
-              <Image
-                src="/img/logo_ClaimRecords.svg"
-                alt="Claim Records Logo"
-                width={400}
-                height={200}
-                className="w-full max-w-md mx-auto"
-                priority
-              />
-            </div>
+          <div className="text-center" style={{ maxWidth: '100%' }}>
+            <h1 className="h1 mb-4 font-electric">Claim Records</h1>
+            <p className="fs-5 text-gray-300 mb-4">Claim Your Stake!</p>
+            <p className="fs-5 text-gray-300 mb-0">
+              An independent record label dedicated to amplifying authentic voices and groundbreaking music.
+            </p>
           </div>
         </div>
       </section>
@@ -131,8 +119,8 @@ export default function AboutPage() {
             Discover the talented artists who make Claim Records what it is today.
           </p>
           <div className="row mb-5">
-            {artists.slice(0, 3).map((artist) => (
-              <div key={artist.id} className="col-sm-4 mb-3 mb-sm-0">
+            {artists.slice(0, 4).map((artist) => (
+              <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
                 <ArtistCard artist={artist} variant="card" />
               </div>
             ))}

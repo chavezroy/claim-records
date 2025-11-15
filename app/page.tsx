@@ -110,10 +110,10 @@ export default function HomePage() {
       {/* Featured Releases */}
       <section>
         <div className="container pt-5">
-          <h2 className="text-center">Featured</h2>
+          <h2 className="text-center mb-5">Featured</h2>
           <div className="row mb-5">
-            {featuredReleases.map((release) => (
-              <div key={release.id} className="col-sm-4 mb-3 mb-sm-0">
+            {featuredReleases.slice(0, 4).map((release) => (
+              <div key={release.id} className="col-sm-3 mb-3 mb-sm-0">
                 <Card href={`/artists/${release.artistId}`}>
                   <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
                     <Image
@@ -121,7 +121,7 @@ export default function HomePage() {
                       alt={release.title}
                       fill
                       unoptimized
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 25vw"
                       className="object-cover"
                       style={{
                         position: 'absolute',

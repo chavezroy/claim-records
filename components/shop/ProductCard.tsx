@@ -5,18 +5,20 @@ import { Product } from '@/lib/types/product';
 type ProductCardProps = {
   product: Product;
   showPrice?: boolean;
+  sizes?: string;
+  thumbHeight?: number;
 };
 
-export default function ProductCard({ product, showPrice = true }: ProductCardProps) {
+export default function ProductCard({ product, showPrice = true, sizes = "(max-width: 768px) 100vw, 33vw", thumbHeight = 200 }: ProductCardProps) {
   return (
     <Card href={`/shop/${product.slug}`}>
-      <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
+      <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: `${thumbHeight}px` }}>
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
           unoptimized
-          sizes="(max-width: 768px) 100vw, 33vw"
+          sizes={sizes}
           className="object-cover"
           style={{ 
             position: 'absolute',

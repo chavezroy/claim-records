@@ -134,8 +134,8 @@ export default function ShopDetailPage({ params }: PageProps) {
       {relatedProducts.length > 0 && (
         <section>
           <div className="container pt-5">
-            <h2 className="text-center">You might like these</h2>
-            <ProductGrid products={relatedProducts} />
+            <h2 className="text-center mb-5">You might like these</h2>
+            <ProductGrid products={relatedProducts} columns={4} />
           </div>
         </section>
       )}
