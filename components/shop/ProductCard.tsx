@@ -31,7 +31,7 @@ export default function ProductCard({ product, showPrice = true, sizes = "(max-w
           }}
         />
       </div>
-      <div className="card-body p-5 min-h-44">
+      <div className="card-body p-5 min-h-[110px]">
         <p className="card-title mb-0 text-primary hover:text-black transition-colors">
           {product.artistName || product.name}
         </p>

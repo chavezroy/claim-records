@@ -93,30 +93,21 @@ export default function HomePage() {
       <section>
         <div className="container pt-5">
           <h2 className="text-center mb-5">Featured</h2>
-          <div className="row mb-5">
+          <div className="row mb-5 justify-content-start">
             {featuredReleases.slice(0, 4).map((release) => (
-              <div key={release.id} className="col-sm-3 mb-3 mb-sm-0">
+              <div key={release.id} className="col-sm-3 mb-3 mb-sm-0 max-w-[300px] mx-auto md:max-w-none md:mx-0">
                 <Card href={`/artists/${release.artistId}`}>
-                  <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '340px' }}>
+                  <div className="thumb relative w-full overflow-hidden bg-white h-[250px] md:h-[400px]">
                     <Image
                       src={release.artwork}
                       alt={release.title}
                       fill
                       unoptimized
                       sizes="(max-width: 768px) 100vw, 25vw"
-                      className="object-cover"
-                      style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        left: 0,
-                        top: 0,
-                        transform: 'none',
-                      }}
+                      className="object-cover featured-thumb-mobile md:featured-thumb-desktop"
                     />
                   </div>
-                  <div className="card-body p-5 min-h-44">
+                  <div className="card-body p-5 min-h-[110px]">
                     <p className="card-title mb-0 text-primary hover:text-black transition-colors">{release.artistName}</p>
                     <p className="card-subtitle mb-2 text-gray-500 text-sm">
                       {release.type === 'single' ? 'Single' : release.type === 'ep' ? 'EP' : 'Album'} - {release.title}

@@ -96,7 +96,7 @@ export default function ArtistDetailPage({ params }: PageProps) {
                         }}
                       />
                     </div>
-                    <div className="card-body p-5 min-h-44">
+                    <div className="card-body p-5 min-h-[110px]">
                       <p className="card-title mb-0 text-primary hover:text-black transition-colors">{release.artistName}</p>
                       <p className="card-subtitle mb-2 text-gray-500 text-sm">
                         {release.title}{' '}

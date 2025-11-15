@@ -33,7 +33,7 @@ export default function ArtistsPage() {
   };
 
   return (
-    <section className="artists relative h-screen w-full overflow-hidden">
+    <section className="artists relative h-[50vh] md:h-screen w-full overflow-hidden">
       <ArtistGrid 
         artists={artists} 
         containerVariants={containerVariants}

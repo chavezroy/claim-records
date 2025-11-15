@@ -67,7 +67,7 @@ export default function ShopPage() {
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-44">
+                <div className="card-body p-5 min-h-[110px]">
                   <p className="card-title mb-0 text-primary hover:text-black transition-colors">Shirts</p>
                   <p className="card-subtitle mb-2 text-gray-500 text-sm">Last Goodbye T-shirt</p>
                 </div>
@@ -94,7 +94,7 @@ export default function ShopPage() {
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-44">
+                <div className="card-body p-5 min-h-[110px]">
                   <p className="card-title mb-0 text-primary hover:text-black transition-colors">Stickers</p>
                   <p className="card-subtitle mb-2 text-gray-500 text-sm">Logo T-shirt</p>
                 </div>
@@ -121,7 +121,7 @@ export default function ShopPage() {
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-44">
+                <div className="card-body p-5 min-h-[110px]">
                   <p className="card-title mb-0 text-primary hover:text-black transition-colors">Digital Content</p>
                   <p className="card-subtitle mb-2 text-gray-500 text-sm">Mix and master templates for Logic Pro</p>
                 </div>
@@ -148,7 +148,7 @@ export default function ShopPage() {
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-44">
+                <div className="card-body p-5 min-h-[110px]">
                   <p className="card-title mb-0 text-primary hover:text-black transition-colors">Accessories</p>
                   <p className="card-subtitle mb-2 text-gray-500 text-sm">Merchandise and accessories</p>
                 </div>

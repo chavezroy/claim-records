@@ -21,7 +21,7 @@ export default function ArtistGrid({
     // Hero-style grid layout
     return (
       <motion.div
-        className="hero-grid absolute inset-0 h-screen w-full"
+        className="hero-grid absolute inset-0 h-[50vh] md:h-screen w-full"
         data-framer-component
         variants={containerVariants}
         initial="hidden"
