@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { artists } from '@/lib/data/artists';
 import { getFeaturedReleases } from '@/lib/data/releases';
 import Card from '@/components/ui/Card';
+import AnimatedLogo from '@/components/logo/AnimatedLogo';
 
 export default function HomePage() {
   const featuredReleases = getFeaturedReleases();
@@ -15,7 +16,7 @@ export default function HomePage() {
       opacity: 1,
       transition: {
         staggerChildren: 0.08,
-        delayChildren: 0.1,
+        delayChildren: 3.2, // Start after logo animation completes (3s + 0.2s buffer)
         duration: 0.3,
       },
     },
@@ -39,10 +40,10 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section with Thumbs Grid */}
-      <div className="relative h-screen w-full overflow-hidden">
+      <div className="relative h-[50vh] md:h-screen w-full overflow-hidden">
         {/* Hero Grid - 3 columns, 2 rows, equal squares */}
         <motion.div
-          className="hero-grid absolute inset-0 h-screen w-full"
+          className="hero-grid absolute inset-0 h-[50vh] md:h-screen w-full"
           data-framer-component
           variants={containerVariants}
           initial="hidden"
@@ -80,31 +81,12 @@ export default function HomePage() {
           })}
         </motion.div>
         
-        {/* Logo Overlay */}
-        <motion.div
-          className="absolute z-10 px-10 w-80 md:w-96 top-8 md:top-1/4 left-1/2 -translate-x-1/2"
-          data-framer-component
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.4,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          }}
-          style={{
-            willChange: 'transform, opacity',
-            backfaceVisibility: 'hidden',
-          }}
+        {/* Animated Logo Overlay - Centered in grid */}
+        <div
+          className="absolute z-10 left-1/2 top-[47.5%] -translate-x-1/2 -translate-y-1/2"
         >
-          <Image
-            src="/img/logo_ClaimRecords.svg"
-            alt="Claim Records"
-            width={600}
-            height={200}
-            className="w-full"
-            priority
-          />
-        </motion.div>
+          <AnimatedLogo />
+        </div>
       </div>
 
       {/* Featured Releases */}
