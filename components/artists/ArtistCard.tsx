@@ -49,6 +49,11 @@ export default function ArtistCard({
               opacity: 1,
               scale: 1.1,
             }}
+            animate={isLabelHovered ? {
+              filter: 'none',
+              opacity: 1,
+              scale: 1.1,
+            } : undefined}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
             style={{
               filter: baseFilter,
@@ -72,8 +77,14 @@ export default function ArtistCard({
           </motion.div>
           <span 
             className="artist__name group-hover:opacity-100"
-            onMouseEnter={() => setIsLabelHovered(true)}
-            onMouseLeave={() => setIsLabelHovered(false)}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+              setIsLabelHovered(true);
+            }}
+            onMouseLeave={(e) => {
+              e.stopPropagation();
+              setIsLabelHovered(false);
+            }}
             style={{ 
               transition: 'opacity 0.15s linear',
               pointerEvents: 'auto',

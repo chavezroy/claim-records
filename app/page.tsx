@@ -16,7 +16,7 @@ export default function HomePage() {
       opacity: 1,
       transition: {
         staggerChildren: 0.08,
-        delayChildren: 3.2, // Start after logo animation completes (3s + 0.2s buffer)
+        delayChildren: 1.5,
         duration: 0.3,
       },
     },
