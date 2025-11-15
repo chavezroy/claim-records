@@ -21,11 +21,19 @@ export default function ArtistGrid({
     // Hero-style grid layout
     return (
       <motion.div
-        className="hero-grid absolute inset-0 h-[50vh] md:h-screen w-full"
+        className="hero-grid absolute w-full"
         data-framer-component
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        style={{
+          maxWidth: '1140px',
+          height: '70vh',
+          margin: 'auto',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
       >
         {artists.slice(0, 6).map((artist, index) => (
           <ArtistCard 

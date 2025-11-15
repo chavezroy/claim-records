@@ -2,72 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-
-// Mock cart item type
-type CartItem = {
-  id: string;
-  productId: string;
-  name: string;
-  artistName?: string;
-  price: number;
-  quantity: number;
-  image: string;
-  size?: string;
-  color?: string;
-};
-
-// Mock cart data
-const mockCartItems: CartItem[] = [
-  {
-    id: 'cart-1',
-    productId: 'fg-last-goodbye-tshirt',
-    name: 'Last Goodbye T-shirt',
-    artistName: 'Final Generation',
-    price: 22.98,
-    quantity: 2,
-    image: '/img/shop/FG-LG-black.jpg',
-    size: 'L',
-  },
-  {
-    id: 'cart-2',
-    productId: 'claim-logo-tshirt',
-    name: 'Logo T-shirt',
-    price: 22.98,
-    quantity: 1,
-    image: '/img/shop/Claim-shirt-white.jpg',
-    size: 'M',
-  },
-  {
-    id: 'cart-3',
-    productId: 'extrapolate-death-tshirt',
-    name: 'Death Metal Logo T-shirt',
-    artistName: 'Extrapolate',
-    price: 22.98,
-    quantity: 1,
-    image: '/img/shop/extrapolate-death-black.jpg',
-    size: 'XL',
-  },
-];
+import { useCart } from '@/contexts/CartContext';
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) {
-      removeItem(id);
-      return;
-    }
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
+  const { cartItems, updateQuantity, removeItem } = useCart();
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,

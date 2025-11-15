@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
+import { useState } from 'react';
 import Card from '@/components/ui/Card';
 import { Artist } from '@/lib/types/artist';
 
@@ -23,7 +24,8 @@ export default function ArtistCard({
 }: ArtistCardProps) {
   // For grid view (artists landing page), use the hero-style grid layout
   if (variant === 'grid' && itemVariants) {
-    const baseFilter = index % 2 === 0 ? 'sepia(80%)' : 'grayscale(100%)';
+    const baseFilter = 'grayscale(100%)';
+    const [isLabelHovered, setIsLabelHovered] = useState(false);
     
     return (
       <motion.div
@@ -38,10 +40,11 @@ export default function ArtistCard({
         <Link 
           href={`/artists/${artist.slug}`} 
           className="block w-full h-full relative no-underline"
+          style={{ transition: 'none' }}
         >
           <motion.div
             className="absolute inset-0"
-            whileHover={{ 
+            whileHover={isLabelHovered ? {} : { 
               filter: 'none',
               opacity: 1,
               scale: 1.1,
@@ -62,11 +65,20 @@ export default function ArtistCard({
               style={{ 
                 willChange: 'auto',
                 transform: 'translateZ(0)',
+                transition: 'none',
               }}
               priority={index < 3}
             />
           </motion.div>
-          <span className="artist__name group-hover:opacity-100">
+          <span 
+            className="artist__name group-hover:opacity-100"
+            onMouseEnter={() => setIsLabelHovered(true)}
+            onMouseLeave={() => setIsLabelHovered(false)}
+            style={{ 
+              transition: 'opacity 0.15s linear',
+              pointerEvents: 'auto',
+            }}
+          >
             {artist.name}
           </span>
         </Link>
