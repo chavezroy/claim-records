@@ -1,8 +1,24 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { CartProvider } from '@/contexts/CartContext';
+import SessionProvider from '@/components/providers/SessionProvider';
+
+// Dynamically import Footer to avoid hydration issues
+const Footer = dynamic(() => import('@/components/layout/Footer'), {
+  ssr: false,
+  loading: () => (
+    <footer className="bg-dark-bg text-gray-400 py-5">
+      <div className="container">
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '2rem', minHeight: '100px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '250px' }}></div>
+          <div style={{ flex: '1 1 300px', minWidth: '250px' }}></div>
+        </div>
+      </div>
+    </footer>
+  ),
+});
 
 export const metadata: Metadata = {
   title: 'Claim Records',
@@ -28,11 +44,13 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <CartProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </CartProvider>
+        <SessionProvider>
+          <CartProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
+        </SessionProvider>
       </body>
     </html>
   );

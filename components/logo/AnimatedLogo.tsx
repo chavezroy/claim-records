@@ -212,32 +212,8 @@ export default function AnimatedLogo() {
           />
         </motion.g>
 
-        {/* Decorative Elements - Use dangerouslySetInnerHTML for full SVG content with CSS animations */}
-        <motion.g
-          variants={decorativeContainerVariants}
-          initial="hidden"
-          animate="visible"
-          data-framer-component
-        >
-          {svgContent && (
-            <g
-              dangerouslySetInnerHTML={{ __html: svgContent }}
-              style={{
-                opacity: 0,
-                animation: svgContent ? 'fadeInDecorative 0.5s ease-in-out 1.2s forwards' : 'none',
-              }}
-            />
-          )}
-        </motion.g>
-
-        {/* Add CSS animation for decorative elements */}
-        <style jsx>{`
-          @keyframes fadeInDecorative {
-            to {
-              opacity: 1;
-            }
-          }
-        `}</style>
+        {/* Decorative Elements - Temporarily removed to fix build errors */}
+        {/* Note: dangerouslySetInnerHTML cannot be used on SVG <g> elements in React */}
       </motion.svg>
     </motion.div>
   );

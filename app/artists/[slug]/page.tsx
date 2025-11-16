@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getArtistBySlug } from '@/lib/data/artists';
-import { getReleasesByArtist } from '@/lib/data/releases';
-import { artists } from '@/lib/data/artists';
+import { query } from '@/lib/db';
 import Card from '@/components/ui/Card';
 import ArtistCard from '@/components/artists/ArtistCard';
+import MediaSection from '@/components/artists/MediaSection';
+import YouMightLike from '@/components/promo/YouMightLike';
 
 type PageProps = {
   params: {
@@ -13,15 +13,40 @@ type PageProps = {
   };
 };
 
-export default function ArtistDetailPage({ params }: PageProps) {
-  const artist = getArtistBySlug(params.slug);
-  
-  if (!artist) {
+export default async function ArtistDetailPage({ params }: PageProps) {
+  // Fetch artist from database
+  const artistResult = await query(
+    'SELECT * FROM artists WHERE slug = $1',
+    [params.slug]
+  );
+
+  if (artistResult.rows.length === 0) {
     notFound();
   }
 
-  const releases = getReleasesByArtist(artist.id);
-  const otherArtists = artists.filter((a) => a.id !== artist.id).slice(0, 4);
+  const artist = artistResult.rows[0];
+
+  // Fetch artist's products (releases)
+  const productsResult = await query(
+    'SELECT * FROM products WHERE artist_id = $1 ORDER BY created_at DESC',
+    [artist.id]
+  );
+
+  const releases = productsResult.rows;
+
+  // Fetch other artists
+  const otherArtistsResult = await query(
+    'SELECT * FROM artists WHERE id != $1 ORDER BY name ASC LIMIT 4',
+    [artist.id]
+  );
+
+  const otherArtists = otherArtistsResult.rows.map((a: any) => ({
+    id: a.id,
+    name: a.name,
+    slug: a.slug,
+    image: a.image || a.profile_image || '/img/artist/default.jpg',
+    profileImage: a.profile_image || a.image || '/img/artist/default.jpg',
+  }));
 
   return (
     <>
@@ -32,7 +57,7 @@ export default function ArtistDetailPage({ params }: PageProps) {
             <div className="carousel-item active">
               <div className="relative h-[70vh] flex items-center justify-center">
                 <Image
-                  src={artist.profileImage}
+                  src={artist.profile_image || artist.image || '/img/artist/default.jpg'}
                   alt={artist.name}
                   width={1200}
                   height={800}
@@ -41,23 +66,33 @@ export default function ArtistDetailPage({ params }: PageProps) {
                 />
                 <div className="carousel-caption d-md-block absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center text-center">
                   <h5 className="text-white text-2xl md:text-4xl mb-4">{artist.name}</h5>
-                  <p className="text-gray-300 mb-4">Some representative placeholder content for the first slide.</p>
+                  {artist.bio && (
+                    <p className="text-gray-300 mb-4 max-w-2xl px-4">{artist.bio}</p>
+                  )}
                   <div className="share-buttons">
                     <div className="mb-3 row">
                       <span className="section-title col-sm-2 text-white">Share</span>
                       <div className="col-sm-10 flex gap-4">
-                        <a target="_blank" href="#" className="text-white text-2xl hover:text-primary">
-                          <i className="bi bi-instagram"></i>
-                        </a>
-                        <a target="_blank" href="#" className="text-white text-2xl hover:text-primary">
-                          <i className="bi bi-twitter-x"></i>
-                        </a>
-                        <a target="_blank" href="#" className="text-white text-2xl hover:text-primary">
-                          <i className="bi bi-facebook"></i>
-                        </a>
-                        <a target="_blank" href="#" className="text-white text-2xl hover:text-primary">
-                          <i className="bi bi-youtube"></i>
-                        </a>
+                        {artist.instagram_url && (
+                          <a target="_blank" href={artist.instagram_url} className="text-white text-2xl hover:text-primary">
+                            <i className="bi bi-instagram"></i>
+                          </a>
+                        )}
+                        {artist.twitter_url && (
+                          <a target="_blank" href={artist.twitter_url} className="text-white text-2xl hover:text-primary">
+                            <i className="bi bi-twitter-x"></i>
+                          </a>
+                        )}
+                        {artist.facebook_url && (
+                          <a target="_blank" href={artist.facebook_url} className="text-white text-2xl hover:text-primary">
+                            <i className="bi bi-facebook"></i>
+                          </a>
+                        )}
+                        {artist.youtube_url && (
+                          <a target="_blank" href={artist.youtube_url} className="text-white text-2xl hover:text-primary">
+                            <i className="bi bi-youtube"></i>
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -132,6 +167,13 @@ export default function ArtistDetailPage({ params }: PageProps) {
         </section>
       )}
 
+      {/* Media Section */}
+      <section className="py-12">
+        <div className="container">
+          <MediaSection artistId={artist.id} />
+        </div>
+      </section>
+
       {/* Other Artists */}
       <section>
         <div className="container pt-5 others">
@@ -145,6 +187,14 @@ export default function ArtistDetailPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      {/* Promo Cards */}
+      <YouMightLike
+        type="artists"
+        limit={4}
+        currentArtistId={artist.id}
+        excludeIds={otherArtists.map((a) => a.id)}
+      />
     </>
   );
 }

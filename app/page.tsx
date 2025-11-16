@@ -1,124 +1,67 @@
-'use client';
+import { query } from '@/lib/db';
+import FeaturedPost from '@/components/content/FeaturedPost';
+import PostGrid from '@/components/content/PostGrid';
+import Link from 'next/link';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturedReleases from '@/components/home/FeaturedReleases';
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { artists } from '@/lib/data/artists';
-import { getFeaturedReleases } from '@/lib/data/releases';
-import Card from '@/components/ui/Card';
-import AnimatedLogo from '@/components/logo/AnimatedLogo';
+export default async function HomePage() {
+  // Fetch featured post
+  const featuredPostResult = await query(
+    `SELECT p.*, u.name as author_name
+     FROM posts p
+     LEFT JOIN users u ON p.author_id = u.id
+     WHERE p.status = 'published' AND p.featured = true
+     ORDER BY p.published_at DESC NULLS LAST, p.created_at DESC
+     LIMIT 1`
+  );
 
-export default function HomePage() {
-  const featuredReleases = getFeaturedReleases();
+  // Fetch latest posts (excluding featured)
+  const latestPostsResult = await query(
+    `SELECT p.*, u.name as author_name
+     FROM posts p
+     LEFT JOIN users u ON p.author_id = u.id
+     WHERE p.status = 'published' AND (p.featured = false OR p.featured IS NULL)
+     ORDER BY p.published_at DESC NULLS LAST, p.created_at DESC
+     LIMIT 6`
+  );
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 1.5,
-        duration: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1] as const,
-      },
-    },
-  };
+  const featuredPost = featuredPostResult.rows[0] || null;
+  const latestPosts = latestPostsResult.rows || [];
 
   return (
     <>
-      {/* Hero Section with Thumbs Grid */}
-      <div className="relative h-[50vh] md:h-screen w-full overflow-hidden">
-        {/* Hero Grid - 3 columns, 2 rows, equal squares */}
-        <motion.div
-          className="hero-grid absolute inset-0 h-[50vh] md:h-screen w-full"
-          data-framer-component
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {artists.slice(0, 6).map((artist, index) => {
-            const filter = index % 2 === 0 ? 'sepia(80%)' : 'grayscale(100%)';
-            
-            return (
-              <motion.div
-                key={`hero-grid-${artist.id}`}
-                className="relative w-full h-full overflow-hidden bg-white"
-                data-framer-component
-                variants={itemVariants}
-                style={{
-                  willChange: 'transform, opacity',
-                  backfaceVisibility: 'hidden',
-                }}
-              >
-                <Image
-                  src={artist.image}
-                  alt={artist.name}
-                  fill
-                  unoptimized
-                  className="object-cover opacity-25"
-                  style={{ 
-                    filter,
-                    willChange: 'auto',
-                    transform: 'translateZ(0)',
-                  }}
-                  priority={index < 3}
-                />
-              </motion.div>
-            );
-          })}
-        </motion.div>
-        
-        {/* Animated Logo Overlay - Centered in grid */}
-        <div
-          className="absolute z-10 left-1/2 top-[47.5%] -translate-x-1/2 -translate-y-1/2"
-        >
-          <AnimatedLogo />
-        </div>
-      </div>
+      <HeroSection />
 
-      {/* Featured Releases */}
-      <section>
-        <div className="container pt-5">
-          <h2 className="text-center mb-5">Featured</h2>
-          <div className="row mb-5 justify-content-start">
-            {featuredReleases.slice(0, 4).map((release) => (
-              <div key={release.id} className="col-sm-3 mb-3 mb-sm-0 max-w-[300px] mx-auto md:max-w-none md:mx-0">
-                <Card href={`/artists/${release.artistId}`}>
-                  <div className="thumb relative w-full overflow-hidden bg-white h-[250px] md:h-[400px]">
-                    <Image
-                      src={release.artwork}
-                      alt={release.title}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                      className="object-cover featured-thumb-mobile md:featured-thumb-desktop"
-                    />
-                  </div>
-                  <div className="card-body p-5 min-h-[110px]">
-                    <p className="card-title mb-0 text-primary hover:text-black transition-colors">{release.artistName}</p>
-                    <p className="card-subtitle mb-2 text-gray-500 text-sm">
-                      {release.type === 'single' ? 'Single' : release.type === 'ep' ? 'EP' : 'Album'} - {release.title}
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            ))}
+      {/* Featured Post */}
+      {featuredPost && (
+        <section className="py-12 bg-gray-50">
+          <div className="container">
+            <h2 className="text-3xl font-bold mb-6 text-center">Latest News</h2>
+            <FeaturedPost post={featuredPost} />
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      <FeaturedReleases />
+
+      {/* Latest Posts */}
+      {latestPosts.length > 0 && (
+        <section className="py-12">
+          <div className="container">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-3xl font-bold">Recent Updates</h2>
+              <Link
+                href="/news"
+                className="text-indigo-600 hover:text-indigo-800 font-medium"
+              >
+                View All →
+              </Link>
+            </div>
+            <PostGrid posts={latestPosts} columns={3} />
+          </div>
+        </section>
+      )}
     </>
   );
 }

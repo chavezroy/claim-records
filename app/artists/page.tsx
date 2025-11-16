@@ -1,10 +1,27 @@
-'use client';
+import { query } from '@/lib/db';
+import ArtistGridClient from '@/components/artists/ArtistGridClient';
 
-import { motion } from 'framer-motion';
-import { artists } from '@/lib/data/artists';
-import ArtistGrid from '@/components/artists/ArtistGrid';
+export default async function ArtistsPage() {
+  // Fetch artists from database
+  const result = await query(
+    'SELECT * FROM artists ORDER BY name ASC'
+  );
 
-export default function ArtistsPage() {
+  const artists = result.rows.map((artist: any) => ({
+    id: artist.id,
+    name: artist.name,
+    slug: artist.slug,
+    image: artist.image || artist.profile_image || '/img/artist/default.jpg',
+    profileImage: artist.profile_image || artist.image || '/img/artist/default.jpg',
+    bio: artist.bio,
+    socialLinks: {
+      instagram: artist.instagram_url,
+      twitter: artist.twitter_url,
+      facebook: artist.facebook_url,
+      youtube: artist.youtube_url,
+    },
+  }));
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -34,8 +51,8 @@ export default function ArtistsPage() {
 
   return (
     <section className="artists relative w-full overflow-hidden" style={{ height: '90vh', marginTop: 0, paddingTop: 0 }}>
-      <ArtistGrid 
-        artists={artists} 
+      <ArtistGridClient 
+        artists={artists}
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />

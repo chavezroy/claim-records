@@ -6,6 +6,15 @@
   --color-dark: #23201f;
   --color-dark-bg: #3e4451;
   --font-family-electric: ElectricPanda, sans-serif;
+  /* Logo colors */
+  --color-black: #000000;
+  --color-black-darkest: #0a0a0a;
+  --color-black-very-dark: #0c0b0a;
+  --color-gray-dark: #2d2e2d;
+  --color-gray-medium: #89969d;
+  --color-white: #ffffff;
+  --color-accent-red: #e83226;
+  --color-cream: #f6f0e0;
 }
 
 @font-face {
@@ -116,6 +125,11 @@ section {
   height: 75vh;
 }
 
+/* Featured card thumbnail container - gradient background */
+.featured-thumb-container {
+  background: linear-gradient(135deg, #d0d0d0 0%, #b8b8b8 100%);
+}
+
 /* Featured thumbnails - mobile: centered and enlarged */
 .featured-thumb-mobile {
   position: absolute !important;
@@ -132,13 +146,13 @@ section {
 @media (min-width: 768px) {
   .featured-thumb-mobile {
     object-position: center top !important;
-    top: -50px !important;
+    top: 0 !important;
     transform: scale(1) !important;
   }
   
   .featured-thumb-desktop {
     object-position: center top !important;
-    top: -50px !important;
+    top: 0 !important;
     transform: scale(1) !important;
   }
 }
@@ -393,6 +407,148 @@ footer a:hover.nav-link {
   to {
     opacity: 1;
   }
+}
+
+/* Jitter animation for RecordsLetter_O_Decorative - vinyl record shine effect */
+@keyframes vinylShine {
+  0% {
+    transform: translate(-0.8px, 0.8px) rotate(0deg);
+    opacity: 0.4;
+  }
+  12.5% {
+    transform: translate(0.6px, -0.6px) rotate(0.3deg);
+    opacity: 0.55;
+  }
+  25% {
+    transform: translate(-0.5px, -0.5px) rotate(-0.2deg);
+    opacity: 0.7;
+  }
+  37.5% {
+    transform: translate(0.7px, 0.5px) rotate(0.4deg);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-0.6px, 0.4px) rotate(-0.15deg);
+    opacity: 1;
+  }
+  62.5% {
+    transform: translate(0.5px, -0.7px) rotate(0.25deg);
+    opacity: 0.9;
+  }
+  75% {
+    transform: translate(-0.4px, 0.6px) rotate(-0.3deg);
+    opacity: 0.75;
+  }
+  87.5% {
+    transform: translate(0.6px, -0.4px) rotate(0.2deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-0.8px, 0.8px) rotate(0deg);
+    opacity: 0.4;
+  }
+}
+
+.RecordsLetter_O_Decorative {
+  animation: vinylShine 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 1.7s; /* Start after fan-in completes (0.9s + 0.6s duration) */
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Slow bouncing animation for nested group containing RecordsLetter_O and decorative path */
+@keyframes slowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.o_g_ {
+  animation: slowBounce 3s ease-in-out infinite;
+  animation-delay: 1.7s; /* Start after fan-in completes (0.9s + 0.6s duration) */
+  transform-origin: center;
+  will-change: transform;
+}
+
+.RecordsLetter_O {
+  animation: slowBounce 3s ease-in-out infinite;
+  animation-delay: 1.7s; /* Start after fan-in completes (0.9s + 0.6s duration) */
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* CLAIM Letters - Staggered fade-in (opacity only) */
+.ClaimLetter_C {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.1s;
+}
+
+.ClaimLetter_L {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.2s;
+}
+
+.ClaimLetter_A {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.3s;
+}
+
+.ClaimLetter_I {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.4s;
+}
+
+.ClaimLetter_M {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.5s;
+}
+
+/* RECORDS Letters - Staggered fade-in */
+/* First R in RECORDS */
+.RecordsLetters > .RecordsLetter_R:first-of-type,
+.RecordsLetters .RecordsLetter_R:first-child {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.6s;
+}
+
+.RecordsLetter_E {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.7s;
+}
+
+.RecordsLetter_C {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.8s;
+}
+
+/* O letter (RecordsLetter_R with O_group) - special entrance */
+.O_group {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 0.9s;
+}
+
+.RecordsLetter_D {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1s;
+}
+
+.RecordsLetter_S {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1.1s;
 }
 
 /* Bootstrap-style utility classes */

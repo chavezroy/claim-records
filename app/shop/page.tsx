@@ -1,14 +1,70 @@
 import Image from 'next/image';
-import { getFeaturedProducts } from '@/lib/data/products';
-import { artists } from '@/lib/data/artists';
+import { query } from '@/lib/db';
 import ProductGrid from '@/components/shop/ProductGrid';
-import ProductCard from '@/components/shop/ProductCard';
 import ArtistCard from '@/components/artists/ArtistCard';
 import Card from '@/components/ui/Card';
 
-export default function ShopPage() {
-  const featuredProducts = getFeaturedProducts();
-  const shopByArtist = artists.slice(0, 4);
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: { category?: string; artist?: string };
+}) {
+  // Fetch products from database
+  let productsQuery = `
+    SELECT p.*, a.name as artist_name, a.slug as artist_slug
+    FROM products p
+    LEFT JOIN artists a ON p.artist_id = a.id
+    WHERE p.in_stock = true
+  `;
+  const params: any[] = [];
+  let paramCount = 0;
+
+  if (searchParams.category) {
+    paramCount++;
+    productsQuery += ` AND p.category = $${paramCount}`;
+    params.push(searchParams.category);
+  }
+
+  if (searchParams.artist) {
+    paramCount++;
+    productsQuery += ` AND p.artist_id = $${paramCount}`;
+    params.push(searchParams.artist);
+  }
+
+  productsQuery += ` ORDER BY p.featured DESC, p.created_at DESC`;
+
+  const productsResult = await query(productsQuery, params);
+  const allProducts = productsResult.rows;
+
+  // Fetch featured products
+  const featuredResult = await query(
+    `SELECT p.*, a.name as artist_name, a.slug as artist_slug
+     FROM products p
+     LEFT JOIN artists a ON p.artist_id = a.id
+     WHERE p.featured = true AND p.in_stock = true
+     ORDER BY p.created_at DESC
+     LIMIT 8`
+  );
+  const featuredProducts = featuredResult.rows;
+
+  // Fetch artists for shop by artist section
+  const artistsResult = await query(
+    `SELECT a.*, COUNT(p.id) as product_count
+     FROM artists a
+     LEFT JOIN products p ON a.id = p.artist_id
+     WHERE p.in_stock = true
+     GROUP BY a.id
+     HAVING COUNT(p.id) > 0
+     ORDER BY a.name ASC
+     LIMIT 4`
+  );
+  const shopByArtist = artistsResult.rows.map((artist: any) => ({
+    id: artist.id,
+    name: artist.name,
+    slug: artist.slug,
+    image: artist.image || artist.profile_image || '/img/artist/default.jpg',
+    profileImage: artist.profile_image || artist.image || '/img/artist/default.jpg',
+  }));
 
   return (
     <>
@@ -34,12 +90,34 @@ export default function ShopPage() {
       </section>
 
       {/* Featured Products */}
-      <section>
-        <div className="container pt-5">
-          <h1 className="text-center mb-5">Featured products</h1>
-          <ProductGrid products={featuredProducts} />
-        </div>
-      </section>
+      {featuredProducts.length > 0 && (
+        <section>
+          <div className="container pt-5">
+            <h1 className="text-center mb-5">Featured products</h1>
+            <ProductGrid products={featuredProducts.map(formatProduct)} />
+          </div>
+        </section>
+      )}
+
+      {/* All Products */}
+      {allProducts.length > 0 && (
+        <section>
+          <div className="container pt-5">
+            <h2 className="text-center mb-5">All Products</h2>
+            <ProductGrid products={allProducts.map(formatProduct)} />
+          </div>
+        </section>
+      )}
+
+      {allProducts.length === 0 && (
+        <section>
+          <div className="container pt-5">
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No products available at this time.</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Shop by Products */}
       <section>
@@ -159,19 +237,44 @@ export default function ShopPage() {
       </section>
 
       {/* Shop by Artist */}
-      <section>
-        <div className="container pt-5">
-          <h2 className="text-center mb-5">Shop by artist</h2>
-          <div className="row mb-5">
-            {shopByArtist.slice(0, 4).map((artist) => (
-              <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
-                <ArtistCard artist={artist} variant="card" />
-              </div>
-            ))}
+      {shopByArtist.length > 0 && (
+        <section>
+          <div className="container pt-5">
+            <h2 className="text-center mb-5">Shop by artist</h2>
+            <div className="row mb-5">
+              {shopByArtist.map((artist) => (
+                <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
+                  <ArtistCard artist={artist} variant="card" />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
+}
+
+// Helper function to format product for ProductGrid
+function formatProduct(product: any) {
+  // Fetch product images
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    price: parseFloat(product.price),
+    images: [product.image || '/img/shop/default.jpg'], // Will need to fetch from product_images table
+    category: product.category,
+    artistId: product.artist_id,
+    artistName: product.artist_name,
+    artistSlug: product.artist_slug,
+    variants: {
+      size: product.variants?.size || [],
+      color: product.variants?.color || [],
+    },
+    inStock: product.in_stock,
+    productType: product.product_type,
+  };
 }
 

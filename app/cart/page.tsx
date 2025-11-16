@@ -242,9 +242,13 @@ export default function CartPage() {
                 <span className="font-medium text-black text-end" style={{ fontSize: '1.5rem', fontWeight: '700', minWidth: '120px' }}>${total.toFixed(2)}</span>
               </div>
 
-              <button className="btn btn-primary w-100 mb-3 py-3" style={{ fontSize: '1rem', fontWeight: '600' }} disabled>
+              <Link
+                href="/checkout"
+                className="btn btn-primary w-100 mb-3 py-3 d-block text-center text-decoration-none"
+                style={{ fontSize: '1rem', fontWeight: '600' }}
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
 
               <Link href="/shop" className="btn btn-outline-secondary w-100 py-2" style={{ fontSize: '0.95rem' }}>
                 Continue Shopping

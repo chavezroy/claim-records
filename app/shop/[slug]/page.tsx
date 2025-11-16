@@ -1,43 +1,70 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
-import { getProductBySlug, getFeaturedProducts } from '@/lib/data/products';
+import { notFound } from 'next/navigation';
+import { query } from '@/lib/db';
 import ProductGrid from '@/components/shop/ProductGrid';
-import { useCart } from '@/contexts/CartContext';
+import AddToCartButton from '@/components/shop/AddToCartButton';
+import YouMightLike from '@/components/promo/YouMightLike';
 
-export default function ShopDetailPage() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  const product = getProductBySlug(slug);
-  const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState<string>('');
-  const [quantity, setQuantity] = useState<number>(1);
-  
-  if (!product) {
-    return <div>Product not found</div>;
+export default async function ShopDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  // Fetch product from database
+  const productResult = await query(
+    `SELECT p.*, a.name as artist_name, a.slug as artist_slug
+     FROM products p
+     LEFT JOIN artists a ON p.artist_id = a.id
+     WHERE p.slug = $1`,
+    [params.slug]
+  );
+
+  if (productResult.rows.length === 0) {
+    notFound();
   }
 
-  const relatedProducts = getFeaturedProducts().filter((p) => p.id !== product.id).slice(0, 4);
+  const product = productResult.rows[0];
 
-  const handleAddToCart = () => {
-    if (product.variants?.size && !selectedSize) {
-      // Set default to first size if none selected
-      setSelectedSize(product.variants.size[0]);
+  // Fetch product images
+  const imagesResult = await query(
+    `SELECT m.file_path, m.file_url
+     FROM product_images pi
+     JOIN media m ON pi.media_id = m.id
+     WHERE pi.product_id = $1
+     ORDER BY pi.display_order ASC`,
+    [product.id]
+  );
+
+  const productImages = imagesResult.rows.map((img: any) => img.file_url || img.file_path);
+  const mainImage = productImages[0] || '/img/shop/default.jpg';
+
+  // Fetch product variants
+  const variantsResult = await query(
+    'SELECT * FROM product_variants WHERE product_id = $1',
+    [product.id]
+  );
+
+  const variants: any = {};
+  variantsResult.rows.forEach((variant: any) => {
+    if (!variants[variant.variant_type]) {
+      variants[variant.variant_type] = [];
     }
-    
-    addToCart({
-      productId: product.id,
-      name: product.name,
-      artistName: product.artistName,
-      price: product.price,
-      image: product.images[0],
-      size: selectedSize || product.variants?.size?.[0],
-      quantity: quantity,
-    });
-  };
+    variants[variant.variant_type].push(variant.variant_value);
+  });
+
+  // Fetch related products
+  const relatedResult = await query(
+    `SELECT p.*, a.name as artist_name, a.slug as artist_slug
+     FROM products p
+     LEFT JOIN artists a ON p.artist_id = a.id
+     WHERE p.id != $1 AND p.in_stock = true
+     ORDER BY RANDOM()
+     LIMIT 4`,
+    [product.id]
+  );
+
+  const relatedProducts = relatedResult.rows.map(formatProduct);
 
   return (
     <>
@@ -70,100 +97,75 @@ export default function ShopDetailPage() {
                 <div className="product-main-image animate-fade-in">
                   <Image
                     alt={product.name}
-                    src={product.images[0]}
+                    src={mainImage}
                     width={600}
                     height={800}
                     className="w-full"
                     unoptimized
                   />
                 </div>
+                {productImages.length > 1 && (
+                  <div className="product-thumbnails mt-4 d-flex gap-2">
+                    {productImages.slice(1, 5).map((img: string, idx: number) => (
+                      <div key={idx} className="thumbnail" style={{ width: '80px', height: '80px' }}>
+                        <Image
+                          src={img}
+                          alt={`${product.name} ${idx + 2}`}
+                          width={80}
+                          height={80}
+                          className="w-full h-full object-cover rounded"
+                          unoptimized
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="product-details-wrapper col-sm-7">
                 <div className="product-details" style={{ paddingLeft: '2rem' }}>
                   <h1 className="product-title mb-4">{product.name}</h1>
                   <p className="product-price mb-5" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#23201f' }}>
-                    ${product.price.toFixed(2)}
+                    ${parseFloat(product.price).toFixed(2)}
                   </p>
-                  <form onSubmit={(e) => { e.preventDefault(); handleAddToCart(); }} className="mb-5">
-                    <div className="product-options">
-                      {product.variants?.size && (
-                        <div className="mb-4">
-                          <div className="d-flex align-items-center mb-2">
-                            <label htmlFor="size" className="mb-0 me-3" style={{ minWidth: '80px', fontWeight: '500', fontSize: '0.95rem' }}>
-                              Size
-                            </label>
-                            <select
-                              id="size"
-                              className="form-control form-select"
-                              style={{ width: 'auto', minWidth: '120px', maxWidth: '200px' }}
-                              value={selectedSize || product.variants.size[0]}
-                              onChange={(e) => setSelectedSize(e.target.value)}
-                            >
-                              {product.variants.size.map((size) => (
-                                <option key={size} value={size}>
-                                  {size}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      )}
-                      <div className="mb-4">
-                        <div className="d-flex align-items-center mb-2">
-                          <label htmlFor="quantity" className="mb-0 me-3" style={{ minWidth: '80px', fontWeight: '500', fontSize: '0.95rem' }}>
-                            Quantity
-                          </label>
-                          <input
-                            id="quantity"
-                            className="form-control"
-                            type="number"
-                            name="quantity"
-                            value={quantity}
-                            onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                            min="1"
-                            style={{ width: 'auto', minWidth: '80px', maxWidth: '120px' }}
-                          />
-                        </div>
-                      </div>
-                      <div className="mb-5">
-                        <div className="d-flex align-items-center">
-                          <span className="mb-0 me-3" style={{ minWidth: '80px', fontWeight: '500', fontSize: '0.95rem' }}>
-                            Share
-                          </span>
-                          <div className="d-flex gap-3">
-                            <a target="_blank" href="#" className="text-xl hover:text-primary transition-colors" aria-label="Instagram">
-                              <i className="bi bi-instagram"></i>
-                            </a>
-                            <a target="_blank" href="#" className="text-xl hover:text-primary transition-colors" aria-label="Twitter">
-                              <i className="bi bi-twitter-x"></i>
-                            </a>
-                            <a target="_blank" href="#" className="text-xl hover:text-primary transition-colors" aria-label="Facebook">
-                              <i className="bi bi-facebook"></i>
-                            </a>
-                            <a target="_blank" href="mailto:#" className="text-xl hover:text-primary transition-colors" aria-label="Email">
-                              <i className="bi bi-envelope"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="add-to-cart">
-                        <button
-                          type="submit"
-                          className="btn btn-primary bg-primary text-white px-8 py-3 rounded hover:bg-primary/90"
-                          style={{ fontSize: '1rem', fontWeight: '500', minWidth: '180px' }}
-                        >
-                          Add to cart
-                        </button>
-                      </div>
+                  {product.product_type === 'digital' && (
+                    <div className="mb-4 p-3 bg-blue-50 rounded">
+                      <p className="text-blue-800 mb-0">
+                        <i className="bi bi-download me-2"></i>
+                        Digital Download - Available immediately after purchase
+                      </p>
                     </div>
-                  </form>
+                  )}
+                  <AddToCartButton
+                    product={{
+                      id: product.id,
+                      name: product.name,
+                      slug: product.slug,
+                      price: parseFloat(product.price),
+                      image: mainImage,
+                      artistName: product.artist_name,
+                      artistId: product.artist_id,
+                      variants: Object.keys(variants).length > 0 ? variants : undefined,
+                      productType: product.product_type,
+                    }}
+                  />
                   <div className="product-description rte pt-4" style={{ borderTop: '1px solid #e5e7eb' }}>
-                    <p className="fs-6 text-sm mb-2 text-gray-700">{product.description}</p>
-                    {product.artistName && (
+                    {product.description && (
+                      <div
+                        className="fs-6 text-sm mb-2 text-gray-700"
+                        dangerouslySetInnerHTML={{ __html: product.description }}
+                      />
+                    )}
+                    {product.artist_name && (
                       <p className="fs-6 text-sm mb-0 text-gray-700">
-                        Artist: <Link href={`/artists/${product.artistId}`} className="text-primary hover:underline">{product.artistName}</Link>
+                        Artist:{' '}
+                        <Link href={`/artists/${product.artist_slug}`} className="text-primary hover:underline">
+                          {product.artist_name}
+                        </Link>
                       </p>
                     )}
+                    <p className="fs-6 text-sm mb-0 text-gray-700">
+                      Category: <span className="capitalize">{product.category}</span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -181,7 +183,30 @@ export default function ShopDetailPage() {
           </div>
         </section>
       )}
+
+      {/* Promo Cards */}
+      <YouMightLike
+        type="products"
+        limit={4}
+        currentProductId={product.id}
+        excludeIds={relatedProducts.map((p) => p.id)}
+      />
     </>
   );
 }
 
+function formatProduct(product: any) {
+  return {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    price: parseFloat(product.price),
+    images: ['/img/shop/default.jpg'], // Will need to fetch from product_images
+    category: product.category,
+    artistId: product.artist_id,
+    artistName: product.artist_name,
+    inStock: product.in_stock,
+    productType: product.product_type,
+  };
+}
