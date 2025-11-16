@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { query } from '@/lib/db';
 import Card from '@/components/ui/Card';
-import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
+import { getProductPlaceholder, getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 interface ShopByProps {
   type: 'products' | 'artists' | 'featured';

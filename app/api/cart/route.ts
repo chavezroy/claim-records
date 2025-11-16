@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const cartItemSchema = z.object({
   product_id: z.string().uuid(),
   quantity: z.number().int().positive(),
-  variant_info: z.record(z.any()).optional().nullable(),
+  variant_info: z.record(z.string(), z.any()).optional().nullable(),
 });
 
 const cartSchema = z.object({
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     console.error('Error saving cart:', error);
     return NextResponse.json(

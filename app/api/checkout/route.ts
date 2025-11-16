@@ -27,7 +27,7 @@ const checkoutSchema = z.object({
     product_name: z.string(),
     product_price: z.number().nonnegative(),
     quantity: z.number().int().positive(),
-    variant_info: z.record(z.any()).optional().nullable(),
+    variant_info: z.record(z.string(), z.any()).optional().nullable(),
   })).optional(),
 });
 
@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     console.error('Error initiating checkout:', error);
     return NextResponse.json(

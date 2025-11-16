@@ -80,7 +80,7 @@ export async function PUT(
     return NextResponse.json({ artist: result.rows[0] });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     console.error('Error updating artist:', error);
     return NextResponse.json(

@@ -30,7 +30,7 @@ const orderSchema = z.object({
     product_name: z.string(),
     product_price: z.number().nonnegative(),
     quantity: z.number().int().positive(),
-    variant_info: z.record(z.any()).optional().nullable(),
+    variant_info: z.record(z.string(), z.any()).optional().nullable(),
   })),
 });
 
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     console.error('Error creating order:', error);
     return NextResponse.json(

@@ -37,8 +37,11 @@ export default async function FeaturedMusic({ limit = 6 }: FeaturedMusicProps) {
     id: product.id,
     name: product.name,
     slug: product.slug,
+    description: product.description || '',
     price: parseFloat(product.price),
     images: [product.image || '/img/shop/default.jpg'],
+    category: (product.category || 'other') as 'shirt' | 'sticker' | 'digital' | 'other',
+    inStock: product.in_stock ?? true,
     artistName: product.artist_name,
   }));
 
