@@ -5,6 +5,8 @@ import Link from 'next/link';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedReleases from '@/components/home/FeaturedReleases';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   // Fetch featured post
   const featuredPostResult = await query(

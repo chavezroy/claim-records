@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
 
+export const dynamic = 'force-dynamic';
+
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const result = await query(
     `SELECT p.*, u.name as author_name, u.email as author_email

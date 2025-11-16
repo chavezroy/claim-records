@@ -3,6 +3,8 @@ import { query } from '@/lib/db';
 import Link from 'next/link';
 import VideoPlayer from '@/components/videos/VideoPlayer';
 
+export const dynamic = 'force-dynamic';
+
 export default async function VideoPage({ params }: { params: { slug: string } }) {
   const result = await query(
     `SELECT v.*, a.name as artist_name, a.slug as artist_slug

@@ -14,6 +14,8 @@ type PageProps = {
   };
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function ArtistDetailPage({ params }: PageProps) {
   // Fetch artist from database
   const artistResult = await query(

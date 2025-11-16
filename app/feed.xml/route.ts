@@ -1,5 +1,7 @@
 import { query } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const result = await query(
     `SELECT p.*, u.name as author_name

@@ -7,6 +7,8 @@ import AddToCartButton from '@/components/shop/AddToCartButton';
 import YouMightLike from '@/components/promo/YouMightLike';
 import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ShopDetailPage({
   params,
 }: {

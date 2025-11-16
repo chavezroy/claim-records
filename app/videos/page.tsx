@@ -2,6 +2,8 @@ import { query } from '@/lib/db';
 import VideoGrid from '@/components/videos/VideoGrid';
 import CategoryFilter from '@/components/videos/CategoryFilter';
 
+export const dynamic = 'force-dynamic';
+
 export default async function VideosPage({
   searchParams,
 }: {
