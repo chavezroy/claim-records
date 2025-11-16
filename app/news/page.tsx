@@ -14,8 +14,8 @@ export default async function NewsPage() {
   const posts = result.rows;
 
   return (
-    <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-8">News & Updates</h1>
+    <div className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+      <h1 className="text-4xl font-bold" style={{ marginBottom: '2rem', paddingTop: '1rem' }}>News & Updates</h1>
 
       {posts.length === 0 ? (
         <div className="text-center py-12">
@@ -39,10 +39,10 @@ export default async function NewsPage() {
                   />
                 </div>
               )}
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 line-clamp-2">{post.title}</h2>
+              <div className="p-6" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                <h2 className="text-xl font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{post.title}</h2>
                 {post.excerpt && (
-                  <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                  <p className="text-gray-600 mb-4" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '4.2em' }}>{post.excerpt}</p>
                 )}
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>{post.author_name || 'Claim Records'}</span>

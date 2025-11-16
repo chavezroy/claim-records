@@ -106,8 +106,8 @@ export default async function ArtistDetailPage({ params }: PageProps) {
             {/* Releases Section */}
             {releases.length > 0 && (
               <section>
-                <div className="container pt-5 releases">
-                  <h2 className="text-center mb-5">Releases</h2>
+                <div className="container releases" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+                  <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Releases</h2>
                   <div className="row mb-5">
               {releases.map((release) => (
                 <div key={release.id} className="col-sm-4 mb-3 mb-sm-0">
@@ -131,9 +131,9 @@ export default async function ArtistDetailPage({ params }: PageProps) {
                         }}
                       />
                     </div>
-                    <div className="card-body p-5 min-h-[110px]">
-                      <p className="card-title mb-0 text-primary hover:text-black transition-colors">{release.artistName}</p>
-                      <p className="card-subtitle mb-2 text-gray-500 text-sm">
+                    <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                      <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{release.artistName}</p>
+                      <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>
                         {release.title}{' '}
                         <span className="badge badge-warning bg-yellow-400 text-black px-2 py-1 text-xs">
                           {release.type.toUpperCase()}
@@ -176,8 +176,8 @@ export default async function ArtistDetailPage({ params }: PageProps) {
 
       {/* Other Artists */}
       <section>
-        <div className="container pt-5 others">
-          <h2 className="text-center mb-5">Check out other Artists</h2>
+        <div className="container others" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+          <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Check out other Artists</h2>
           <div className="row mb-5">
             {otherArtists.map((otherArtist) => (
               <div key={otherArtist.id} className="col-sm-3 mb-3 mb-sm-0">

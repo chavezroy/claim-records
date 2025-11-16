@@ -31,11 +31,11 @@ export default function ProductCard({ product, showPrice = true, sizes = "(max-w
           }}
         />
       </div>
-      <div className="card-body p-5 min-h-[110px]">
-        <p className="card-title mb-0 text-primary hover:text-black transition-colors">
+      <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+        <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {product.artistName || product.name}
         </p>
-        <p className="card-subtitle mb-2 text-gray-500 text-sm">
+        <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>
           {product.artistName ? product.name : product.description}
         </p>
         {showPrice && (

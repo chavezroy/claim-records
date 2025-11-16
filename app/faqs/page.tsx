@@ -64,7 +64,7 @@ export default function FAQsPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-dark text-white py-16">
+      <section className="bg-dark text-white" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="text-center" style={{ maxWidth: '100%' }}>
             <h1 className="h1 mb-4 font-electric">Frequently Asked Questions</h1>
@@ -76,7 +76,7 @@ export default function FAQsPage() {
       </section>
 
       {/* FAQs Section */}
-      <section className="py-16">
+      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="text-center" style={{ maxWidth: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
             <div className="faq-list" style={{ maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto', textAlign: 'left' }}>
@@ -132,7 +132,7 @@ export default function FAQsPage() {
       </section>
 
       {/* Still Have Questions Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="bg-gray-50" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="text-center" style={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
             <h2 className="h2 mb-4 font-electric">Still Have Questions?</h2>
@@ -158,7 +158,7 @@ export default function FAQsPage() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-16">
+      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <h2 className="h1 mb-5 font-electric text-center">Shop Claim Records</h2>
           <p className="text-center text-gray-700 mb-5 fs-5">

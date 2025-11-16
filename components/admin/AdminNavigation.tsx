@@ -23,27 +23,49 @@ export default function AdminNavigation() {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-gray-100 border-b border-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link href="/admin/dashboard" className="text-xl font-bold text-gray-900">
-                Claim Records Admin
+        <div className="flex justify-between items-end h-16">
+          <div className="flex items-end">
+            <div className="flex-shrink-0 flex items-center" style={{ paddingRight: '2rem', paddingBottom: '0.5rem' }}>
+              <Link 
+                href="/admin/dashboard" 
+                className="text-sm font-bold text-gray-900 hover:text-gray-700 transition-colors uppercase flex items-center"
+              >
+                <i className="bi bi-lock-fill mr-2"></i>
+                Admin
               </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <div className="hidden sm:flex sm:items-end" style={{ gap: '2px' }}>
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    className={`inline-flex items-center px-4 text-sm font-medium transition-all rounded-t-md ${
                       isActive
-                        ? 'border-indigo-500 text-gray-900'
-                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                        ? 'text-indigo-600 border-t border-l border-r border-gray-300 active-tab admin-tab-active'
+                        : 'text-gray-600 hover:text-gray-900 inactive-tab admin-tab-inactive'
                     }`}
+                    style={{ 
+                      marginBottom: '-1px',
+                      borderTopLeftRadius: '0.25rem',
+                      borderTopRightRadius: '0.25rem',
+                      borderBottomLeftRadius: '0',
+                      borderBottomRightRadius: '0',
+                      boxShadow: '0 -1px 2px 0 rgb(0 0 0 / 0.05)',
+                      ...(isActive 
+                        ? { backgroundImage: 'linear-gradient(to top, #f9fafb 0%, #ffffff 60%, #ffffff 100%)' }
+                        : { 
+                            backgroundImage: 'linear-gradient(to top, #e5e7eb 0%, #f3f4f6 100%)',
+                            borderTop: '1px solid #d1d5db',
+                            borderLeft: '1px solid #d1d5db',
+                            borderRight: '1px solid #d1d5db',
+                            borderBottom: 'none',
+                          }
+                      ),
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -51,18 +73,20 @@ export default function AdminNavigation() {
               })}
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4" style={{ paddingBottom: '0.5rem' }}>
             <Link
               href="/"
-              className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
+              className="text-indigo-600 hover:text-indigo-700 flex items-center justify-center transition-colors px-4 py-2"
+              title="View Site"
             >
-              View Site
+              <i className="bi bi-eye text-lg"></i>
             </Link>
             <button
               onClick={handleSignOut}
-              className="ml-4 bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700"
+              className="text-indigo-600 hover:text-indigo-700 flex items-center justify-center transition-colors px-4 py-2"
+              title="Sign Out"
             >
-              Sign Out
+              <i className="bi bi-box-arrow-right text-lg"></i>
             </button>
           </div>
         </div>

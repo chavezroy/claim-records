@@ -263,9 +263,11 @@ CREATE TABLE IF NOT EXISTS votes (
   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
   session_id VARCHAR(255),
   vote_type VARCHAR(50) DEFAULT 'upvote' CHECK (vote_type IN ('upvote', 'downvote')),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(entity_type, entity_id, COALESCE(user_id::text, session_id))
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Unique constraint for votes (user_id or session_id must be unique per entity)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_votes_unique ON votes(entity_type, entity_id, COALESCE(user_id::text, session_id));
 
 -- Cart sessions table (for persistent carts)
 CREATE TABLE IF NOT EXISTS cart_sessions (

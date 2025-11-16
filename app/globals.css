@@ -56,6 +56,13 @@ main {
   padding: 0;
 }
 
+/* Allow padding utility classes on main elements (e.g., py-6 in admin dashboard) */
+.bg-gray-50 > main[class*="py-"],
+main.py-6 {
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
 section {
   margin-top: 0;
   padding-top: 0;
@@ -1367,3 +1374,37 @@ footer a:hover.nav-link {
 }
 
 /* Removed .bg-hero styles - no longer used */
+
+/* Active tab pseudo-element to blend with dashboard background */
+.active-tab {
+  position: relative;
+}
+
+.active-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-color: white;
+  z-index: 1;
+  mask-image: linear-gradient(to bottom, transparent 0%, white 20%, white 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 20%, white 80%, transparent 100%);
+}
+
+/* Inactive tab hover gradient */
+.inactive-tab:hover {
+  background-image: linear-gradient(to top, #d1d5db 0%, #e5e7eb 100%) !important;
+}
+
+/* Admin tab padding */
+.admin-tab-active {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.admin-tab-inactive {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}

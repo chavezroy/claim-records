@@ -92,8 +92,8 @@ export default async function ShopPage({
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
         <section>
-          <div className="container pt-5">
-            <h1 className="text-center mb-5">Featured products</h1>
+          <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+            <h1 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Featured products</h1>
             <ProductGrid products={featuredProducts.map(formatProduct)} />
           </div>
         </section>
@@ -102,8 +102,8 @@ export default async function ShopPage({
       {/* All Products */}
       {allProducts.length > 0 && (
         <section>
-          <div className="container pt-5">
-            <h2 className="text-center mb-5">All Products</h2>
+          <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+            <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>All Products</h2>
             <ProductGrid products={allProducts.map(formatProduct)} />
           </div>
         </section>
@@ -111,8 +111,8 @@ export default async function ShopPage({
 
       {allProducts.length === 0 && (
         <section>
-          <div className="container pt-5">
-            <div className="text-center py-12">
+          <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+            <div className="text-center" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
               <p className="text-gray-500 text-lg">No products available at this time.</p>
             </div>
           </div>
@@ -121,8 +121,8 @@ export default async function ShopPage({
 
       {/* Shop by Products */}
       <section>
-        <div className="container pt-5">
-          <h2 className="text-center mb-5">Shop by products</h2>
+        <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+          <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Shop by products</h2>
           <div className="row mb-5 products">
             <div className="col-sm-3 mb-3 mb-sm-0">
               <Card href="/shop?category=shirt">
@@ -145,9 +145,9 @@ export default async function ShopPage({
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-[110px]">
-                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">Shirts</p>
-                  <p className="card-subtitle mb-2 text-gray-500 text-sm">Last Goodbye T-shirt</p>
+                <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Shirts</p>
+                  <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>Last Goodbye T-shirt</p>
                 </div>
               </Card>
             </div>
@@ -172,9 +172,9 @@ export default async function ShopPage({
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-[110px]">
-                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">Stickers</p>
-                  <p className="card-subtitle mb-2 text-gray-500 text-sm">Logo T-shirt</p>
+                <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Stickers</p>
+                  <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>Logo T-shirt</p>
                 </div>
               </Card>
             </div>
@@ -199,9 +199,9 @@ export default async function ShopPage({
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-[110px]">
-                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">Digital Content</p>
-                  <p className="card-subtitle mb-2 text-gray-500 text-sm">Mix and master templates for Logic Pro</p>
+                <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Digital Content</p>
+                  <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>Mix and master templates for Logic Pro</p>
                 </div>
               </Card>
             </div>
@@ -226,9 +226,9 @@ export default async function ShopPage({
                     }}
                   />
                 </div>
-                <div className="card-body p-5 min-h-[110px]">
-                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">Accessories</p>
-                  <p className="card-subtitle mb-2 text-gray-500 text-sm">Merchandise and accessories</p>
+                <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Accessories</p>
+                  <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>Merchandise and accessories</p>
                 </div>
               </Card>
             </div>
@@ -239,8 +239,8 @@ export default async function ShopPage({
       {/* Shop by Artist */}
       {shopByArtist.length > 0 && (
         <section>
-          <div className="container pt-5">
-            <h2 className="text-center mb-5">Shop by artist</h2>
+          <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+            <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Shop by artist</h2>
             <div className="row mb-5">
               {shopByArtist.map((artist) => (
                 <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">

@@ -29,16 +29,17 @@ export default async function PostPage({ params }: { params: { slug: string } })
   );
 
   return (
-    <article className="container py-8 max-w-4xl">
+    <article className="container max-w-4xl" style={{ paddingTop: '2rem', paddingBottom: '2rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
       <Link
         href="/news"
-        className="text-indigo-600 hover:text-indigo-800 mb-4 inline-block"
+        className="text-indigo-600 hover:text-indigo-800 inline-block"
+        style={{ marginBottom: '1rem' }}
       >
         ← Back to News
       </Link>
 
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+      <header style={{ marginBottom: '2rem' }}>
+        <h1 className="text-4xl font-bold" style={{ marginBottom: '1rem', paddingTop: '1rem' }}>{post.title}</h1>
         <div className="flex items-center text-gray-600 mb-4">
           <span>{post.author_name || 'Claim Records'}</span>
           <span className="mx-2">•</span>
@@ -70,22 +71,24 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
       <div
         className="prose prose-lg max-w-none"
+        style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
 
       {relatedResult.rows.length > 0 && (
-        <aside className="mt-12 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-bold mb-6">Related Posts</h2>
+        <aside style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e5e7eb' }}>
+          <h2 className="text-2xl font-bold" style={{ marginBottom: '1.5rem', paddingTop: '1rem' }}>Related Posts</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {relatedResult.rows.map((related: any) => (
               <Link
                 key={related.id}
                 href={`/news/${related.slug}`}
-                className="block p-4 border border-gray-200 rounded-lg hover:border-indigo-500 transition-colors"
+                className="block border border-gray-200 rounded-lg hover:border-indigo-500 transition-colors"
+                style={{ padding: '1rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}
               >
-                <h3 className="font-semibold mb-2 line-clamp-2">{related.title}</h3>
+                <h3 className="font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{related.title}</h3>
                 {related.excerpt && (
-                  <p className="text-sm text-gray-600 line-clamp-2">{related.excerpt}</p>
+                  <p className="text-sm text-gray-600" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{related.excerpt}</p>
                 )}
               </Link>
             ))}

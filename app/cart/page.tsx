@@ -30,8 +30,8 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container py-5">
-      <h1 className="text-center mb-5 font-electric" style={{ fontSize: '2.5rem', letterSpacing: '2px', fontWeight: '700' }}>Shopping Cart</h1>
+    <div className="container" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+      <h1 className="text-center font-electric" style={{ fontSize: '2.5rem', letterSpacing: '2px', fontWeight: '700', marginBottom: '3rem', paddingTop: '1rem' }}>Shopping Cart</h1>
 
       <div className="d-flex flex-column flex-md-row gap-4">
         {/* Cart Items */}

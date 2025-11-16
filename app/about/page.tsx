@@ -12,7 +12,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-dark text-white py-16">
+      <section className="bg-dark text-white" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="text-center" style={{ maxWidth: '100%' }}>
             <h1 className="h1 mb-4 font-electric">Claim Records</h1>
@@ -25,7 +25,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16">
+      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
@@ -45,7 +45,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="bg-gray-50" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
@@ -74,7 +74,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-16">
+      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <div className="text-center mb-8">
             <h2 className="h1 mb-5 font-electric">What We Stand For</h2>
@@ -112,7 +112,7 @@ export default function AboutPage() {
       </section>
 
       {/* Featured Artists */}
-      <section className="py-16 bg-gray-50">
+      <section className="bg-gray-50" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <h2 className="h1 mb-5 font-electric text-center">Our Artists</h2>
           <p className="text-center text-gray-700 mb-5 fs-5">
@@ -134,7 +134,7 @@ export default function AboutPage() {
       </section>
 
       {/* Featured Products - One Row */}
-      <section className="py-16">
+      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="container">
           <h2 className="h1 mb-5 font-electric text-center">Shop Claim Records</h2>
           <p className="text-center text-gray-700 mb-5 fs-5">

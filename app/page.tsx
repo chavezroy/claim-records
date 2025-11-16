@@ -37,7 +37,7 @@ export default async function HomePage() {
       {featuredPost && (
         <section className="py-12 bg-gray-50">
           <div className="container">
-            <h2 className="text-3xl font-bold mb-6 text-center">Latest News</h2>
+            <h2 className="text-3xl font-bold text-center" style={{ marginBottom: '1.5rem', paddingTop: '1rem' }}>Latest News</h2>
             <FeaturedPost post={featuredPost} />
           </div>
         </section>
@@ -49,8 +49,8 @@ export default async function HomePage() {
       {latestPosts.length > 0 && (
         <section className="py-12">
           <div className="container">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-3xl font-bold">Recent Updates</h2>
+            <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem', paddingTop: '1rem' }}>
+              <h2 className="text-3xl font-bold" style={{ marginBottom: 0 }}>Recent Updates</h2>
               <Link
                 href="/news"
                 className="text-indigo-600 hover:text-indigo-800 font-medium"

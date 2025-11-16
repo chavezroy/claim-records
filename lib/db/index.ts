@@ -13,7 +13,9 @@ export function getPool(): Pool {
 
     pool = new Pool({
       connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: connectionString.includes('rds.amazonaws.com') || process.env.NODE_ENV === 'production' 
+        ? { rejectUnauthorized: false } 
+        : false,
       max: 20, // Maximum number of clients in the pool
       idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
       connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection cannot be established

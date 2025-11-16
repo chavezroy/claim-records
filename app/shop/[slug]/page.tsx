@@ -122,9 +122,9 @@ export default async function ShopDetailPage({
                 )}
               </div>
               <div className="product-details-wrapper col-sm-7">
-                <div className="product-details" style={{ paddingLeft: '2rem' }}>
-                  <h1 className="product-title mb-4">{product.name}</h1>
-                  <p className="product-price mb-5" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#23201f' }}>
+                <div className="product-details" style={{ paddingLeft: '2rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <h1 className="product-title" style={{ marginBottom: '1rem', paddingTop: '1rem' }}>{product.name}</h1>
+                  <p className="product-price" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#23201f', marginBottom: '3rem' }}>
                     ${parseFloat(product.price).toFixed(2)}
                   </p>
                   {product.product_type === 'digital' && (
@@ -148,10 +148,11 @@ export default async function ShopDetailPage({
                       productType: product.product_type,
                     }}
                   />
-                  <div className="product-description rte pt-4" style={{ borderTop: '1px solid #e5e7eb' }}>
+                  <div className="product-description rte" style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                     {product.description && (
                       <div
                         className="fs-6 text-sm mb-2 text-gray-700"
+                        style={{ wordWrap: 'break-word', overflowWrap: 'break-word', overflow: 'hidden' }}
                         dangerouslySetInnerHTML={{ __html: product.description }}
                       />
                     )}
@@ -177,8 +178,8 @@ export default async function ShopDetailPage({
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <section>
-          <div className="container pt-5">
-            <h2 className="text-center mb-5">You might like these</h2>
+          <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
+            <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>You might like these</h2>
             <ProductGrid products={relatedProducts} columns={4} />
           </div>
         </section>

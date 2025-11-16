@@ -34,10 +34,10 @@ export default function PostCard({ post }: PostCardProps) {
           />
         </div>
       )}
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 line-clamp-2">{post.title}</h3>
+      <div className="p-6" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+        <h3 className="text-xl font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{post.title}</h3>
         {post.excerpt && (
-          <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
+          <p className="text-gray-600 mb-4" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '4.2em' }}>{post.excerpt}</p>
         )}
         <div className="flex items-center justify-between text-sm text-gray-500">
           <span>{post.author_name || 'Claim Records'}</span>

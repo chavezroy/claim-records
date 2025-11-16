@@ -41,8 +41,8 @@ export default async function VideosPage({
   const categories = categoriesResult.rows.map((r: any) => r.category);
 
   return (
-    <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-8">Videos</h1>
+    <div className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+      <h1 className="text-4xl font-bold" style={{ marginBottom: '2rem', paddingTop: '1rem' }}>Videos</h1>
 
       {/* Filters */}
       {categories.length > 0 && (

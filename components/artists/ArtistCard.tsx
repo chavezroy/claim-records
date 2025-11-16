@@ -170,12 +170,12 @@ export default function ArtistCard({
           }}
         />
       </div>
-      <div className="card-body p-5 min-h-[110px]">
-        <p className="card-title mb-0 text-primary hover:text-black transition-colors">
+      <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+        <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {artist.name}
         </p>
         {showBio && artist.bio && (
-          <p className="card-subtitle mb-2 text-gray-500 text-sm line-clamp-2">
+          <p className="card-subtitle mb-2 text-gray-500 text-sm" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>
             {artist.bio}
           </p>
         )}

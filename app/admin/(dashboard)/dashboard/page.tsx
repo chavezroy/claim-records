@@ -36,11 +36,11 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-900" style={{ marginBottom: '1.5rem' }}>Dashboard</h1>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ marginBottom: '1.5rem' }}>
+        <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -70,7 +70,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -85,7 +85,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -102,8 +102,8 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent Posts */}
-      <div className="bg-white shadow rounded-lg mb-8">
-        <div className="px-4 py-5 sm:p-6">
+      <div className="bg-white shadow rounded-lg border border-gray-200" style={{ marginBottom: '1.5rem' }}>
+        <div className="p-4 sm:p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Posts</h2>
           <div className="flow-root">
             <ul className="-mb-8">
@@ -135,8 +135,8 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
+      <div className="bg-white shadow rounded-lg border border-gray-200">
+        <div className="p-4 sm:p-6">
           <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Orders</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
