@@ -14,7 +14,7 @@ export default async function NewsPage() {
   const posts = result.rows;
 
   return (
-    <div className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+    <div className="container news" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
       <h1 className="text-4xl font-bold" style={{ marginBottom: '2rem', paddingTop: '1rem' }}>News & Updates</h1>
 
       {posts.length === 0 ? (
@@ -40,7 +40,7 @@ export default async function NewsPage() {
                 </div>
               )}
               <div className="p-6" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-                <h2 className="text-xl font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{post.title}</h2>
+                <h2 className="text-xl font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.15', maxHeight: '2.8em' }}>{post.title}</h2>
                 {post.excerpt && (
                   <p className="text-gray-600 mb-4" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '4.2em' }}>{post.excerpt}</p>
                 )}

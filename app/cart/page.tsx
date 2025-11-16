@@ -1,8 +1,49 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
+
+function CartItemImage({ item }: { item: any }) {
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = (() => {
+    if (imageError || !isValidImageUrl(item.image)) {
+      // Try to determine category from product name or use 'other'
+      let category = 'other';
+      if (item.name?.toLowerCase().includes('shirt') || item.name?.toLowerCase().includes('tshirt')) {
+        category = 'shirt';
+      } else if (item.name?.toLowerCase().includes('sticker')) {
+        category = 'sticker';
+      } else if (item.name?.toLowerCase().includes('digital') || item.name?.toLowerCase().includes('download') || item.name?.toLowerCase().includes('mixtape')) {
+        category = 'digital';
+      }
+      return getProductPlaceholder(120, 120, category, item.productId);
+    }
+    return item.image;
+  })();
+
+  return (
+    <Image
+      src={imageSrc}
+      alt={item.name}
+      fill
+      unoptimized
+      className="object-cover"
+      style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        left: 0,
+        top: 0,
+        transform: 'none',
+      }}
+      onError={() => setImageError(true)}
+    />
+  );
+}
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeItem } = useCart();
@@ -60,22 +101,7 @@ export default function CartPage() {
                           className="relative overflow-hidden bg-white border rounded"
                           style={{ width: '100%', height: '100%' }}
                         >
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            unoptimized
-                            className="object-cover"
-                            style={{
-                              position: 'absolute',
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              left: 0,
-                              top: 0,
-                              transform: 'none',
-                            }}
-                          />
+                          <CartItemImage item={item} />
                         </div>
                       </Link>
                     </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { query } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth/session';
 
@@ -6,7 +7,13 @@ export default async function AdminProductsPage() {
   await requireAdmin();
 
   const result = await query(
-    `SELECT p.*, a.name as artist_name
+    `SELECT p.*, a.name as artist_name, 
+            (SELECT m.file_path 
+             FROM product_images pi 
+             JOIN media m ON pi.media_id = m.id 
+             WHERE pi.product_id = p.id 
+             ORDER BY pi.display_order ASC 
+             LIMIT 1) as thumbnail_url
      FROM products p
      LEFT JOIN artists a ON p.artist_id = a.id
      ORDER BY p.created_at DESC`
@@ -14,13 +21,14 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-start mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Products</h1>
         <Link
           href="/admin/products/new"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 flex items-center justify-center"
+          title="New Product"
         >
-          New Product
+          <i className="bi bi-plus-lg text-lg"></i>
         </Link>
       </div>
 
@@ -31,13 +39,28 @@ export default async function AdminProductsPage() {
               <Link href={`/admin/products/${product.id}`} className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-indigo-600 truncate">
-                        {product.name}
-                      </p>
-                      <p className="mt-2 text-sm text-gray-500">
-                        {product.description || 'No description'}
-                      </p>
+                    <div className="flex items-center space-x-8 flex-1 min-w-0">
+                      {product.thumbnail_url && (
+                        <div className="flex-shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
+                          <div className="h-16 w-16 relative rounded-md overflow-hidden bg-gray-100">
+                            <Image
+                              src={product.thumbnail_url}
+                              alt={product.name}
+                              fill
+                              className="object-cover"
+                              sizes="64px"
+                            />
+                          </div>
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-indigo-600 truncate">
+                          {product.name}
+                        </p>
+                        <p className="mt-2 text-sm text-gray-500 line-clamp-2">
+                          {product.description || 'No description'}
+                        </p>
+                      </div>
                     </div>
                     <div className="ml-5 flex-shrink-0">
                       <p className="text-sm font-medium text-gray-900">

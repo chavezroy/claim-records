@@ -1,5 +1,9 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 interface FeaturedPostProps {
   post: {
@@ -15,22 +19,29 @@ interface FeaturedPostProps {
 }
 
 export default function FeaturedPost({ post }: FeaturedPostProps) {
+  const [imageError, setImageError] = useState(false);
   const date = post.published_at
     ? new Date(post.published_at)
     : new Date(post.created_at);
 
+  const imageSrc = (() => {
+    if (!post.featured_image || imageError || !isValidImageUrl(post.featured_image)) {
+      return getLoremFlickrUrl(800, 600, 'music,news,article', parseInt(post.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
+    }
+    return post.featured_image;
+  })();
+
   return (
     <div className="relative bg-gray-900 text-white rounded-lg overflow-hidden">
-      {post.featured_image && (
-        <div className="absolute inset-0">
-          <Image
-            src={post.featured_image}
-            alt={post.title}
-            fill
-            className="object-cover opacity-50"
-          />
-        </div>
-      )}
+      <div className="absolute inset-0">
+        <Image
+          src={imageSrc}
+          alt={post.title}
+          fill
+          className="object-cover opacity-50"
+          onError={() => setImageError(true)}
+        />
+      </div>
       <div className="relative p-8 md:p-12">
         <Link href={`/news/${post.slug}`}>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 hover:text-indigo-300 transition-colors">

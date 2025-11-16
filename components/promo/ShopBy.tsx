@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { query } from '@/lib/db';
 import Card from '@/components/ui/Card';
+import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 interface ShopByProps {
   type: 'products' | 'artists' | 'featured';
@@ -33,9 +34,10 @@ export default async function ShopBy({ type, limit = 4 }: ShopByProps) {
           `SELECT image FROM products WHERE category = $1 AND in_stock = true AND image IS NOT NULL LIMIT 1`,
           [cat.category]
         );
+        const productImage = productResult.rows[0]?.image;
         return {
           ...cat,
-          image: productResult.rows[0]?.image || '/img/shop/default.jpg',
+          image: isValidImageUrl(productImage) ? productImage : getProductPlaceholder(400, 400, cat.category),
         };
       })
     );
@@ -81,14 +83,18 @@ export default async function ShopBy({ type, limit = 4 }: ShopByProps) {
       [limit]
     );
 
-    const artists = artistsResult.rows.map((artist: any) => ({
-      id: artist.id,
-      name: artist.name,
-      slug: artist.slug,
-      image: artist.image || artist.profile_image || '/img/artist/default.jpg',
-      profileImage: artist.profile_image || artist.image || '/img/artist/default.jpg',
-      productCount: artist.product_count,
-    }));
+    const artists = artistsResult.rows.map((artist: any) => {
+      const artistImage = artist.image || artist.profile_image;
+      const placeholderImage = getLoremFlickrUrl(400, 400, 'music,artist,band', parseInt(artist.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
+      return {
+        id: artist.id,
+        name: artist.name,
+        slug: artist.slug,
+        image: isValidImageUrl(artistImage) ? artistImage : placeholderImage,
+        profileImage: isValidImageUrl(artist.profile_image) ? artist.profile_image : placeholderImage,
+        productCount: artist.product_count,
+      };
+    });
 
     if (artists.length === 0) {
       return null;
@@ -137,14 +143,20 @@ export default async function ShopBy({ type, limit = 4 }: ShopByProps) {
       [limit]
     );
 
-    const products = productsResult.rows.map((product: any) => ({
-      id: product.id,
-      name: product.name,
-      slug: product.slug,
-      price: parseFloat(product.price),
-      images: [product.image || '/img/shop/default.jpg'],
-      artistName: product.artist_name,
-    }));
+    const products = productsResult.rows.map((product: any) => {
+      const productImage = product.image;
+      const imageSrc = isValidImageUrl(productImage) 
+        ? productImage 
+        : getProductPlaceholder(400, 400, product.category, product.id);
+      return {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: parseFloat(product.price),
+        images: [imageSrc],
+        artistName: product.artist_name,
+      };
+    });
 
     if (products.length === 0) {
       return null;

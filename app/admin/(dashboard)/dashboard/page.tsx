@@ -42,11 +42,11 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ marginBottom: '1.5rem' }}>
         <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <div className="flex-shrink-0">
                 <div className="text-2xl font-bold text-gray-900">{stats.posts}</div>
               </div>
-              <div className="ml-5 w-0 flex-1">
+              <div className="mt-2">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Posts</dt>
                 </dl>
@@ -57,11 +57,11 @@ export default async function AdminDashboard() {
 
         <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <div className="flex-shrink-0">
                 <div className="text-2xl font-bold text-gray-900">{stats.artists}</div>
               </div>
-              <div className="ml-5 w-0 flex-1">
+              <div className="mt-2">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Artists</dt>
                 </dl>
@@ -72,11 +72,11 @@ export default async function AdminDashboard() {
 
         <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <div className="flex-shrink-0">
                 <div className="text-2xl font-bold text-gray-900">{stats.products}</div>
               </div>
-              <div className="ml-5 w-0 flex-1">
+              <div className="mt-2">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Products</dt>
                 </dl>
@@ -87,11 +87,11 @@ export default async function AdminDashboard() {
 
         <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
           <div className="p-5">
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <div className="flex-shrink-0">
                 <div className="text-2xl font-bold text-gray-900">{stats.orders}</div>
               </div>
-              <div className="ml-5 w-0 flex-1">
+              <div className="mt-2">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Paid Orders</dt>
                 </dl>
@@ -109,14 +109,18 @@ export default async function AdminDashboard() {
             <ul className="-mb-8">
               {recentPosts.rows.map((post: any, idx: number) => (
                 <li key={post.id}>
-                  <div className="relative pb-8">
+                  <div className="relative pb-5">
                     {idx !== recentPosts.rows.length - 1 && (
                       <span
-                        className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                        className="absolute top-4 left-[15px] h-full w-0.5 bg-gray-200"
                         aria-hidden="true"
+                        style={{ transform: 'translateX(-50%)' }}
                       />
                     )}
-                    <div className="relative flex space-x-3">
+                    <div className="relative flex space-x-6 pl-4">
+                      <div className="flex-shrink-0 flex items-center">
+                        <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      </div>
                       <div className="min-w-0 flex-1">
                         <div>
                           <p className="text-sm font-medium text-gray-900">{post.title}</p>

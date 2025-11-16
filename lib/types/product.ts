@@ -1,4 +1,5 @@
 export type ProductCategory = 'shirt' | 'sticker' | 'digital' | 'other';
+export type ProductType = 'physical' | 'digital' | 'bundle';
 
 export type Product = {
   id: string;
@@ -8,6 +9,7 @@ export type Product = {
   price: number;
   images: string[];
   category: ProductCategory;
+  productType?: ProductType;
   artistId?: string;
   artistName?: string;
   variants?: {

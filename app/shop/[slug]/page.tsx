@@ -5,6 +5,7 @@ import { query } from '@/lib/db';
 import ProductGrid from '@/components/shop/ProductGrid';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 import YouMightLike from '@/components/promo/YouMightLike';
+import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 export default async function ShopDetailPage({
   params,
@@ -28,7 +29,7 @@ export default async function ShopDetailPage({
 
   // Fetch product images
   const imagesResult = await query(
-    `SELECT m.file_path, m.file_url
+    `SELECT m.file_path
      FROM product_images pi
      JOIN media m ON pi.media_id = m.id
      WHERE pi.product_id = $1
@@ -36,8 +37,14 @@ export default async function ShopDetailPage({
     [product.id]
   );
 
-  const productImages = imagesResult.rows.map((img: any) => img.file_url || img.file_path);
-  const mainImage = productImages[0] || '/img/shop/default.jpg';
+  const productImages = imagesResult.rows.map((img: any) => img.file_path);
+  const mainImage = (() => {
+    const firstImage = productImages[0];
+    if (isValidImageUrl(firstImage)) {
+      return firstImage;
+    }
+    return getProductPlaceholder(600, 800, product.category, product.id);
+  })();
 
   // Fetch product variants
   const variantsResult = await query(
@@ -106,18 +113,23 @@ export default async function ShopDetailPage({
                 </div>
                 {productImages.length > 1 && (
                   <div className="product-thumbnails mt-4 d-flex gap-2">
-                    {productImages.slice(1, 5).map((img: string, idx: number) => (
-                      <div key={idx} className="thumbnail" style={{ width: '80px', height: '80px' }}>
-                        <Image
-                          src={img}
-                          alt={`${product.name} ${idx + 2}`}
-                          width={80}
-                          height={80}
-                          className="w-full h-full object-cover rounded"
-                          unoptimized
-                        />
-                      </div>
-                    ))}
+                    {productImages.slice(1, 5).map((img: string, idx: number) => {
+                      const thumbnailSrc = isValidImageUrl(img) 
+                        ? img 
+                        : getProductPlaceholder(80, 80, product.category, `${product.id}-${idx}`);
+                      return (
+                        <div key={idx} className="thumbnail" style={{ width: '80px', height: '80px' }}>
+                          <Image
+                            src={thumbnailSrc}
+                            alt={`${product.name} ${idx + 2}`}
+                            width={80}
+                            height={80}
+                            className="w-full h-full object-cover rounded"
+                            unoptimized
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

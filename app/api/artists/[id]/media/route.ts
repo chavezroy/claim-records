@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const result = await query(
-      `SELECT am.*, m.file_path, m.file_url, m.mime_type, m.alt_text
+      `SELECT am.*, m.file_path, m.mime_type, m.alt_text
        FROM artist_media am
        LEFT JOIN media m ON am.media_id = m.id
        WHERE am.artist_id = $1

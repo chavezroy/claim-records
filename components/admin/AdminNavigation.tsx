@@ -24,18 +24,21 @@ export default function AdminNavigation() {
 
   return (
     <nav className="bg-gray-100 border-b border-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-end h-16">
-          <div className="flex items-end">
-            <div className="flex-shrink-0 flex items-center" style={{ paddingRight: '2rem', paddingBottom: '0.5rem' }}>
-              <Link 
-                href="/admin/dashboard" 
-                className="text-sm font-bold text-gray-900 hover:text-gray-700 transition-colors uppercase flex items-center"
-              >
-                <i className="bi bi-lock-fill mr-2"></i>
-                Admin
-              </Link>
-            </div>
+      <div className="container mx-auto px-4">
+        <div className="flex items-end h-16 relative">
+          {/* Left: Admin heading */}
+          <div className="flex-shrink-0 flex items-end" style={{ paddingBottom: '0.5rem' }}>
+            <Link 
+              href="/admin/dashboard" 
+              className="text-sm font-bold text-gray-900 hover:text-gray-700 transition-colors uppercase flex items-center"
+            >
+              <i className="bi bi-lock-fill mr-2"></i>
+              Admin
+            </Link>
+          </div>
+          
+          {/* Center: Tabs */}
+          <div className="flex-1 flex justify-center items-end">
             <div className="hidden sm:flex sm:items-end" style={{ gap: '2px' }}>
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
@@ -73,7 +76,9 @@ export default function AdminNavigation() {
               })}
             </div>
           </div>
-          <div className="flex items-center space-x-4" style={{ paddingBottom: '0.5rem' }}>
+          
+          {/* Right: Icons */}
+          <div className="flex-shrink-0 flex items-end space-x-4" style={{ paddingBottom: '0.5rem' }}>
             <Link
               href="/"
               className="text-indigo-600 hover:text-indigo-700 flex items-center justify-center transition-colors px-4 py-2"

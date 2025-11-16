@@ -257,14 +257,14 @@ export default async function ShopPage({
 
 // Helper function to format product for ProductGrid
 function formatProduct(product: any) {
-  // Fetch product images
+  // Fetch product images - keep original image path, ProductCard will handle fallback
   return {
     id: product.id,
     name: product.name,
     slug: product.slug,
     description: product.description,
     price: parseFloat(product.price),
-    images: [product.image || '/img/shop/default.jpg'], // Will need to fetch from product_images table
+    images: product.image ? [product.image] : [], // Empty array will trigger placeholder in ProductCard
     category: product.category,
     artistId: product.artist_id,
     artistName: product.artist_name,

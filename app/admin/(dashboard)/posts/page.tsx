@@ -14,13 +14,14 @@ export default async function AdminPostsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-start mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Posts</h1>
         <Link
           href="/admin/posts/new"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 flex items-center justify-center"
+          title="New Post"
         >
-          New Post
+          <i className="bi bi-plus-lg text-lg"></i>
         </Link>
       </div>
 

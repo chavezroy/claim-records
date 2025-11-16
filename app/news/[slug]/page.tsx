@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { query } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const result = await query(
@@ -29,7 +30,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   );
 
   return (
-    <article className="container max-w-4xl" style={{ paddingTop: '2rem', paddingBottom: '2rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+    <article className="container max-w-4xl news" style={{ paddingTop: '2rem', paddingBottom: '2rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
       <Link
         href="/news"
         className="text-indigo-600 hover:text-indigo-800 inline-block"
@@ -57,16 +58,21 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 })}
           </time>
         </div>
-        {post.featured_image && (
-          <div className="relative h-96 w-full mb-6 rounded-lg overflow-hidden">
-            <Image
-              src={post.featured_image}
-              alt={post.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
+        {(() => {
+          const imageSrc = isValidImageUrl(post.featured_image) 
+            ? post.featured_image 
+            : getLoremFlickrUrl(800, 600, 'music,news,article', parseInt(post.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
+          return (
+            <div className="relative h-96 w-full mb-6 rounded-lg overflow-hidden">
+              <Image
+                src={imageSrc}
+                alt={post.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+          );
+        })()}
       </header>
 
       <div
@@ -83,8 +89,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
               <Link
                 key={related.id}
                 href={`/news/${related.slug}`}
-                className="block border border-gray-200 rounded-lg hover:border-indigo-500 transition-colors"
-                style={{ padding: '1rem', wordWrap: 'break-word', overflowWrap: 'break-word' }}
+                className="block border rounded-lg hover:border-indigo-500 transition-colors"
+                style={{ padding: '1rem', wordWrap: 'break-word', overflowWrap: 'break-word', borderColor: 'rgb(244, 244, 244)' }}
               >
                 <h3 className="font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{related.title}</h3>
                 {related.excerpt && (

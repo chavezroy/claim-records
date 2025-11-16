@@ -6,15 +6,27 @@ import { z } from 'zod';
 const postSchema = z.object({
   title: z.string().min(1).max(500),
   slug: z.string().min(1).max(500),
-  excerpt: z.string().optional(),
+  excerpt: z.string().optional().nullable(),
   content: z.string().min(1),
-  featured_image: z.string().url().optional().nullable(),
-  author_id: z.string().uuid().optional().nullable(),
+  featured_image: z.union([
+    z.string().url(),
+    z.literal(''),
+    z.null()
+  ]).optional().nullable().transform(val => val === '' ? null : val),
+  author_id: z.union([
+    z.string().uuid(),
+    z.literal(''),
+    z.null()
+  ]).optional().nullable().transform(val => val === '' ? null : val),
   status: z.enum(['draft', 'published', 'archived']).default('draft'),
   featured: z.boolean().default(false),
-  meta_title: z.string().max(255).optional().nullable(),
-  meta_description: z.string().optional().nullable(),
-  published_at: z.string().datetime().optional().nullable(),
+  meta_title: z.string().max(255).optional().nullable().transform(val => val === '' ? null : val),
+  meta_description: z.string().optional().nullable().transform(val => val === '' ? null : val),
+  published_at: z.union([
+    z.string().datetime(),
+    z.literal(''),
+    z.null()
+  ]).optional().nullable().transform(val => val === '' ? null : val),
 });
 
 // GET /api/posts - List posts

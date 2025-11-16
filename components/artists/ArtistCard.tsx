@@ -22,6 +22,9 @@ export default function ArtistCard({
   index = 0,
   itemVariants,
 }: ArtistCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = (artist.image?.trim()) || (artist.profileImage?.trim()) || '/img/artist/default.jpg';
+  
   // For grid view (artists landing page), use the hero-style grid layout
   if (variant === 'grid' && itemVariants) {
     const baseFilter = 'grayscale(100%)';
@@ -61,19 +64,26 @@ export default function ArtistCard({
               willChange: 'transform, filter, opacity',
             }}
           >
-            <Image
-              src={artist.image}
-              alt={artist.name}
-              fill
-              unoptimized
-              className="object-cover"
-              style={{ 
-                willChange: 'auto',
-                transform: 'translateZ(0)',
-                transition: 'none',
-              }}
-              priority={index < 3}
-            />
+            {!imageError && imageSrc ? (
+              <Image
+                src={imageSrc}
+                alt={artist.name}
+                fill
+                unoptimized
+                className="object-cover"
+                style={{ 
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                  transition: 'none',
+                }}
+                priority={index < 3}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-400 text-sm">{artist.name}</span>
+              </div>
+            )}
           </motion.div>
           <span 
             className="artist__name group-hover:opacity-100"
@@ -120,25 +130,32 @@ export default function ArtistCard({
           }}
         >
           <div className="relative w-full h-full" style={{ width: '100%', height: '100%', minHeight: '400px' }}>
-            <Image
-              src={artist.image}
-              alt={artist.name}
-              fill
-              unoptimized
-              className="artwork"
-              style={{
-                position: 'absolute',
-                height: '100%',
-                transform: 'translate(-50%, -50%)',
-                left: '50%',
-                top: '50%',
-                zIndex: 0,
-                filter: 'sepia(80%)',
-                opacity: 0.55,
-                transition: 'all 0.3s ease',
-                objectFit: 'cover',
-              }}
-            />
+            {!imageError && imageSrc ? (
+              <Image
+                src={imageSrc}
+                alt={artist.name}
+                fill
+                unoptimized
+                className="artwork"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  transform: 'translate(-50%, -50%)',
+                  left: '50%',
+                  top: '50%',
+                  zIndex: 0,
+                  filter: 'sepia(80%)',
+                  opacity: 0.55,
+                  transition: 'all 0.3s ease',
+                  objectFit: 'cover',
+                }}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center" style={{ filter: 'sepia(80%)', opacity: 0.55 }}>
+                <span className="text-gray-400 text-sm">{artist.name}</span>
+              </div>
+            )}
             <span className="artist__name">
               {artist.name}
             </span>
@@ -152,23 +169,30 @@ export default function ArtistCard({
   return (
     <Card href={`/artists/${artist.slug}`}>
       <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
-        <Image
-          src={artist.image}
-          alt={artist.name}
-          fill
-          unoptimized
-                sizes="(max-width: 768px) 100vw, 25vw"
-          className="object-cover"
-          style={{ 
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            left: 0,
-            top: 0,
-            transform: 'none'
-          }}
-        />
+        {!imageError && imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={artist.name}
+            fill
+            unoptimized
+            sizes="(max-width: 768px) 100vw, 25vw"
+            className="object-cover"
+            style={{ 
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              left: 0,
+              top: 0,
+              transform: 'none'
+            }}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-400 text-sm">{artist.name}</span>
+          </div>
+        )}
       </div>
       <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
         <p className="card-title mb-0 text-primary hover:text-black transition-colors" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

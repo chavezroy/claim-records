@@ -1,6 +1,10 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Card from '@/components/ui/Card';
 import { Product } from '@/lib/types/product';
+import { getProductPlaceholder, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 type ProductCardProps = {
   product: Product;
@@ -10,11 +14,22 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product, showPrice = true, sizes = "(max-width: 768px) 100vw, 33vw", thumbHeight = 200 }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false);
+  
+  // Get image source - use placeholder if image is missing or invalid
+  const imageSrc = (() => {
+    const productImage = product.images?.[0];
+    if (imageError || !isValidImageUrl(productImage)) {
+      return getProductPlaceholder(400, 400, product.category, product.id);
+    }
+    return productImage!;
+  })();
+
   return (
     <Card href={`/shop/${product.slug}`}>
       <div className="thumb relative w-full overflow-hidden bg-white" style={{ height: `${thumbHeight}px` }}>
         <Image
-          src={product.images[0]}
+          src={imageSrc}
           alt={product.name}
           fill
           unoptimized
@@ -29,6 +44,7 @@ export default function ProductCard({ product, showPrice = true, sizes = "(max-w
             top: 0,
             transform: 'none'
           }}
+          onError={() => setImageError(true)}
         />
       </div>
       <div className="card-body p-5 min-h-[110px]" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>

@@ -1,5 +1,9 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
 
 interface Video {
   id: string;
@@ -18,26 +22,27 @@ interface VideoCardProps {
 }
 
 export default function VideoCard({ video }: VideoCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = (() => {
+    if (!video.thumbnail_url || imageError || !isValidImageUrl(video.thumbnail_url)) {
+      return getLoremFlickrUrl(640, 360, 'music,video,concert', parseInt(video.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
+    }
+    return video.thumbnail_url;
+  })();
+
   return (
     <Link
       href={`/videos/${video.slug}`}
       className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
     >
       <div className="relative aspect-video bg-gray-900">
-        {video.thumbnail_url ? (
-          <Image
-            src={video.thumbnail_url}
-            alt={video.title}
-            fill
-            className="object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-white">
-            <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-            </svg>
-          </div>
-        )}
+        <Image
+          src={imageSrc}
+          alt={video.title}
+          fill
+          className="object-cover"
+          onError={() => setImageError(true)}
+        />
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-opacity">
           <svg
             className="w-12 h-12 text-white"

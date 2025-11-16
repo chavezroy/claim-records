@@ -23,8 +23,13 @@
   font-display: swap;
 }
 
-* {
+/* Base reset - only for specific elements, not universal */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li {
   margin: 0;
+}
+
+/* Global transition - but allow overrides */
+* {
   transition: all 0.3s ease-out;
 }
 
@@ -51,18 +56,12 @@ body {
   padding: 0;
 }
 
+/* Main element - minimal reset, Tailwind utilities will override */
 main {
   margin: 0;
-  padding: 0;
 }
 
-/* Allow padding utility classes on main elements (e.g., py-6 in admin dashboard) */
-.bg-gray-50 > main[class*="py-"],
-main.py-6 {
-  padding-top: 1.5rem !important;
-  padding-bottom: 1.5rem !important;
-}
-
+/* Section element - minimal reset, Tailwind utilities will override */
 section {
   margin-top: 0;
   padding-top: 0;
@@ -294,10 +293,9 @@ a.cardlink:hover {
 }
 
 a.cardlink img {
-  position: relative;
+  position: absolute;
   width: 100%;
   z-index: 0;
-  position: absolute;
   height: auto;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -327,6 +325,7 @@ a.cardlink:hover .price {
   font-weight: 500;
 }
 
+/* Base heading styles - default ElectricPanda font */
 h1 {
   font-size: 4.5rem;
   font-family: ElectricPanda, sans-serif;
@@ -343,12 +342,9 @@ h2 {
   letter-spacing: 2px;
 }
 
-.font-electric {
-  font-family: ElectricPanda, sans-serif;
-  letter-spacing: 2px;
-}
-
-.shop h1 {
+/* Scoped heading overrides - higher specificity */
+.shop h1,
+.news h1 {
   font-family: sans-serif;
   color: #23201f;
   font-size: 2.5em;
@@ -358,10 +354,20 @@ h2 {
 }
 
 .shop h2,
-.artists h2 {
+.artists h2,
+.news h2 {
   font-size: 1.5em;
   font-family: sans-serif;
   text-transform: uppercase;
+}
+
+.font-electric {
+  font-family: ElectricPanda, sans-serif;
+  letter-spacing: 2px;
+}
+
+.news .grid h2 {
+  line-height: 1.15;
 }
 
 .nav-pills .nav-link.active,
@@ -1393,12 +1399,12 @@ footer a:hover.nav-link {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 20%, white 80%, transparent 100%);
 }
 
-/* Inactive tab hover gradient */
+/* Inactive tab hover gradient - needs !important to override inline styles */
 .inactive-tab:hover {
   background-image: linear-gradient(to top, #d1d5db 0%, #e5e7eb 100%) !important;
 }
 
-/* Admin tab padding */
+/* Admin tab padding - needs !important to override inline styles in AdminNavigation */
 .admin-tab-active {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
@@ -1407,4 +1413,25 @@ footer a:hover.nav-link {
 .admin-tab-inactive {
   padding-top: 0.5rem !important;
   padding-bottom: 0.5rem !important;
+}
+
+/* Admin form inputs - ensure proper styling */
+.bg-gray-50 input[type="text"],
+.bg-gray-50 input[type="url"],
+.bg-gray-50 input[type="datetime-local"],
+.bg-gray-50 textarea,
+.bg-gray-50 select {
+  background-color: white !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.bg-gray-50 input[type="text"]:focus,
+.bg-gray-50 input[type="url"]:focus,
+.bg-gray-50 input[type="datetime-local"]:focus,
+.bg-gray-50 textarea:focus,
+.bg-gray-50 select:focus {
+  outline: none !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
 }
