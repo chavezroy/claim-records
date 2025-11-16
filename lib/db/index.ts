@@ -8,8 +8,13 @@ export function getPool(): Pool {
     const connectionString = process.env.DATABASE_URL;
     
     if (!connectionString) {
+      console.error('DATABASE_URL is missing. Available env vars:', Object.keys(process.env).filter(k => k.includes('DATABASE') || k.includes('NEXT')));
       throw new Error('DATABASE_URL environment variable is not set');
     }
+    
+    // Log connection info (without password) for debugging
+    const connectionInfo = connectionString.replace(/:[^:@]+@/, ':****@');
+    console.log('Initializing database pool:', connectionInfo);
 
     pool = new Pool({
       connectionString,
@@ -18,7 +23,7 @@ export function getPool(): Pool {
         : false,
       max: 20, // Maximum number of clients in the pool
       idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-      connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection cannot be established
+      connectionTimeoutMillis: 10000, // Return an error after 10 seconds if connection cannot be established
     });
 
     // Handle pool errors
