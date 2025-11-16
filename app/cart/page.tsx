@@ -61,6 +61,7 @@ export default function CartPage() {
       <div className="container py-5">
         <h1 className="text-center mb-5">Shopping Cart</h1>
         <div className="text-center py-10">
+          <i className="bi bi-emoji-frown" style={{ fontSize: '3rem', color: '#9ca3af', marginBottom: '1rem', display: 'block' }}></i>
           <p className="text-gray-500 mb-4">Your cart is empty</p>
           <Link href="/shop" className="btn btn-primary">
             Continue Shopping
