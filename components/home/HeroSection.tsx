@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { artists } from '@/lib/data/artists';
-import AnimatedLogo from '@/components/logo/AnimatedLogo';
 
 export default function HeroSection() {
   const containerVariants = {
@@ -75,7 +74,27 @@ export default function HeroSection() {
       </motion.div>
 
       <div className="absolute z-10 left-1/2 top-[47.5%] -translate-x-1/2 -translate-y-1/2">
-        <AnimatedLogo />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 1.5 }}
+          style={{
+            willChange: 'opacity',
+            backfaceVisibility: 'hidden',
+          }}
+          className="flex items-center justify-center"
+        >
+          <Image
+            src="/img/logo_ClaimRecords.svg"
+            alt="Claim Records"
+            width={550}
+            height={200}
+            className="h-auto"
+            style={{ width: '550px', height: 'auto' }}
+            priority
+            unoptimized
+          />
+        </motion.div>
       </div>
     </div>
   );

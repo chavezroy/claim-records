@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getLoremFlickrUrl, isValidImageUrl } from '@/lib/utils/loremflickr';
+import { isValidImageUrl } from '@/lib/utils/loremflickr';
 
 interface FeaturedPostProps {
   post: {
@@ -26,7 +26,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
 
   const imageSrc = (() => {
     if (!post.featured_image || imageError || !isValidImageUrl(post.featured_image)) {
-      return getLoremFlickrUrl(800, 600, 'music,news,article', parseInt(post.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
+      return '/img/shop_banner.jpg';
     }
     return post.featured_image;
   })();
