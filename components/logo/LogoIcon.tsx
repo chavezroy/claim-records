@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 interface LogoIconProps {
   className?: string;
@@ -11,6 +12,13 @@ interface LogoIconProps {
 }
 
 export default function LogoIcon({ className = '', animateOnHover = false, isHovered = false, animationStartDelay = 0 }: LogoIconProps) {
+  // Generate random pause delay between 5-10 seconds
+  const [pauseDelay, setPauseDelay] = useState(() => 5 + Math.random() * 5);
+  
+  // Regenerate random delay on each mount for variety
+  useEffect(() => {
+    setPauseDelay(5 + Math.random() * 5);
+  }, []);
   return (
     <div 
       className={`relative logo-icon-container ${className}`}
@@ -67,6 +75,22 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
         />
       </motion.div>
       
+      {/* Transform origin indicator - purple circle (fixed fulcrum point) */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          bottom: 0,
+          width: '5px',
+          height: '5px',
+          backgroundColor: 'purple',
+          borderRadius: '50%',
+          transform: 'translate(-50%, 50%)',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      />
+      
       {/* Hand and Flag - grouped (hand is parent, flag is child) */}
       <motion.div
         data-framer-component
@@ -74,6 +98,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
           position: 'absolute',
           inset: 0,
           zIndex: 3,
+          transformOrigin: 'center bottom',
         }}
         animate={animateOnHover ? (isHovered ? {
           x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
@@ -100,6 +125,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
           repeatType: 'loop',
           ease: 'easeInOut',
           delay: animationStartDelay + 0.5,
+          repeatDelay: pauseDelay, // Random pause between 5-10 seconds
         }}
       >
         {/* Hand - parent layer */}

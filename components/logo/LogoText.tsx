@@ -28,12 +28,20 @@ export default function LogoText({
         opacity: 0,
         scale: 0.9,
         filter: 'blur(10px)',
-      } : false}
+      } : {
+        opacity: 1,
+        scale: 1,
+        filter: 'blur(0px)',
+      }}
       animate={showAnimation ? {
         opacity: 1,
         scale: 1,
         filter: 'blur(0px)',
-      } : false}
+      } : {
+        opacity: 1,
+        scale: 1,
+        filter: 'blur(0px)',
+      }}
       transition={showAnimation ? {
         duration: 1.2,
         delay: animationStartDelay + 0.6, // Stagger: starts after letter O completes (0.6s duration)
@@ -58,6 +66,7 @@ export default function LogoText({
         position: 'relative',
         width: '100%',
         height: '100%',
+        minHeight: '70px', /* Ensure minimum height */
         overflow: 'visible',
         transformOrigin: 'center center',
       }}
@@ -65,17 +74,22 @@ export default function LogoText({
       {/* Base layer: Main logo text (without O) - staggered after container animation */}
       <motion.div
         data-framer-component
-        initial={{ opacity: 0 }}
+        initial={showAnimation ? { opacity: 0 } : { opacity: 1 }}
         animate={{ opacity: 1 }}
-        transition={{
+        transition={showAnimation ? {
           duration: 1.0,
           delay: animationStartDelay + 0.6 + 1.2, // Stagger: starts after container animation completes (0.6s O + 1.2s container)
           ease: [0.43, 0, 0.17, 1] as const, // Slow, smooth ease-out
+        } : {
+          duration: 0,
         }}
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 1,
+          width: '100%',
+          height: '100%',
+          minHeight: '70px',
         }}
       >
         <Image
@@ -91,9 +105,13 @@ export default function LogoText({
       {/* O Group Container: Wraps letter O and oShine - entrance animation first */}
       <motion.div
         data-framer-component
-        initial={{
+        className="logo-o-group"
+        initial={showAnimation ? {
           opacity: 0,
           scale: 0.8,
+        } : {
+          opacity: 1,
+          scale: 1,
         }}
         animate={{
           opacity: 1,
@@ -116,6 +134,7 @@ export default function LogoText({
       >
         {/* Letter O shape - hugs contents */}
         <div
+          className="logo-letter-o"
           style={{
             position: 'relative',
             width: 'fit-content',
@@ -128,7 +147,7 @@ export default function LogoText({
             alt=""
             width={68}
             height={68}
-            className="object-contain"
+            className="object-contain logo-letter-o-img"
             style={{
               width: '68px',
               height: '68px',
@@ -142,6 +161,7 @@ export default function LogoText({
         {/* O shine effect - positioned at top right */}
         <motion.div
           data-framer-component
+          className="logo-o-shine"
           style={{
             position: 'absolute',
             width: '55px',

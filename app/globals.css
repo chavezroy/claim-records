@@ -1456,6 +1456,7 @@ footer a:hover.nav-link {
 
 .hero-logo-text {
   width: 200px;
+  height: 70px; /* Explicit height for mobile */
 }
 
 /* Logo icon container - mobile sizing */
@@ -1463,6 +1464,14 @@ footer a:hover.nav-link {
   width: 300px;
   height: 258px; /* Maintain aspect ratio: 300 * (215/250) = 258 */
   position: relative;
+}
+
+/* Logo text container - ensure proper height */
+.logo-text-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 70px;
 }
 
 /* Next.js Image wrapper and image sizing */
@@ -1492,6 +1501,26 @@ footer a:hover.nav-link {
 .hero-section-logo-wrapper {
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
+}
+
+/* Mobile-only: Letter O group positioning and sizing */
+@media (max-width: 767px) {
+  .logo-o-group {
+    top: 33px !important;
+    left: 64px !important;
+  }
+  
+  .logo-letter-o-img {
+    width: 69px !important;
+    height: 39px !important;
+  }
+  
+  /* O shine - proportionally scaled relative to letter O (68x68 → 69x39) */
+  .logo-o-shine {
+    width: 56px !important; /* 55 * (69/68) ≈ 55.8px */
+    height: 17px !important; /* 30 * (39/68) ≈ 17.2px */
+    right: -5px !important;
+  }
 }
 
 /* Desktop: side by side, icon 150px height, text 340px width */
