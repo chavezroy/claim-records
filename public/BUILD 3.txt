@@ -1,0 +1,140 @@
+2025-11-16T11:16:05.924Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+2025-11-16T11:16:06.355Z [INFO]: # Cloning repository: git@github.com:chavezroy/claim-records.git
+2025-11-16T11:16:06.978Z [INFO]: 
+2025-11-16T11:16:06.978Z [INFO]: Cloning into 'claim-records'...
+2025-11-16T11:16:06.978Z [INFO]: # Switching to commit: cfdc20c32d840ee35c85b8ff2ff75a4763a92bb5
+2025-11-16T11:16:07.011Z [INFO]: Note: switching to 'cfdc20c32d840ee35c85b8ff2ff75a4763a92bb5'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at cfdc20c Add drop shadow to hero-grid container on artists page
+2025-11-16T11:16:07.056Z [INFO]: Successfully cleaned up Git credentials
+2025-11-16T11:16:07.056Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2792881412/src/claim-records/.gitmodules
+2025-11-16T11:16:07.062Z [INFO]: # Retrieving environment cache...
+2025-11-16T11:16:07.102Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-11-16T11:16:07.102Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-11-16T11:16:07.102Z [INFO]: SSM params {"Path":"/amplify/d13axw9ole04hk/feature/dynamic-content/","WithDecryption":true}
+2025-11-16T11:16:07.150Z [WARNING]: !Failed to set up process.env.secrets
+2025-11-16T11:16:07.919Z [INFO]: # No package override configuration found.
+2025-11-16T11:16:07.922Z [INFO]: # Retrieving cache...
+2025-11-16T11:16:10.749Z [INFO]: # Extracting cache...
+2025-11-16T11:16:11.308Z [INFO]: # Extraction completed
+2025-11-16T11:16:11.379Z [INFO]: # Retrieved cache
+2025-11-16T11:16:13.792Z [INFO]: BackendEnvironment name feature/dynamic-content for app d13axw9ole04hk is invalid
+2025-11-16T11:16:13.839Z [INFO]: Random environment name penny generated
+2025-11-16T11:16:16.309Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2025-11-16T11:16:16.312Z [INFO]: ## Starting Frontend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: npm ci --cache .npm --prefer-offline
+2025-11-16T11:16:37.044Z [INFO]: added 406 packages, and audited 407 packages in 16s
+2025-11-16T11:16:37.049Z [INFO]: 149 packages are looking for funding
+                                 run `npm fund` for details
+                                 found 0 vulnerabilities
+2025-11-16T11:16:37.070Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
+                                 # Executing command: npm run build
+2025-11-16T11:16:37.164Z [INFO]: > claim-records@0.1.0 build
+                                 > next build
+2025-11-16T11:16:37.732Z [INFO]: ▲ Next.js 14.2.33
+2025-11-16T11:16:37.732Z [INFO]: 
+2025-11-16T11:16:37.791Z [INFO]: Creating an optimized production build ...
+2025-11-16T11:16:52.448Z [INFO]: ✓ Compiled successfully
+2025-11-16T11:16:52.452Z [INFO]: Linting and checking validity of types ...
+2025-11-16T11:16:52.622Z [WARNING]: ⨯ ESLint: Invalid Options: - Unknown options: useEslintrc, extensions - 'extensions' has been removed.
+2025-11-16T11:16:57.045Z [INFO]: Collecting page data ...
+2025-11-16T11:16:58.311Z [INFO]: Generating static pages (0/41) ...
+2025-11-16T11:16:58.627Z [INFO]: Generating static pages (10/41)
+2025-11-16T11:16:58.793Z [INFO]: Generating static pages (20/41)
+2025-11-16T11:16:58.987Z [INFO]: Generating static pages (30/41)
+2025-11-16T11:16:59.110Z [INFO]: ✓ Generating static pages (41/41)
+2025-11-16T11:16:59.479Z [INFO]: Finalizing page optimization ...
+2025-11-16T11:16:59.480Z [INFO]: Collecting build traces ...
+2025-11-16T11:17:06.383Z [INFO]: 
+2025-11-16T11:17:06.396Z [INFO]: Route (app)                                Size     First Load JS
+                                 ┌ ƒ /                                      3.86 kB         142 kB
+                                 ├ ○ /_not-found                            149 B          87.5 kB
+                                 ├ ○ /about                                 3.14 kB         141 kB
+                                 ├ ƒ /admin/artists                         196 B           101 kB
+                                 ├ ƒ /admin/comments                        149 B          87.5 kB
+                                 ├ ƒ /admin/dashboard                       149 B          87.5 kB
+                                 ├ ○ /admin/login                           1.17 kB        98.2 kB
+                                 ├ ƒ /admin/media                           294 B          92.8 kB
+                                 ├ ƒ /admin/orders                          188 B          96.2 kB
+                                 ├ ƒ /admin/posts                           188 B          96.2 kB
+                                 ├ ƒ /admin/posts/[id]                      2.39 kB        98.4 kB
+                                 ├ ƒ /admin/posts/new                       2.17 kB         108 kB
+                                 ├ ƒ /admin/products                        196 B           101 kB
+                                 ├ ƒ /admin/videos                          196 B           101 kB
+                                 ├ ƒ /api/artists                           0 B                0 B
+                                 ├ ƒ /api/artists/[id]                      0 B                0 B
+                                 ├ ƒ /api/artists/[id]/media                0 B                0 B
+                                 ├ ƒ /api/artists/slug/[slug]               0 B                0 B
+                                 ├ ƒ /api/auth/[...nextauth]                0 B                0 B
+                                 ├ ƒ /api/auth/users                        0 B                0 B
+                                 ├ ƒ /api/cart                              0 B                0 B
+                                 ├ ƒ /api/checkout                          0 B                0 B
+                                 ├ ƒ /api/comments                          0 B                0 B
+                                 ├ ƒ /api/comments/[entityType]/[entityId]  0 B                0 B
+                                 ├ ƒ /api/downloads/[id]                    0 B                0 B
+                                 ├ ƒ /api/media                             0 B                0 B
+                                 ├ ƒ /api/orders                            0 B                0 B
+                                 ├ ƒ /api/orders/[id]                       0 B                0 B
+                                 ├ ƒ /api/orders/number/[orderNumber]       0 B                0 B
+                                 ├ ƒ /api/payments/paypal                   0 B                0 B
+                                 ├ ƒ /api/payments/stripe                   0 B                0 B
+                                 ├ ƒ /api/posts                             0 B                0 B
+                                 ├ ƒ /api/posts/[id]                        0 B                0 B
+                                 ├ ƒ /api/products                          0 B                0 B
+                                 ├ ƒ /api/products/[id]                     0 B                0 B
+                                 ├ ƒ /api/products/slug/[slug]              0 B                0 B
+                                 ├ ƒ /api/ratings                           0 B                0 B
+                                 ├ ƒ /api/ratings/[entityType]/[entityId]   0 B                0 B
+                                 ├ ƒ /api/videos                            0 B                0 B
+                                 ├ ƒ /api/videos/[id]                       0 B                0 B
+                                 ├ ƒ /api/votes                             0 B                0 B
+                                 ├ ƒ /api/webhooks/paypal                   0 B                0 B
+                                 ├ ƒ /api/webhooks/stripe                   0 B                0 B
+                                 ├ ƒ /artists                               1.88 kB         140 kB
+                                 ├ ƒ /artists/[slug]                        5.13 kB         143 kB
+                                 ├ ○ /cart                                  4.03 kB         105 kB
+                                 ├ ○ /checkout                              2.47 kB        98.5 kB
+                                 ├ ○ /checkout/cancel                       188 B          96.2 kB
+                                 ├ ƒ /checkout/success                      188 B          96.2 kB
+                                 ├ ○ /faqs                                  5.36 kB         107 kB
+                                 ├ ƒ /feed.xml                              0 B                0 B
+                                 ├ ○ /icon.png                              0 B                0 B
+                                 ├ ƒ /news                                  196 B           101 kB
+                                 ├ ƒ /news/[slug]                           196 B           101 kB
+                                 ├ ƒ /orders/[orderNumber]                  188 B          96.2 kB
+                                 ├ ƒ /shop                                  3.15 kB         141 kB
+                                 ├ ƒ /shop/[slug]                           4.63 kB         142 kB
+                                 ├ ƒ /videos                                2.77 kB         104 kB
+                                 └ ƒ /videos/[slug]                         716 B          96.7 kB
+                                 + First Load JS shared by all              87.3 kB
+                                 ├ chunks/117-f651f7e5595365cb.js         31.7 kB
+                                 ├ chunks/fd9d1056-b4129a380d1be68f.js    53.6 kB
+                                 └ other shared chunks (total)            1.95 kB
+                                 ƒ Middleware                               49.5 kB
+                                 ○  (Static)   prerendered as static content
+                                 ƒ  (Dynamic)  server-rendered on demand
+2025-11-16T11:17:06.412Z [INFO]: # Completed phase: build
+                                 ## Completed Frontend Build
+2025-11-16T11:17:06.476Z [INFO]: ## Build completed successfully
+2025-11-16T11:17:06.476Z [INFO]: # Starting caching...
+2025-11-16T11:17:06.479Z [INFO]: # Creating cache artifact...
+2025-11-16T11:17:07.206Z [INFO]: # Created cache artifact
+2025-11-16T11:17:07.206Z [INFO]: # Uploading cache artifact...
+2025-11-16T11:17:09.942Z [INFO]: # Uploaded cache artifact
+2025-11-16T11:17:10.012Z [INFO]: # Caching completed
+2025-11-16T11:17:20.152Z [INFO]: # Starting environment caching...
+2025-11-16T11:17:20.246Z [INFO]: # Environment caching completed
+

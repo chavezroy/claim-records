@@ -28,8 +28,8 @@ export default async function AdminMediaPage() {
                            media.mime_type?.startsWith('image/');
             
             return (
-              <li key={media.id} className="px-4 py-4 sm:px-6">
-                <div className="flex items-center justify-between">
+            <li key={media.id} className="px-4 py-4 sm:px-6">
+              <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-8 flex-1 min-w-0">
                     {isImage && media.file_path && (
                       <div className="flex-shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
@@ -52,20 +52,20 @@ export default async function AdminMediaPage() {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {media.original_filename}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {media.file_type} • {media.mime_type || 'Unknown type'}
-                        {media.file_size && ` • ${(media.file_size / 1024).toFixed(2)} KB`}
-                      </p>
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {media.original_filename}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {media.file_type} • {media.mime_type || 'Unknown type'}
+                    {media.file_size && ` • ${(media.file_size / 1024).toFixed(2)} KB`}
+                  </p>
                     </div>
-                  </div>
-                  <div className="ml-5 flex-shrink-0 text-sm text-gray-500">
-                    {new Date(media.created_at).toLocaleDateString()}
-                  </div>
                 </div>
-              </li>
+                <div className="ml-5 flex-shrink-0 text-sm text-gray-500">
+                  {new Date(media.created_at).toLocaleDateString()}
+                </div>
+              </div>
+            </li>
             );
           })}
         </ul>

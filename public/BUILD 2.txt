@@ -1,0 +1,238 @@
+2025-11-16T10:46:14.727Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+2025-11-16T10:46:15.165Z [INFO]: # Cloning repository: git@github.com:chavezroy/claim-records.git
+2025-11-16T10:46:15.832Z [INFO]: 
+2025-11-16T10:46:15.832Z [INFO]: Cloning into 'claim-records'...
+2025-11-16T10:46:15.833Z [INFO]: # Switching to commit: 2fe7e001358a1b54ae323d6c790f85185fcf208f
+2025-11-16T10:46:15.864Z [INFO]: Note: switching to '2fe7e001358a1b54ae323d6c790f85185fcf208f'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 2fe7e00 Fix build errors for AWS Amplify deployment
+2025-11-16T10:46:15.906Z [INFO]: Successfully cleaned up Git credentials
+2025-11-16T10:46:15.906Z [INFO]: # Checking for Git submodules at: /codebuild/output/src4207765969/src/claim-records/.gitmodules
+2025-11-16T10:46:15.913Z [INFO]: # Retrieving environment cache...
+2025-11-16T10:46:15.951Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-11-16T10:46:15.951Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-11-16T10:46:15.951Z [INFO]: SSM params {"Path":"/amplify/d13axw9ole04hk/feature/dynamic-content/","WithDecryption":true}
+2025-11-16T10:46:15.997Z [WARNING]: !Failed to set up process.env.secrets
+2025-11-16T10:46:16.744Z [INFO]: # No package override configuration found.
+2025-11-16T10:46:16.746Z [INFO]: # Retrieving cache...
+2025-11-16T10:46:16.792Z [INFO]: # Retrieved cache
+2025-11-16T10:46:19.238Z [INFO]: BackendEnvironment name feature/dynamic-content for app d13axw9ole04hk is invalid
+2025-11-16T10:46:19.374Z [INFO]: Random environment name feodora generated
+2025-11-16T10:46:21.536Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2025-11-16T10:46:21.539Z [INFO]: ## Starting Frontend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: npm ci --cache .npm --prefer-offline
+2025-11-16T10:46:43.766Z [INFO]: added 406 packages, and audited 407 packages in 17s
+2025-11-16T10:46:43.773Z [INFO]: 149 packages are looking for funding
+                                 run `npm fund` for details
+                                 found 0 vulnerabilities
+2025-11-16T10:46:43.785Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
+                                 # Executing command: npm run build
+2025-11-16T10:46:43.878Z [INFO]: > claim-records@0.1.0 build
+                                 > next build
+2025-11-16T10:46:44.441Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-11-16T10:46:44.522Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+                                 This information is used to shape Next.js' roadmap and prioritize features.
+2025-11-16T10:46:44.522Z [INFO]: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+                                 https://nextjs.org/telemetry
+2025-11-16T10:46:44.581Z [INFO]: ▲ Next.js 14.2.33
+2025-11-16T10:46:44.582Z [INFO]: 
+2025-11-16T10:46:44.648Z [INFO]: Creating an optimized production build ...
+2025-11-16T10:46:59.201Z [INFO]: ✓ Compiled successfully
+2025-11-16T10:46:59.205Z [INFO]: Linting and checking validity of types ...
+2025-11-16T10:46:59.351Z [WARNING]: ⨯ ESLint: Invalid Options: - Unknown options: useEslintrc, extensions - 'extensions' has been removed.
+2025-11-16T10:47:03.526Z [INFO]: Collecting page data ...
+2025-11-16T10:47:04.824Z [INFO]: Generating static pages (0/42) ...
+2025-11-16T10:47:05.083Z [INFO]: Generating static pages (10/42)
+2025-11-16T10:47:05.213Z [WARNING]: Error occurred prerendering page "/feed.xml". Read more: https://nextjs.org/docs/messages/prerender-error
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/route.js:1:3409)
+                                    at i (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/route.js:1:3741)
+                                    at i (/codebuild/output/src4207765969/src/claim-records/.next/server/app/feed.xml/route.js:1:1168)
+                                    at /codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+                                    at /codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+                                    at NoopContextManager.with (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+                                    at ContextAPI.with (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+                                    at NoopTracer.startActiveSpan (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+                                    at ProxyTracer.startActiveSpan (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+                                    at /codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+2025-11-16T10:47:05.213Z [INFO]: Generating static pages (20/42)
+2025-11-16T10:47:05.526Z [INFO]: Generating static pages (31/42)
+2025-11-16T10:47:05.526Z [WARNING]: Error: DATABASE_URL environment variable is not set
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:660)
+                                    at l (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:992)
+                                    at o (/codebuild/output/src4207765969/src/claim-records/.next/server/app/artists/page.js:1:7187)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1868448080'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:660)
+                                    at l (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:992)
+                                    at o (/codebuild/output/src4207765969/src/claim-records/.next/server/app/artists/page.js:1:7187)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1868448080'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:660)
+                                    at l (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:992)
+                                    at o (/codebuild/output/src4207765969/src/claim-records/.next/server/app/artists/page.js:1:7187)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1868448080'
+                                    }
+                                    Error occurred prerendering page "/artists". Read more: https://nextjs.org/docs/messages/prerender-error
+                                    Error: DATABASE_URL environment variable is not set
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:660)
+                                    at l (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/route.js:3:992)
+                                    at o (/codebuild/output/src4207765969/src/claim-records/.next/server/app/artists/page.js:1:7187)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572)
+2025-11-16T10:47:05.589Z [WARNING]: Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at c (/codebuild/output/src4207765969/src/claim-records/.next/server/app/news/page.js:1:2378)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '570154242'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at c (/codebuild/output/src4207765969/src/claim-records/.next/server/app/news/page.js:1:2378)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '570154242'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at c (/codebuild/output/src4207765969/src/claim-records/.next/server/app/news/page.js:1:2378)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '570154242'
+                                    }
+2025-11-16T10:47:05.609Z [WARNING]: Error occurred prerendering page "/news". Read more: https://nextjs.org/docs/messages/prerender-error
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at c (/codebuild/output/src4207765969/src/claim-records/.next/server/app/news/page.js:1:2378)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572)
+2025-11-16T10:47:05.663Z [WARNING]: Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at u (/codebuild/output/src4207765969/src/claim-records/.next/server/app/page.js:1:11317)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1593025135'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at u (/codebuild/output/src4207765969/src/claim-records/.next/server/app/page.js:1:11317)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1593025135'
+                                    }
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at u (/codebuild/output/src4207765969/src/claim-records/.next/server/app/page.js:1:11317)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572) {
+                                    digest: '1593025135'
+                                    }
+                                    Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+                                    Error: DATABASE_URL environment variable is not set
+                                    at n (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:656)
+                                    at s (/codebuild/output/src4207765969/src/claim-records/.next/server/app/api/artists/[id]/media/route.js:5:988)
+                                    at u (/codebuild/output/src4207765969/src/claim-records/.next/server/app/page.js:1:11317)
+                                    at eh (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134660)
+                                    at e (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:137545)
+                                    at ek (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:138019)
+                                    at Array.toJSON (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:135629)
+                                    at stringify (<anonymous>)
+                                    at eP (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142093)
+                                    at eE (/codebuild/output/src4207765969/src/claim-records/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:142572)
+2025-11-16T10:47:05.664Z [INFO]: ✓ Generating static pages (42/42)
+2025-11-16T10:47:05.756Z [WARNING]: 
+2025-11-16T10:47:05.756Z [WARNING]: > Export encountered errors on following paths:
+                                    /artists/page: /artists
+                                    /feed.xml/route: /feed.xml
+                                    /news/page: /news
+                                    /page: /
+2025-11-16T10:47:05.775Z [ERROR]: !!! Build failed
+2025-11-16T10:47:05.775Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+2025-11-16T10:47:05.776Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-11-16T10:47:05.776Z [INFO]: # Starting environment caching...
+2025-11-16T10:47:05.776Z [INFO]: # Environment caching completed
+

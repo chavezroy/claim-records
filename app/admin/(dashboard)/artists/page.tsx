@@ -43,12 +43,12 @@ export default async function AdminArtistsPage() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-indigo-600 truncate">
-                          {artist.name}
-                        </p>
+                      <p className="text-sm font-medium text-indigo-600 truncate">
+                        {artist.name}
+                      </p>
                         <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                          {artist.bio || 'No bio'}
-                        </p>
+                        {artist.bio || 'No bio'}
+                      </p>
                       </div>
                     </div>
                     <div className="ml-5 flex-shrink-0">

@@ -48,12 +48,12 @@ export default async function AdminVideosPage() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-indigo-600 truncate">
-                          {video.title}
-                        </p>
+                      <p className="text-sm font-medium text-indigo-600 truncate">
+                        {video.title}
+                      </p>
                         <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                          {video.description || 'No description'}
-                        </p>
+                        {video.description || 'No description'}
+                      </p>
                       </div>
                     </div>
                     <div className="ml-5 flex-shrink-0">

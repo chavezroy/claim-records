@@ -54,12 +54,12 @@ export default async function AdminProductsPage() {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-indigo-600 truncate">
-                          {product.name}
-                        </p>
+                      <p className="text-sm font-medium text-indigo-600 truncate">
+                        {product.name}
+                      </p>
                         <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-                          {product.description || 'No description'}
-                        </p>
+                        {product.description || 'No description'}
+                      </p>
                       </div>
                     </div>
                     <div className="ml-5 flex-shrink-0">

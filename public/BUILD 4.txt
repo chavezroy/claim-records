@@ -1,0 +1,69 @@
+2025-11-17T00:24:39.929Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+2025-11-17T00:24:40.381Z [INFO]: # Cloning repository: git@github.com:chavezroy/claim-records.git
+2025-11-17T00:24:41.099Z [INFO]: 
+2025-11-17T00:24:41.100Z [INFO]: Cloning into 'claim-records'...
+2025-11-17T00:24:41.100Z [INFO]: # Switching to commit: ce884c18ae688030f347b68ac6eb1bbb472ff104
+2025-11-17T00:24:41.134Z [INFO]: Note: switching to 'ce884c18ae688030f347b68ac6eb1bbb472ff104'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at ce884c1 Fix: Write environment variables to .env.production for Next.js runtime access in Amplify
+2025-11-17T00:24:41.185Z [INFO]: Successfully cleaned up Git credentials
+2025-11-17T00:24:41.186Z [INFO]: # Checking for Git submodules at: /codebuild/output/src546413880/src/claim-records/.gitmodules
+2025-11-17T00:24:41.193Z [INFO]: # Retrieving environment cache...
+2025-11-17T00:24:41.241Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-11-17T00:24:41.241Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-11-17T00:24:41.241Z [INFO]: SSM params {"Path":"/amplify/d13axw9ole04hk/feature/dynamic-content/","WithDecryption":true}
+2025-11-17T00:24:41.293Z [WARNING]: !Failed to set up process.env.secrets
+2025-11-17T00:24:41.903Z [INFO]: # No package override configuration found.
+2025-11-17T00:24:41.907Z [INFO]: # Retrieving cache...
+2025-11-17T00:24:45.441Z [INFO]: # Extracting cache...
+2025-11-17T00:24:46.068Z [INFO]: # Extraction completed
+2025-11-17T00:24:46.095Z [INFO]: # Retrieved cache
+2025-11-17T00:24:47.376Z [INFO]: BackendEnvironment name feature/dynamic-content for app d13axw9ole04hk is invalid
+2025-11-17T00:24:47.420Z [INFO]: Random environment name olva generated
+2025-11-17T00:24:49.808Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2025-11-17T00:24:49.815Z [INFO]: ## Starting Frontend Build
+2025-11-17T00:24:49.815Z [INFO]: # Starting phase: preBuild
+                                 # Executing command: npm ci
+2025-11-17T00:25:11.881Z [INFO]: added 406 packages, and audited 407 packages in 18s
+2025-11-17T00:25:11.885Z [INFO]: 149 packages are looking for funding
+                                 run `npm fund` for details
+                                 found 0 vulnerabilities
+2025-11-17T00:25:11.903Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
+                                 # Executing command: npm run build
+2025-11-17T00:25:11.998Z [INFO]: > claim-records@0.1.0 build
+                                 > next build
+2025-11-17T00:25:12.533Z [INFO]: ▲ Next.js 14.2.33
+2025-11-17T00:25:12.533Z [INFO]: 
+2025-11-17T00:25:12.595Z [INFO]: Creating an optimized production build ...
+2025-11-17T00:25:29.318Z [INFO]: ✓ Compiled successfully
+2025-11-17T00:25:29.324Z [INFO]: Linting and checking validity of types ...
+2025-11-17T00:25:29.504Z [WARNING]: ⨯ ESLint: Invalid Options: - Unknown options: useEslintrc, extensions - 'extensions' has been removed.
+2025-11-17T00:25:34.492Z [WARNING]: Failed to compile.
+2025-11-17T00:25:34.496Z [WARNING]: ./app/api/health/route.ts:27:29
+                                    Type error: 'dbUrl' is possibly 'undefined'.
+                                    [0m [90m 25 |[39m       [36mconst[39m dbUrl [33m=[39m process[33m.[39menv[33m.[39m[33mDATABASE_URL[39m[33m;[39m[0m
+                                    [0m [90m 26 |[39m       [36mtry[39m {[0m
+                                    [0m[31m[1m>[22m[39m[90m 27 |[39m         [36mconst[39m url [33m=[39m [36mnew[39m [33mURL[39m(dbUrl[33m.[39mreplace([35m/^postgresql:\/\//[39m[33m,[39m [32m'http://'[39m))[33m;[39m[0m
+                                    [0m [90m    |[39m                             [31m[1m^[22m[39m[0m
+                                    [0m [90m 28 |[39m         databaseUrlInfo [33m=[39m {[0m
+                                    [0m [90m 29 |[39m           host[33m:[39m url[33m.[39mhostname[33m,[39m[0m
+                                    [0m [90m 30 |[39m           port[33m:[39m url[33m.[39mport [33m||[39m [32m'5432'[39m[33m,[39m[0m
+2025-11-17T00:25:34.512Z [WARNING]: Next.js build worker exited with code: 1 and signal: null
+2025-11-17T00:25:34.573Z [ERROR]: !!! Build failed
+2025-11-17T00:25:34.573Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+2025-11-17T00:25:34.573Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-11-17T00:25:34.573Z [INFO]: # Starting environment caching...
+2025-11-17T00:25:34.573Z [INFO]: # Environment caching completed
+

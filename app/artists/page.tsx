@@ -5,9 +5,21 @@ export const dynamic = 'force-dynamic';
 
 export default async function ArtistsPage() {
   // Fetch artists from database
-  const result = await query(
-    'SELECT * FROM artists ORDER BY name ASC'
-  );
+  let result;
+  try {
+    result = await query(
+      'SELECT * FROM artists ORDER BY name ASC'
+    );
+  } catch (error: any) {
+    console.error('Database error in artists page:', error);
+    // Log detailed error for debugging
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
+    throw error;
+  }
 
   const artists = result.rows.map((artist: any) => ({
     id: artist.id,

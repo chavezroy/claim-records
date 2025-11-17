@@ -112,13 +112,13 @@ export default async function ShopPage({
       )}
 
       {allProducts.length === 0 && (
-        <section>
+      <section>
           <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
             <div className="text-center" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
               <p className="text-gray-500 text-lg">No products available at this time.</p>
             </div>
-          </div>
-        </section>
+        </div>
+      </section>
       )}
 
       {/* Shop by Products */}
@@ -240,18 +240,18 @@ export default async function ShopPage({
 
       {/* Shop by Artist */}
       {shopByArtist.length > 0 && (
-        <section>
+      <section>
           <div className="container" style={{ paddingTop: '3rem', paddingBottom: '1.5rem' }}>
             <h2 className="text-center" style={{ marginBottom: '3rem', paddingTop: '1rem' }}>Shop by artist</h2>
-            <div className="row mb-5">
+          <div className="row mb-5">
               {shopByArtist.map((artist) => (
-                <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
-                  <ArtistCard artist={artist} variant="card" />
-                </div>
-              ))}
-            </div>
+              <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
+                <ArtistCard artist={artist} variant="card" />
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
       )}
     </>
   );
