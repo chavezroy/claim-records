@@ -10,6 +10,7 @@ interface LogoTextProps {
   animationStartDelay?: number;
   showAnimation?: boolean;
   textTotalDelay?: number;
+  autoAnimate?: boolean; // If true, animation plays automatically without hover
 }
 
 export default function LogoText({ 
@@ -18,7 +19,8 @@ export default function LogoText({
   isHovered = false, 
   animationStartDelay = 0,
   showAnimation = false,
-  textTotalDelay = 0
+  textTotalDelay = 0,
+  autoAnimate = false
 }: LogoTextProps) {
   return (
     <motion.div 
@@ -170,14 +172,14 @@ export default function LogoText({
             right: '-11px',
             zIndex: 2,
           }}
-          animate={animateOnHover ? (isHovered ? {
+          animate={(autoAnimate || (animateOnHover && isHovered)) ? {
             opacity: [0.3, 0.8, 0.3],
             scale: [1, 1.02, 1],
-          } : undefined) : {
-            opacity: [0.3, 0.8, 0.3],
-            scale: [1, 1.02, 1],
+          } : {
+            opacity: 0.3,
+            scale: 1,
           }}
-          whileHover={animateOnHover ? {
+          whileHover={animateOnHover && !autoAnimate ? {
             opacity: [0.3, 0.8, 0.3],
             scale: [1, 1.02, 1],
           } : undefined}

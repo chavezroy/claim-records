@@ -103,6 +103,7 @@ export default function BrandLogo({
           animateOnHover={animateOnHover} 
           isHovered={isHovered}
           animationStartDelay={showAnimation ? animationDelay + 0.75 : 0}
+          autoAnimate={variant === 'hero'} // Auto-animate for hero, hover-only for header
         />
       </motion.div>
       <div 
@@ -114,6 +115,7 @@ export default function BrandLogo({
           animationStartDelay={showAnimation ? textTotalDelay : 0}
           showAnimation={showAnimation}
           textTotalDelay={textTotalDelay}
+          autoAnimate={variant === 'hero'} // Auto-animate for hero, hover-only for header
         />
       </div>
     </motion.div>
