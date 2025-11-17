@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 
 interface LogoIconProps {
   className?: string;
+  animateOnHover?: boolean;
+  animationStartDelay?: number;
 }
 
-export default function LogoIcon({ className = '' }: LogoIconProps) {
+export default function LogoIcon({ className = '', animateOnHover = false, animationStartDelay = 0 }: LogoIconProps) {
   return (
     <div 
       className={`relative logo-icon-container ${className}`}
@@ -34,14 +36,18 @@ export default function LogoIcon({ className = '' }: LogoIconProps) {
           zIndex: 2,
           overflow: 'visible',
         }}
-        animate={{
+        animate={animateOnHover ? undefined : {
           scale: [0.97, 1.03, 0.97], // Start at 97% size, grow to 103%, back to 97%
         }}
+        whileHover={animateOnHover ? {
+          scale: [0.97, 1.03, 0.97],
+        } : undefined}
         transition={{
           duration: 6,
           repeat: Infinity,
           repeatType: 'loop',
           ease: 'easeInOut',
+          delay: animationStartDelay,
         }}
       >
         <Image
@@ -61,16 +67,27 @@ export default function LogoIcon({ className = '' }: LogoIconProps) {
           inset: 0,
           zIndex: 3,
         }}
-        animate={{
+        animate={animateOnHover ? undefined : {
           x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
           y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
           rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
         }}
+        whileHover={animateOnHover ? {
+          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
+          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
+          rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
+        } : undefined}
+        whileTap={animateOnHover ? {
+          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
+          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
+          rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
+        } : undefined}
         transition={{
           duration: 1.25,
           repeat: Infinity,
           repeatType: 'loop',
           ease: 'easeInOut',
+          delay: animationStartDelay,
         }}
       >
         {/* Hand - parent layer */}
@@ -106,14 +123,18 @@ export default function LogoIcon({ className = '' }: LogoIconProps) {
               maskPosition: 'center',
               WebkitMaskPosition: 'center',
             }}
-            animate={{
+            animate={animateOnHover ? undefined : {
               backgroundPosition: ['200% 200%', '-200% -200%'],
             }}
+            whileHover={animateOnHover ? {
+              backgroundPosition: ['200% 200%', '-200% -200%'],
+            } : undefined}
             transition={{
               duration: 1.5,
               repeat: Infinity,
               repeatDelay: 7.5, // Average of 7-9 seconds
               ease: 'easeInOut',
+              delay: animationStartDelay,
             }}
           />
         </div>
@@ -125,15 +146,24 @@ export default function LogoIcon({ className = '' }: LogoIconProps) {
             inset: 0,
             zIndex: 3,
           }}
-          animate={{
+          animate={animateOnHover ? undefined : {
             rotate: [0, 1, -1, 0],
             transformOrigin: 'bottom left',
           }}
+          whileHover={animateOnHover ? {
+            rotate: [0, 1, -1, 0],
+            transformOrigin: 'bottom left',
+          } : undefined}
+          whileTap={animateOnHover ? {
+            rotate: [0, 1, -1, 0],
+            transformOrigin: 'bottom left',
+          } : undefined}
           transition={{
             duration: 8,
             repeat: Infinity,
             repeatType: 'loop',
             ease: 'easeInOut',
+            delay: animationStartDelay,
           }}
         >
           <Image

@@ -74,14 +74,9 @@ export default function HeroSection() {
         })}
       </motion.div>
 
-      <motion.div 
-        className="absolute z-10 left-1/2 hero-section-logo-wrapper"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 1.5 }}
-      >
-        <BrandLogo showAnimation={false} />
-      </motion.div>
+      <div className="absolute z-10 left-1/2 hero-section-logo-wrapper">
+        <BrandLogo showAnimation={true} animationDelay={1.5} />
+      </div>
     </div>
   );
 }

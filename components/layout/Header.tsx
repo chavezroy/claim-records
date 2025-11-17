@@ -1,6 +1,8 @@
+'use client';
+
 import Link from 'next/link';
-import Image from 'next/image';
 import Navigation from './Navigation';
+import BrandLogo from '@/components/logo/BrandLogo';
 
 export default function Header() {
   return (
@@ -12,14 +14,7 @@ export default function Header() {
             className="flex items-center no-underline"
             aria-label="Claim Records Home"
           >
-            <Image
-              src="/img/logo_ClaimRecords.svg"
-              alt="Claim Records"
-              width={200}
-              height={44}
-              className="h-11 w-auto"
-              priority
-            />
+            <BrandLogo variant="header" animateOnHover={true} />
           </Link>
           <Navigation />
         </div>

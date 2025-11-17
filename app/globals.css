@@ -1368,6 +1368,58 @@ footer a:hover.nav-link {
   height: 44px;
 }
 
+/* Header logo container - always horizontal, never stacked */
+.header-logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Header logo icon sizing */
+.header-logo-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 44px;
+}
+
+/* Header logo text sizing */
+.header-logo-text {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 44px;
+}
+
+/* Header logo icon container - maintain aspect ratio at 44px height */
+.header-logo-icon .logo-icon-container {
+  width: auto;
+  height: 44px;
+}
+
+/* Header logo text image */
+.header-logo-text img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Header logo Next.js Image wrappers */
+.header-logo-icon > span,
+.header-logo-text > span {
+  position: relative;
+  width: auto;
+  height: 44px;
+  display: block;
+}
+
 /* Hero logo container */
 .hero-logo-container {
   display: flex;
