@@ -18,6 +18,7 @@ type CartContextType = {
   addToCart: (item: Omit<CartItem, 'id' | 'quantity'> & { quantity?: number }) => void;
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
   getCartCount: () => number;
 };
 
@@ -80,13 +81,17 @@ export function CartProvider({ children, onItemAdded }: CartProviderProps) {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const getCartCount = () => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
   };
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, updateQuantity, removeItem, getCartCount }}
+      value={{ cartItems, addToCart, updateQuantity, removeItem, clearCart, getCartCount }}
     >
       {children}
     </CartContext.Provider>
