@@ -16,6 +16,9 @@ export default function ArtistGridClient({
   itemVariants,
 }: ArtistGridClientProps) {
   if (containerVariants && itemVariants) {
+    // Ensure we have exactly 6 artists for the hero grid (3x2 layout)
+    const displayArtists = artists.slice(0, 6);
+    
     return (
       <motion.div
         className="hero-grid absolute w-full"
@@ -33,7 +36,7 @@ export default function ArtistGridClient({
           boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {artists.slice(0, 6).map((artist, index) => (
+        {displayArtists.map((artist, index) => (
           <ArtistCard 
             key={artist.id} 
             artist={artist} 

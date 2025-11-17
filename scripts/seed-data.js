@@ -110,6 +110,15 @@ async function seedData() {
         instagram_url: 'https://instagram.com/crystalecho',
         facebook_url: 'https://facebook.com/crystalecho',
       },
+      {
+        name: 'Solar Flare',
+        bio: 'Alternative rock band known for their energetic live performances and genre-blending sound.',
+        slug: 'solar-flare',
+        featured: false,
+        instagram_url: 'https://instagram.com/solarflare',
+        twitter_url: 'https://twitter.com/solarflare',
+        youtube_url: 'https://youtube.com/@solarflare',
+      },
     ];
 
     const artistIds = [];

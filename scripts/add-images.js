@@ -53,6 +53,7 @@ async function addImages() {
       { slug: 'neon-dreams', image: '/img/artist/_shadeauxx.jpg', profile: '/img/artist/profile/main-extrapolate.jpg' },
       { slug: 'void-walker', image: '/img/artist/_strange.jpg', profile: '/img/artist/_strange.jpg' },
       { slug: 'crystal-echo', image: '/img/artist/_lastgoodbye.jpg', profile: '/img/artist/profile/main-fg.jpg' },
+      { slug: 'solar-flare', image: '/img/artist/_shesaved.jpg', profile: '/img/artist/_shesaved.jpg' },
     ];
 
     for (const artistImg of artistImages) {

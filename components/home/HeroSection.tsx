@@ -2,10 +2,13 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { artists } from '@/lib/data/artists';
 import BrandLogo from '@/components/logo/BrandLogo';
 
 export default function HeroSection() {
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -33,6 +36,10 @@ export default function HeroSection() {
     },
   };
 
+  const handleImageError = (artistId: string) => {
+    setImageErrors(prev => ({ ...prev, [artistId]: true }));
+  };
+
   return (
     <div className="relative h-[75vh] md:h-screen w-full overflow-hidden">
       <motion.div
@@ -44,6 +51,8 @@ export default function HeroSection() {
       >
         {artists.slice(0, 6).map((artist, index) => {
           const filter = index % 2 === 0 ? 'sepia(80%)' : 'grayscale(100%)';
+          const imageError = imageErrors[artist.id];
+          const imageSrc = imageError ? '/img/artist/default.jpg' : artist.image;
 
           return (
             <motion.div
@@ -56,19 +65,27 @@ export default function HeroSection() {
                 backfaceVisibility: 'hidden',
               }}
             >
-              <Image
-                src={artist.image}
-                alt={artist.name}
-                fill
-                unoptimized
-                className="object-cover opacity-25"
-                style={{
-                  filter,
-                  willChange: 'auto',
-                  transform: 'translateZ(0)',
-                }}
-                priority={index < 3}
-              />
+              {!imageError ? (
+                <Image
+                  src={imageSrc}
+                  alt={artist.name}
+                  fill
+                  unoptimized
+                  className="object-cover opacity-25"
+                  style={{
+                    filter,
+                    willChange: 'auto',
+                    transform: 'translateZ(0)',
+                  }}
+                  priority={index < 3}
+                  onError={() => handleImageError(artist.id)}
+                />
+              ) : (
+                <div 
+                  className="w-full h-full bg-gray-200 opacity-25"
+                  style={{ filter }}
+                />
+              )}
             </motion.div>
           );
         })}
