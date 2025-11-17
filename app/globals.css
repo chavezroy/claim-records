@@ -1386,13 +1386,20 @@ footer a:hover.nav-link {
   justify-content: center;
 }
 
-/* Mobile: icon 250px, text 200px */
+/* Mobile: icon 300px, text 200px */
 .hero-logo-icon {
-  width: 250px;
+  width: 300px;
+  height: auto;
 }
 
 .hero-logo-text {
   width: 200px;
+}
+
+/* Logo icon container - mobile sizing */
+.logo-icon-container {
+  width: 300px;
+  height: 258px; /* Maintain aspect ratio: 300 * (215/250) = 258 */
 }
 
 /* Next.js Image wrapper and image sizing */
@@ -1412,16 +1419,32 @@ footer a:hover.nav-link {
   display: block;
 }
 
-/* Desktop: side by side, icon 120px height, text 400px width */
+/* Hero logo wrapper positioning - mobile */
+.hero-section-logo-wrapper {
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+/* Desktop: side by side, icon 150px height, text 340px width */
 @media (min-width: 768px) {
   .hero-logo-container {
     flex-direction: row;
     gap: 0;
   }
   
+  .hero-section-logo-wrapper {
+    top: 50%;
+  }
+  
   .hero-logo-icon {
-    width: auto;
-    height: 150px;
+    width: 200px;
+    height: 172px;
+  }
+  
+  /* Desktop: Logo icon container sizing - 200px width, maintain aspect ratio */
+  .logo-icon-container {
+    width: 200px;
+    height: 172px; /* 200px width / (250/215) aspect ratio = 172px */
   }
   
   .hero-logo-text {
@@ -1430,13 +1453,13 @@ footer a:hover.nav-link {
   }
   
   .hero-logo-icon > span {
-    height: 150px;
-    width: auto;
+    width: 200px;
+    height: 172px;
   }
   
   .hero-logo-icon img {
-    height: 150px;
-    width: auto;
+    width: 200px;
+    height: 172px;
   }
   
   .hero-logo-text > span {

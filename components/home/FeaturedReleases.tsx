@@ -9,13 +9,13 @@ export default function FeaturedReleases() {
 
   return (
     <section>
-      <div className="container pt-5">
+      <div className="container mx-auto px-4 pt-5">
         <h2 className="text-center mb-5">Featured</h2>
-        <div className="row mb-5 justify-content-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
           {featuredReleases.slice(0, 4).map((release) => (
             <div
               key={release.id}
-              className="col-sm-3 mb-3 mb-sm-0 max-w-[300px] mx-auto md:max-w-none md:mx-0"
+              className="max-w-[300px] mx-auto sm:max-w-none sm:mx-0"
             >
               <Card href={`/artists/${release.artistId}`}>
                 <div className="thumb featured-thumb-container relative w-full overflow-hidden bg-white h-[250px] md:h-[400px]">
@@ -28,11 +28,11 @@ export default function FeaturedReleases() {
                     className="object-cover featured-thumb-mobile md:featured-thumb-desktop"
                   />
                 </div>
-                <div className="card-body p-5 min-h-[110px]">
-                  <p className="card-title mb-0 text-primary hover:text-black transition-colors">
+                <div className="p-5 min-h-[110px]">
+                  <p className="text-lg font-semibold mb-0 text-primary hover:text-black transition-colors">
                     {release.artistName}
                   </p>
-                  <p className="card-subtitle mb-2 text-gray-500 text-sm">
+                  <p className="text-sm mb-2 text-gray-500">
                     {release.type === 'single'
                       ? 'Single'
                       : release.type === 'ep'

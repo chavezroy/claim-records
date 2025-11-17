@@ -10,11 +10,7 @@ interface LogoIconProps {
 export default function LogoIcon({ className = '' }: LogoIconProps) {
   return (
     <div 
-      className={`relative ${className}`}
-      style={{
-        width: '250px',
-        height: '215px',
-      }}
+      className={`relative logo-icon-container ${className}`}
     >
       {/* Background - bottom layer */}
       <Image
