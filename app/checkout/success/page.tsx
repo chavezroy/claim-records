@@ -1,36 +1,121 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { query } from '@/lib/db';
+import { useCart } from '@/contexts/CartContext';
 
-export const dynamic = 'force-dynamic';
+export default function CheckoutSuccessPage() {
+  const searchParams = useSearchParams();
+  const { clearCart } = useCart();
+  const [order, setOrder] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function CheckoutSuccessPage({
-  searchParams,
-}: {
-  searchParams: { order?: string };
-}) {
-  let order = null;
+  const orderNumber = searchParams.get('order');
+  const token = searchParams.get('token');
+  const payerId = searchParams.get('PayerID');
+  
+  // PayPal returns with token parameter when user approves
+  const isPayPalReturn = !!token;
 
-  if (searchParams.order) {
-    const result = await query(
-      `SELECT o.*
-       FROM orders o
-       WHERE o.order_number = $1`,
-      [searchParams.order]
+  useEffect(() => {
+    const handlePayPalReturn = async () => {
+      if (!orderNumber) {
+        setError('Order number not found');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // If this is a PayPal return (has token), we need to capture the payment
+        if (isPayPalReturn) {
+          // First, get the order to find PayPal order ID
+          const orderResponse = await fetch(`/api/orders/number/${orderNumber}`);
+          if (!orderResponse.ok) {
+            throw new Error('Order not found');
+          }
+          const orderData = await orderResponse.json();
+          const orderObj = orderData.order || orderData;
+          
+          if (orderObj.paypal_order_id) {
+            // Capture the PayPal payment
+            const captureResponse = await fetch('/api/payments/paypal/capture', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                order_id: orderObj.id,
+                paypal_order_id: orderObj.paypal_order_id,
+              }),
+            });
+
+            if (!captureResponse.ok) {
+              const errorData = await captureResponse.json();
+              throw new Error(errorData.error || 'Failed to capture payment');
+            }
+
+            // Fetch updated order after capture
+            const updatedOrderResponse = await fetch(`/api/orders/number/${orderNumber}`);
+            if (updatedOrderResponse.ok) {
+              const updatedData = await updatedOrderResponse.json();
+              const updatedOrder = updatedData.order || updatedData;
+              updatedOrder.order_items = updatedData.items || [];
+              setOrder(updatedOrder);
+            } else {
+              setOrder(orderObj);
+            }
+          } else {
+            orderObj.order_items = orderData.items || [];
+            setOrder(orderObj);
+          }
+        } else {
+          // Regular order confirmation (not PayPal return)
+          const orderResponse = await fetch(`/api/orders/number/${orderNumber}`);
+          if (!orderResponse.ok) {
+            throw new Error('Order not found');
+          }
+          const orderData = await orderResponse.json();
+          const orderObj = orderData.order || orderData;
+          orderObj.order_items = orderData.items || [];
+          setOrder(orderObj);
+        }
+
+        // Clear cart after successful order
+        clearCart();
+      } catch (err) {
+        console.error('Error processing order:', err);
+        setError(err instanceof Error ? err.message : 'Failed to process order');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handlePayPalReturn();
+  }, [orderNumber, token, payerId, clearCart]);
+
+  if (loading) {
+    return (
+      <div className="container py-5">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Processing Order...</h1>
+          <p className="text-gray-600">Please wait while we confirm your payment.</p>
+        </div>
+      </div>
     );
+  }
 
-    if (result.rows.length > 0) {
-      order = result.rows[0];
-
-      // Fetch order items to check for digital products
-      const itemsResult = await query(
-        `SELECT oi.*, p.product_type
-         FROM order_items oi
-         JOIN products p ON oi.product_id = p.id
-         WHERE oi.order_id = $1`,
-        [order.id]
-      );
-      order.order_items = itemsResult.rows;
-    }
+  if (error) {
+    return (
+      <div className="container py-5">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4 text-red-600">Error</h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Link href="/shop" className="btn btn-primary">
+            Return to Shop
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -58,9 +143,9 @@ export default async function CheckoutSuccessPage({
         {order && (
           <div className="bg-gray-50 rounded-lg p-6 mb-6 max-w-md mx-auto">
             <p className="text-sm text-gray-600 mb-2">Order Number</p>
-            <p className="text-xl font-bold mb-4">{order.order_number}</p>
+            <p className="text-xl font-bold mb-4">{order.order_number || orderNumber}</p>
             <p className="text-sm text-gray-600 mb-2">Total</p>
-            <p className="text-2xl font-bold">${parseFloat(order.total).toFixed(2)}</p>
+            <p className="text-2xl font-bold">${parseFloat(order.total || '0').toFixed(2)}</p>
           </div>
         )}
         {order && order.payment_status === 'paid' && (
@@ -75,7 +160,7 @@ export default async function CheckoutSuccessPage({
                 </p>
                 <p className="text-blue-700 text-sm">
                   You can access your digital downloads from your order confirmation email or{' '}
-                  <Link href={`/orders/${order.order_number}`} className="underline">
+                  <Link href={`/orders/${order.order_number || orderNumber}`} className="underline">
                     view your order
                   </Link>
                   .
@@ -89,7 +174,7 @@ export default async function CheckoutSuccessPage({
             Continue Shopping
           </Link>
           {order && (
-            <Link href={`/orders/${order.order_number}`} className="btn btn-primary">
+            <Link href={`/orders/${order.order_number || orderNumber}`} className="btn btn-primary">
               View Order
             </Link>
           )}
@@ -98,4 +183,3 @@ export default async function CheckoutSuccessPage({
     </div>
   );
 }
-

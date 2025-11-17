@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { CartProvider } from '@/contexts/CartContext';
 import SessionProvider from '@/components/providers/SessionProvider';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
+import CartProviderWithToast from '@/components/cart/CartProviderWithToast';
+import ToastContainer from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
   title: 'Claim Records',
@@ -29,9 +30,10 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col h-full min-h-screen">
         <SessionProvider>
-          <CartProvider>
+          <CartProviderWithToast>
             <ConditionalLayout>{children}</ConditionalLayout>
-          </CartProvider>
+            <ToastContainer />
+          </CartProviderWithToast>
         </SessionProvider>
       </body>
     </html>

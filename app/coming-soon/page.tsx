@@ -21,8 +21,14 @@ export default function ComingSoonPage() {
   const [randomizedArtists, setRandomizedArtists] = useState<typeof artists>([]);
   
   // Randomize artists only on client side after mount to avoid hydration mismatch
+  // Show 8 artists for mobile (2 columns × 4 rows) or 12 for desktop (3 columns × 4 rows)
   useEffect(() => {
-    setRandomizedArtists(shuffleArray(artists).slice(0, 6));
+    const shuffled = shuffleArray(artists);
+    // Take 6 unique artists, then repeat them to fill 8-12 slots
+    const selected = shuffled.slice(0, 6);
+    // Repeat to get at least 12 items (for desktop 3×4 grid)
+    const repeated = [...selected, ...selected];
+    setRandomizedArtists(repeated.slice(0, 12));
   }, []);
 
   const containerVariants = {
@@ -57,7 +63,7 @@ export default function ComingSoonPage() {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full overflow-hidden coming-soon">
       <motion.div
         className="hero-grid absolute inset-0 h-screen w-full"
         data-framer-component
@@ -72,7 +78,7 @@ export default function ComingSoonPage() {
 
           return (
             <motion.div
-              key={`hero-grid-${artist.id}`}
+              key={`hero-grid-${artist.id}-${index}`}
               className="relative w-full h-full overflow-hidden bg-white"
               data-framer-component
               variants={itemVariants}

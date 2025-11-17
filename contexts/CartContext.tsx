@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type CartItem = {
+export type CartItem = {
   id: string;
   productId: string;
   name: string;
@@ -23,7 +23,12 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
+type CartProviderProps = {
+  children: ReactNode;
+  onItemAdded?: (item: CartItem, isUpdate: boolean) => void;
+};
+
+export function CartProvider({ children, onItemAdded }: CartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = (item: Omit<CartItem, 'id' | 'quantity'> & { quantity?: number }) => {
@@ -33,21 +38,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
       );
       
       if (existingItem) {
+        const newQuantity = existingItem.quantity + (item.quantity || 1);
+        const updatedItem = { ...existingItem, quantity: newQuantity };
+        
+        if (onItemAdded) {
+          onItemAdded(updatedItem, true);
+        }
+        
         return prev.map((i) =>
           i.id === existingItem.id
-            ? { ...i, quantity: i.quantity + (item.quantity || 1) }
+            ? updatedItem
             : i
         );
       }
       
-      return [
-        ...prev,
-        {
-          ...item,
-          id: `cart-${Date.now()}-${Math.random()}`,
-          quantity: item.quantity || 1,
-        },
-      ];
+      const newItem: CartItem = {
+        ...item,
+        id: `cart-${Date.now()}-${Math.random()}`,
+        quantity: item.quantity || 1,
+      };
+      
+      if (onItemAdded) {
+        onItemAdded(newItem, false);
+      }
+      
+      return [...prev, newItem];
     });
   };
 

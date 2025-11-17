@@ -73,13 +73,32 @@ section {
   background-color: #000;
 }
 
-/* Hero Grid - Homepage background grid (3x2) */
+/* Hero Grid - Homepage background grid */
+/* Mobile: 2 columns, 3 rows */
 .hero-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 0;
   z-index: 0;
+}
+
+/* Coming-soon page: 4 rows on mobile */
+.coming-soon .hero-grid {
+  grid-template-rows: repeat(4, 1fr);
+}
+
+/* Desktop: 3 columns, 2 rows */
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  
+  /* Coming-soon page: 4 rows on desktop */
+  .coming-soon .hero-grid {
+    grid-template-rows: repeat(4, 1fr);
+  }
 }
 
 .hero-grid > * {

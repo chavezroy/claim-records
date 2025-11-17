@@ -217,8 +217,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     console.error('Error initiating checkout:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    console.error('Error details:', { errorMessage, errorStack });
     return NextResponse.json(
-      { error: 'Failed to initiate checkout' },
+      { 
+        error: 'Failed to initiate checkout',
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      },
       { status: 500 }
     );
   }
