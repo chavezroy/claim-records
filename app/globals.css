@@ -1395,6 +1395,7 @@ footer a:hover.nav-link {
   justify-content: center;
   width: auto;
   height: 32px;
+  overflow: visible;
 }
 
 /* Header logo icon container - maintain aspect ratio at 44px height */
@@ -1444,6 +1445,7 @@ footer a:hover.nav-link {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 /* Mobile: icon 300px, text 200px */
@@ -1472,10 +1474,16 @@ footer a:hover.nav-link {
   display: block;
 }
 
-.hero-logo-icon img,
-.hero-logo-text img {
+.hero-logo-icon img {
   width: 100%;
   height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.hero-logo-text img {
+  height: 70px;
+  width: auto;
   object-fit: contain;
   display: block;
 }
@@ -1530,8 +1538,8 @@ footer a:hover.nav-link {
   }
   
   .hero-logo-text img {
-    height: 120px;
-    width: 100%;
+    height: 70px;
+    width: auto;
   }
 }
 

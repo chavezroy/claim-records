@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
 import { useState } from 'react';
 import LogoIcon from './LogoIcon';
+import LogoText from './LogoText';
 
 interface BrandLogoProps {
   className?: string;
@@ -105,59 +105,17 @@ export default function BrandLogo({
           animationStartDelay={showAnimation ? animationDelay + 0.75 : 0}
         />
       </motion.div>
-      <motion.div 
+      <div 
         className={variant === 'header' ? 'header-logo-text' : 'hero-logo-text'}
-        data-framer-component
-        initial={showAnimation ? {
-          opacity: 0,
-          clipPath: 'inset(100% 0 0 0)',
-          scale: 0.9,
-          filter: 'blur(10px)',
-        } : false}
-        animate={showAnimation ? {
-          opacity: 1,
-          clipPath: 'inset(0% 0 0 0)',
-          scale: 1,
-          filter: 'blur(0px)',
-        } : false}
-        transition={showAnimation ? {
-          duration: 0.5,
-          delay: textTotalDelay,
-          ease: [0.25, 0.1, 0.25, 1] as const,
-          opacity: {
-            duration: 0.4,
-            delay: textTotalDelay,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          },
-          clipPath: {
-            duration: 0.5,
-            delay: textTotalDelay,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          },
-          scale: {
-            duration: 0.5,
-            delay: textTotalDelay,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          },
-          filter: {
-            duration: 0.5,
-            delay: textTotalDelay,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-          },
-        } : undefined}
-        style={{
-          transformOrigin: 'center center',
-        }}
       >
-        <Image
-          src="/img/logo-text.svg"
-          alt="Claim Records"
-          width={400}
-          height={120}
-          priority
-          unoptimized
+        <LogoText 
+          animateOnHover={animateOnHover} 
+          isHovered={isHovered}
+          animationStartDelay={showAnimation ? textTotalDelay : 0}
+          showAnimation={showAnimation}
+          textTotalDelay={textTotalDelay}
         />
-      </motion.div>
+      </div>
     </motion.div>
   );
 
