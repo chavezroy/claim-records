@@ -3,6 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
+        - |
+          # Write environment variables to .env.production for Next.js runtime access
+          echo "DATABASE_URL=$DATABASE_URL" >> .env.production
+          echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
+          echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
         - npm ci
     build:
       commands:
