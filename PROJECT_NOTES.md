@@ -47,15 +47,40 @@
 3. `NEXTAUTH_URL` = `https://feature-dynamic-content.d13axw9ole04hk.amplifyapp.com`
 
 **Next Steps to Fix:**
-1. Go to AWS Amplify Console → Your app → `feature/dynamic-content` branch
-2. Navigate to "App settings" → "Environment variables"
-3. Verify all three variables are listed and have correct values
-4. If missing, add them:
-   - Click "Add variable" or "Manage variables"
-   - Add each variable with its value
-   - Save changes
-5. Trigger a new deployment (or wait for auto-deploy)
-6. Verify fix by checking `/api/health` endpoint again
+
+1. **Verify Environment Variables in AWS Amplify:**
+   - Go to AWS Amplify Console → Your app → `feature/dynamic-content` branch
+   - Navigate to "App settings" → "Environment variables"
+   - **IMPORTANT:** Make sure you're setting variables for the `feature/dynamic-content` branch, not just the app level
+   - Verify all three variables are listed with exact names (case-sensitive):
+     - `DATABASE_URL`
+     - `NEXTAUTH_SECRET`
+     - `NEXTAUTH_URL`
+   - If missing, add them:
+     - Click "Add variable" or "Manage variables"
+     - Add each variable with its exact value (see below)
+     - **Save changes** (this is critical)
+   
+2. **Required Values:**
+   - `DATABASE_URL` = `postgresql://postgres:YOUR_ACTUAL_PASSWORD@claimrecords-db.cz0i6uy4krev.us-east-2.rds.amazonaws.com:5432/claimrecords`
+     - Replace `YOUR_ACTUAL_PASSWORD` with your actual RDS database password
+   - `NEXTAUTH_SECRET` = `avClp+2eD1svYD511dCvnH0bGF5y6x3L4W3FazyjjgQ=`
+   - `NEXTAUTH_URL` = `https://feature-dynamic-content.d13axw9ole04hk.amplifyapp.com`
+
+3. **Trigger New Deployment:**
+   - After saving environment variables, go to the branch overview
+   - Click "Redeploy this version" or make a small commit and push to trigger auto-deploy
+   - Wait for deployment to complete
+
+4. **Verify Fix:**
+   - Check `/api/health` endpoint: `https://feature-dynamic-content.d13axw9ole04hk.amplifyapp.com/api/health`
+   - Should show `hasDatabaseUrl: true`, `hasNextAuthSecret: true`, `hasNextAuthUrl: true`
+   - Should show `database.connected: true` if RDS security group is configured correctly
+
+5. **If Still Not Working:**
+   - Check the enhanced health endpoint output for `relevantEnvKeys` - this shows what env vars are actually available
+   - Verify variables are set at the branch level, not just app level
+   - Check CloudWatch logs for detailed error messages
 
 ### 🔍 Additional Checks Needed
 
@@ -90,9 +115,10 @@
 ### Files Modified Recently
 - `app/cart/page.tsx` - Added sad face icon to empty state
 - `lib/db/index.ts` - Added diagnostic logging, increased connection timeout to 10s
-- `app/api/health/route.ts` - Created health check endpoint
+- `app/api/health/route.ts` - Created health check endpoint with enhanced diagnostics
 - `app/artists/page.tsx` - Added error handling for database queries
 - `components/artists/ArtistGridClient.tsx` - Added drop shadow to hero-grid
+- `amplify.yml` - Created Amplify build configuration file
 
 ## Testing Checklist
 

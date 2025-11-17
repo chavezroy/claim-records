@@ -10,6 +10,32 @@ export async function GET() {
     const hasNextAuthSecret = !!process.env.NEXTAUTH_SECRET;
     const hasNextAuthUrl = !!process.env.NEXTAUTH_URL;
     
+    // Get all environment variable keys (for debugging)
+    const allEnvKeys = Object.keys(process.env).sort();
+    const relevantEnvKeys = allEnvKeys.filter(k => 
+      k.includes('DATABASE') || 
+      k.includes('NEXT') || 
+      k.includes('AUTH') ||
+      k.includes('AMPLIFY')
+    );
+    
+    // Check DATABASE_URL format if present
+    let databaseUrlInfo = null;
+    if (hasDatabaseUrl) {
+      const dbUrl = process.env.DATABASE_URL;
+      try {
+        const url = new URL(dbUrl.replace(/^postgresql:\/\//, 'http://'));
+        databaseUrlInfo = {
+          host: url.hostname,
+          port: url.port || '5432',
+          database: url.pathname.replace('/', ''),
+          hasPassword: !!url.password,
+        };
+      } catch (e) {
+        databaseUrlInfo = { error: 'Invalid URL format' };
+      }
+    }
+    
     // Try database connection
     let dbConnected = false;
     let dbError = null;
@@ -27,6 +53,9 @@ export async function GET() {
         hasDatabaseUrl,
         hasNextAuthSecret,
         hasNextAuthUrl,
+        databaseUrlInfo,
+        relevantEnvKeys, // List of relevant env var keys (without values for security)
+        totalEnvKeys: allEnvKeys.length,
       },
       database: {
         connected: dbConnected,
