@@ -15,8 +15,9 @@ interface LogoIconProps {
 export default function LogoIcon({ className = '', animateOnHover = false, isHovered = false, animationStartDelay = 0, autoAnimate = false }: LogoIconProps) {
   // Generate random pause delay between 7-12 seconds (increased from 5-10)
   const [pauseDelay, setPauseDelay] = useState(() => 7 + Math.random() * 5);
-  // Blend mode cycling for flagGradient
-  const [blendMode, setBlendMode] = useState<'color-dodge' | 'multiply'>('color-dodge');
+  // Blend mode opacity states for smooth crossfading
+  const [colorDodgeOpacity, setColorDodgeOpacity] = useState(1);
+  const [multiplyOpacity, setMultiplyOpacity] = useState(0);
   const transformOrigin = '50% 100%'; // Bottom center of the image
   
   // Generate random scale values for each shake (between 1.03 and 1.05)
@@ -54,32 +55,23 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
     setPauseDelay(7 + Math.random() * 5);
   }, []);
 
-  // Cycle blend modes for flagGradient: color-dodge -> multiply -> color-dodge
-  // Synchronized with 6-second opacity animation cycle
+  // Smooth crossfade between blend modes using opacity
+  // Synchronized with 6-second opacity animation cycle for seamless loop
   // Only animates when autoAnimate is true (hero) OR (animateOnHover is true AND isHovered is true) (header)
-  const blendModeRef = useRef<'color-dodge' | 'multiply'>('color-dodge');
-  
   useEffect(() => {
     // Only animate blend modes if autoAnimate is true OR (animateOnHover is true AND isHovered is true)
     const shouldAnimate = autoAnimate || (animateOnHover && isHovered);
     
     if (!shouldAnimate) {
-      // Set to color-dodge when not animating (no normal blend mode)
-      setBlendMode('color-dodge');
-      blendModeRef.current = 'color-dodge';
+      // Set to color-dodge when not animating
+      setColorDodgeOpacity(1);
+      setMultiplyOpacity(0);
       return;
     }
     
-    const blendModes: Array<'color-dodge' | 'multiply'> = ['color-dodge', 'multiply', 'color-dodge'];
-    
-    // Set initial blend mode
-    setBlendMode(blendModes[0]);
-    blendModeRef.current = blendModes[0];
-    
-    // Cycle through blend modes, synchronized with 6-second opacity cycle
-    // Change at exact points: 0s (color-dodge), 3s (multiply), 6s (color-dodge), 9s (loops seamlessly)
-    const cycleDuration = 9000; // 9 seconds - slower blend mode transitions
-    const segmentDuration = cycleDuration / 3; // 3000ms per segment (3 blend modes)
+    // Cycle through blend modes with smooth crossfade, synchronized with 6-second opacity cycle
+    // Equal timing for each segment: 0s (color-dodge), 2s (multiply), 4s (color-dodge), 6s (loops seamlessly)
+    const cycleDuration = 6000; // 6 seconds - matches opacity animation duration
     
     // Use requestAnimationFrame for frame-perfect synchronization
     let startTime = performance.now();
@@ -89,31 +81,36 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
       // Check if we should still be animating
       const currentShouldAnimate = autoAnimate || (animateOnHover && isHovered);
       if (!currentShouldAnimate) {
-        setBlendMode('color-dodge');
-        blendModeRef.current = 'color-dodge';
+        setColorDodgeOpacity(1);
+        setMultiplyOpacity(0);
         return;
       }
       
       const elapsed = performance.now() - startTime;
       const cyclePosition = (elapsed % cycleDuration) / cycleDuration; // 0 to 1
       
-      // Determine which blend mode based on cycle position (3 segments: color-dodge -> multiply -> color-dodge)
-      let targetIndex: number;
-      if (cyclePosition < 0.333) {
-        targetIndex = 0; // color-dodge (0s - 3s)
-      } else if (cyclePosition < 0.667) {
-        targetIndex = 1; // multiply (3s - 6s)
+      // Calculate opacity for smooth crossfade (3 equal segments: color-dodge -> multiply -> color-dodge)
+      let dodgeOpacity: number;
+      let multiplyOpacityValue: number;
+      
+      if (cyclePosition < 0.333333) {
+        // Segment 1 (0-2s): color-dodge at full, multiply fading out
+        dodgeOpacity = 1;
+        multiplyOpacityValue = 0;
+      } else if (cyclePosition < 0.666667) {
+        // Segment 2 (2-4s): crossfade from color-dodge to multiply
+        const segmentPosition = (cyclePosition - 0.333333) / 0.333334; // 0 to 1 within segment
+        dodgeOpacity = 1 - segmentPosition; // Fade out color-dodge
+        multiplyOpacityValue = segmentPosition; // Fade in multiply
       } else {
-        targetIndex = 2; // color-dodge (6s - 9s) - same as beginning for seamless loop
+        // Segment 3 (4-6s): color-dodge fading in, multiply fading out
+        const segmentPosition = (cyclePosition - 0.666667) / 0.333333; // 0 to 1 within segment
+        dodgeOpacity = segmentPosition; // Fade in color-dodge
+        multiplyOpacityValue = 1 - segmentPosition; // Fade out multiply
       }
       
-      const targetBlendMode = blendModes[targetIndex];
-      
-      // Update if blend mode changed
-      if (targetBlendMode !== blendModeRef.current) {
-        blendModeRef.current = targetBlendMode;
-        setBlendMode(targetBlendMode);
-      }
+      setColorDodgeOpacity(dodgeOpacity);
+      setMultiplyOpacity(multiplyOpacityValue);
       
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -362,7 +359,8 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
               priority
               unoptimized
             />
-            {/* Flag gradient - above flag on z-axis, relatively positioned and responsive */}
+            {/* Flag gradient layers - crossfading between blend modes for smooth transitions */}
+            {/* Color-dodge layer */}
             <motion.div
               data-framer-component
               style={{
@@ -372,22 +370,93 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
                 width: '52.5%',
                 height: '54.875%',
                 zIndex: 4,
-                mixBlendMode: blendMode,
+                mixBlendMode: 'color-dodge',
               }}
               animate={(autoAnimate || (animateOnHover && isHovered)) ? {
-                opacity: [0.05, 1, 0.05],
+                opacity: [
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 1, 
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 0.5, 
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 0.05
+                ],
               } : {
-                opacity: 1,
+                opacity: colorDodgeOpacity,
               }}
               whileHover={animateOnHover && !autoAnimate ? {
-                opacity: [0.05, 1, 0.05],
+                opacity: [
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 1, 
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 0.5, 
+                  colorDodgeOpacity * 0.05, 
+                  colorDodgeOpacity * 0.05
+                ],
               } : undefined}
               transition={{
                 opacity: {
                   duration: 6,
+                  times: [0, 0.333333, 0.333334, 0.5, 0.666667, 1],
                   repeat: Infinity,
                   repeatType: 'loop',
-                  ease: 'easeInOut',
+                  ease: 'linear',
+                },
+              }}
+            >
+              <Image
+                src="/claim-icon/flagGradient.svg"
+                alt=""
+                fill
+                className="object-contain"
+                style={{
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
+                }}
+                priority
+                unoptimized
+              />
+            </motion.div>
+            {/* Multiply layer */}
+            <motion.div
+              data-framer-component
+              style={{
+                position: 'absolute',
+                left: '45%',
+                top: '15.125%',
+                width: '52.5%',
+                height: '54.875%',
+                zIndex: 5,
+                mixBlendMode: 'multiply',
+              }}
+              animate={(autoAnimate || (animateOnHover && isHovered)) ? {
+                opacity: [
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 1, 
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 0.5, 
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 0.05
+                ],
+              } : {
+                opacity: multiplyOpacity,
+              }}
+              whileHover={animateOnHover && !autoAnimate ? {
+                opacity: [
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 1, 
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 0.5, 
+                  multiplyOpacity * 0.05, 
+                  multiplyOpacity * 0.05
+                ],
+              } : undefined}
+              transition={{
+                opacity: {
+                  duration: 6,
+                  times: [0, 0.333333, 0.333334, 0.5, 0.666667, 1],
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                  ease: 'linear',
                 },
               }}
             >
