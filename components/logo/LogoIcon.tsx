@@ -15,9 +15,9 @@ interface LogoIconProps {
 export default function LogoIcon({ className = '', animateOnHover = false, isHovered = false, animationStartDelay = 0, autoAnimate = false }: LogoIconProps) {
   // Generate random pause delay between 7-12 seconds (increased from 5-10)
   const [pauseDelay, setPauseDelay] = useState(() => 7 + Math.random() * 5);
-  // Blend mode opacity states for smooth crossfading
-  const [colorDodgeOpacity, setColorDodgeOpacity] = useState(1);
-  const [multiplyOpacity, setMultiplyOpacity] = useState(0);
+  // Final opacity states that combine crossfade and pulsing animations
+  const [colorDodgeFinalOpacity, setColorDodgeFinalOpacity] = useState(0.05);
+  const [multiplyFinalOpacity, setMultiplyFinalOpacity] = useState(0);
   const transformOrigin = '50% 100%'; // Bottom center of the image
   
   // Generate random scale values for each shake (between 1.03 and 1.05)
@@ -55,7 +55,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
     setPauseDelay(7 + Math.random() * 5);
   }, []);
 
-  // Smooth crossfade between blend modes using opacity
+  // Calculate final opacity combining crossfade and pulsing animations
   // Synchronized with 6-second opacity animation cycle for seamless loop
   // Only animates when autoAnimate is true (hero) OR (animateOnHover is true AND isHovered is true) (header)
   useEffect(() => {
@@ -64,8 +64,8 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
     
     if (!shouldAnimate) {
       // Set to color-dodge when not animating
-      setColorDodgeOpacity(1);
-      setMultiplyOpacity(0);
+      setColorDodgeFinalOpacity(0.05);
+      setMultiplyFinalOpacity(0);
       return;
     }
     
@@ -81,36 +81,77 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
       // Check if we should still be animating
       const currentShouldAnimate = autoAnimate || (animateOnHover && isHovered);
       if (!currentShouldAnimate) {
-        setColorDodgeOpacity(1);
-        setMultiplyOpacity(0);
+        setColorDodgeFinalOpacity(0.05);
+        setMultiplyFinalOpacity(0);
         return;
       }
       
       const elapsed = performance.now() - startTime;
       const cyclePosition = (elapsed % cycleDuration) / cycleDuration; // 0 to 1
       
-      // Calculate opacity for smooth crossfade (3 equal segments: color-dodge -> multiply -> color-dodge)
-      let dodgeOpacity: number;
-      let multiplyOpacityValue: number;
+      // Calculate crossfade opacity (3 equal segments: color-dodge -> multiply -> color-dodge)
+      let dodgeCrossfade: number;
+      let multiplyCrossfade: number;
       
       if (cyclePosition < 0.333333) {
         // Segment 1 (0-2s): color-dodge at full, multiply fading out
-        dodgeOpacity = 1;
-        multiplyOpacityValue = 0;
+        dodgeCrossfade = 1;
+        multiplyCrossfade = 0;
       } else if (cyclePosition < 0.666667) {
         // Segment 2 (2-4s): crossfade from color-dodge to multiply
         const segmentPosition = (cyclePosition - 0.333333) / 0.333334; // 0 to 1 within segment
-        dodgeOpacity = 1 - segmentPosition; // Fade out color-dodge
-        multiplyOpacityValue = segmentPosition; // Fade in multiply
+        dodgeCrossfade = 1 - segmentPosition; // Fade out color-dodge
+        multiplyCrossfade = segmentPosition; // Fade in multiply
       } else {
         // Segment 3 (4-6s): color-dodge fading in, multiply fading out
         const segmentPosition = (cyclePosition - 0.666667) / 0.333333; // 0 to 1 within segment
-        dodgeOpacity = segmentPosition; // Fade in color-dodge
-        multiplyOpacityValue = 1 - segmentPosition; // Fade out multiply
+        dodgeCrossfade = segmentPosition; // Fade in color-dodge
+        multiplyCrossfade = 1 - segmentPosition; // Fade out multiply
       }
       
-      setColorDodgeOpacity(dodgeOpacity);
-      setMultiplyOpacity(multiplyOpacityValue);
+      // Calculate pulsing opacity based on cycle position (matching keyframe times)
+      // Smooth transitions to prevent jumps during crossfade
+      let dodgePulsing: number;
+      let multiplyPulsing: number;
+      
+      if (cyclePosition < 0.333333) {
+        // 0-2s: 0.05 → 1
+        const t = cyclePosition / 0.333333;
+        dodgePulsing = 0.05 + (1 - 0.05) * t;
+        multiplyPulsing = 0.05 + (1 - 0.05) * t;
+      } else if (cyclePosition < 0.5) {
+        // 2-3s: smooth transition from 1 → 0.05, then 0.05 → peak
+        // For color-dodge: fade out smoothly from 1 to 0.05, then build to 0.5
+        // For multiply: fade in from 0.05 to peak at 1
+        const segmentPos = (cyclePosition - 0.333333) / (0.5 - 0.333333);
+        // Color-dodge: extended smooth fade from 1 to 0.05, then to 0.5
+        if (segmentPos < 0.65) {
+          // First 65%: slow, extended fade from 1 to 0.05 (with easing for slower start)
+          const fadeT = segmentPos / 0.65;
+          // Ease-out cubic for slower fade at the beginning
+          const easedT = 1 - Math.pow(1 - fadeT, 3);
+          dodgePulsing = 1 - (1 - 0.05) * easedT;
+        } else {
+          // Remaining 35%: build from 0.05 to 0.5
+          const buildT = (segmentPos - 0.65) / 0.35;
+          dodgePulsing = 0.05 + (0.5 - 0.05) * buildT;
+        }
+        // Multiply: build from 0.05 to 1
+        multiplyPulsing = 0.05 + (1 - 0.05) * segmentPos;
+      } else if (cyclePosition < 0.666667) {
+        // 3-4s: peak → 0.05
+        const t = (cyclePosition - 0.5) / (0.666667 - 0.5);
+        dodgePulsing = 0.5 - (0.5 - 0.05) * t; // From 0.5 to 0.05
+        multiplyPulsing = 1 - (1 - 0.05) * t; // From 1 to 0.05
+      } else {
+        // 4-6s: stay at 0.05
+        dodgePulsing = 0.05;
+        multiplyPulsing = 0.05;
+      }
+      
+      // Combine crossfade and pulsing for final opacity
+      setColorDodgeFinalOpacity(dodgeCrossfade * dodgePulsing);
+      setMultiplyFinalOpacity(multiplyCrossfade * multiplyPulsing);
       
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -361,8 +402,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
             />
             {/* Flag gradient layers - crossfading between blend modes for smooth transitions */}
             {/* Color-dodge layer */}
-            <motion.div
-              data-framer-component
+            <div
               style={{
                 position: 'absolute',
                 left: '45%',
@@ -371,37 +411,8 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
                 height: '54.875%',
                 zIndex: 4,
                 mixBlendMode: 'color-dodge',
-              }}
-              animate={(autoAnimate || (animateOnHover && isHovered)) ? {
-                opacity: [
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 1, 
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 0.5, 
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 0.05
-                ],
-              } : {
-                opacity: colorDodgeOpacity,
-              }}
-              whileHover={animateOnHover && !autoAnimate ? {
-                opacity: [
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 1, 
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 0.5, 
-                  colorDodgeOpacity * 0.05, 
-                  colorDodgeOpacity * 0.05
-                ],
-              } : undefined}
-              transition={{
-                opacity: {
-                  duration: 6,
-                  times: [0, 0.333333, 0.333334, 0.5, 0.666667, 1],
-                  repeat: Infinity,
-                  repeatType: 'loop',
-                  ease: 'linear',
-                },
+                opacity: colorDodgeFinalOpacity, // Final opacity combining crossfade and pulsing
+                transition: 'opacity 0.1s linear', // Smooth updates
               }}
             >
               <Image
@@ -415,10 +426,9 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
                 priority
                 unoptimized
               />
-            </motion.div>
+            </div>
             {/* Multiply layer */}
-            <motion.div
-              data-framer-component
+            <div
               style={{
                 position: 'absolute',
                 left: '45%',
@@ -427,37 +437,8 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
                 height: '54.875%',
                 zIndex: 5,
                 mixBlendMode: 'multiply',
-              }}
-              animate={(autoAnimate || (animateOnHover && isHovered)) ? {
-                opacity: [
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 1, 
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 0.5, 
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 0.05
-                ],
-              } : {
-                opacity: multiplyOpacity,
-              }}
-              whileHover={animateOnHover && !autoAnimate ? {
-                opacity: [
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 1, 
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 0.5, 
-                  multiplyOpacity * 0.05, 
-                  multiplyOpacity * 0.05
-                ],
-              } : undefined}
-              transition={{
-                opacity: {
-                  duration: 6,
-                  times: [0, 0.333333, 0.333334, 0.5, 0.666667, 1],
-                  repeat: Infinity,
-                  repeatType: 'loop',
-                  ease: 'linear',
-                },
+                opacity: multiplyFinalOpacity, // Final opacity combining crossfade and pulsing
+                transition: 'opacity 0.1s linear', // Smooth updates
               }}
             >
               <Image
@@ -471,7 +452,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
                 priority
                 unoptimized
               />
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </motion.div>
