@@ -70,16 +70,16 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
       return;
     }
     
-    const blendModes: Array<'color-dodge' | 'multiply'> = ['color-dodge', 'multiply'];
+    const blendModes: Array<'color-dodge' | 'multiply'> = ['color-dodge', 'multiply', 'color-dodge'];
     
     // Set initial blend mode
     setBlendMode(blendModes[0]);
     blendModeRef.current = blendModes[0];
     
     // Cycle through blend modes, synchronized with 6-second opacity cycle
-    // Change at exact points: 0s (color-dodge), 4.5s (multiply), 9s (color-dodge - loops)
+    // Change at exact points: 0s (color-dodge), 3s (multiply), 6s (color-dodge), 9s (loops seamlessly)
     const cycleDuration = 9000; // 9 seconds - slower blend mode transitions
-    const segmentDuration = cycleDuration / 2; // 4500ms per segment (2 blend modes)
+    const segmentDuration = cycleDuration / 3; // 3000ms per segment (3 blend modes)
     
     // Use requestAnimationFrame for frame-perfect synchronization
     let startTime = performance.now();
@@ -97,12 +97,14 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
       const elapsed = performance.now() - startTime;
       const cyclePosition = (elapsed % cycleDuration) / cycleDuration; // 0 to 1
       
-      // Determine which blend mode based on cycle position (2 segments: color-dodge and multiply)
+      // Determine which blend mode based on cycle position (3 segments: color-dodge -> multiply -> color-dodge)
       let targetIndex: number;
-      if (cyclePosition < 0.5) {
-        targetIndex = 0; // color-dodge (0s - 4.5s)
+      if (cyclePosition < 0.333) {
+        targetIndex = 0; // color-dodge (0s - 3s)
+      } else if (cyclePosition < 0.667) {
+        targetIndex = 1; // multiply (3s - 6s)
       } else {
-        targetIndex = 1; // multiply (4.5s - 9s)
+        targetIndex = 2; // color-dodge (6s - 9s) - same as beginning for seamless loop
       }
       
       const targetBlendMode = blendModes[targetIndex];
