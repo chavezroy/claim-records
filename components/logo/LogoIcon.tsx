@@ -187,7 +187,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
             transformOrigin: 'top left',
           } : undefined}
           transition={{
-            duration: 8,
+            duration: 6,
             repeat: Infinity,
             repeatType: 'loop',
             ease: 'easeInOut',
