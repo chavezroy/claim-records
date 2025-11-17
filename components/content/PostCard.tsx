@@ -16,9 +16,10 @@ interface PostCardProps {
     published_at?: Date | string | null;
     created_at: Date | string;
   };
+  variant?: 'vertical' | 'horizontal';
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, variant = 'vertical' }: PostCardProps) {
   const [imageError, setImageError] = useState(false);
   const date = post.published_at
     ? new Date(post.published_at)
@@ -31,10 +32,41 @@ export default function PostCard({ post }: PostCardProps) {
     return post.featured_image;
   })();
 
+  if (variant === 'horizontal') {
+    return (
+      <Link
+        href={`/news/${post.slug}`}
+        className="flex bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-lg transition-shadow"
+      >
+        <div className="relative w-48 h-48 flex-shrink-0 overflow-hidden rounded-l-lg">
+          <Image
+            src={imageSrc}
+            alt={post.title}
+            fill
+            className="object-cover"
+            onError={() => setImageError(true)}
+          />
+        </div>
+        <div className="p-6 flex-1 flex flex-col justify-between" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+          <div>
+            <h3 className="text-xl font-semibold mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '2.8em' }}>{post.title}</h3>
+            {post.excerpt && (
+              <p className="text-gray-600 mb-4" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.4', maxHeight: '4.2em' }}>{post.excerpt}</p>
+            )}
+          </div>
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <span>{post.author_name || 'Claim Records'}</span>
+            <time>{date.toLocaleDateString()}</time>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={`/news/${post.slug}`}
-      className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+      className="block bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden hover:shadow-lg transition-shadow"
     >
       <div className="relative h-48 w-full">
         <Image

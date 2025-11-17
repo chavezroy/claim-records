@@ -2,12 +2,25 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { artists } from '@/lib/data/artists';
 import BrandLogo from '@/components/logo/BrandLogo';
 
+// Fisher-Yates shuffle algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export default function HeroSection() {
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  
+  // Randomize artists on every page load
+  const randomizedArtists = useMemo(() => shuffleArray(artists).slice(0, 6), []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -49,7 +62,7 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
       >
-        {artists.slice(0, 6).map((artist, index) => {
+        {randomizedArtists.map((artist, index) => {
           const filter = index % 2 === 0 ? 'sepia(80%)' : 'grayscale(100%)';
           const imageError = imageErrors[artist.id];
           const imageSrc = imageError ? '/img/artist/default.jpg' : artist.image;

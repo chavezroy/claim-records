@@ -17,6 +17,7 @@ export default function ArtistGridClient({
 }: ArtistGridClientProps) {
   if (containerVariants && itemVariants) {
     // Ensure we have exactly 6 artists for the hero grid (3x2 layout)
+    // Artists are already randomized on the server side
     const displayArtists = artists.slice(0, 6);
     
     return (

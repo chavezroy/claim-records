@@ -12,12 +12,12 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-dark text-white" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="bg-dark text-white py-16">
         <div className="container">
-          <div className="text-center" style={{ maxWidth: '100%' }}>
-            <h1 className="h1 mb-4 font-electric">Claim Records</h1>
-            <p className="fs-5 text-gray-300 mb-4">Claim Your Stake!</p>
-            <p className="fs-5 text-gray-300 mb-0">
+          <div className="text-center max-w-full">
+            <h1 className="text-4xl md:text-5xl mb-4 font-electric">Claim Records</h1>
+            <p className="text-lg md:text-xl text-gray-300 mb-4">Claim Your Stake!</p>
+            <p className="text-lg md:text-xl text-gray-300">
               An independent record label dedicated to amplifying authentic voices and groundbreaking music.
             </p>
           </div>
@@ -25,48 +25,44 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="py-16">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-8 mx-auto text-center">
-              <h2 className="h1 mb-5 font-electric">Our Mission</h2>
-              <p className="fs-5 text-gray-700 mb-4">
-                Claim Records is built on the foundation of artistic integrity and creative freedom. 
-                We believe in giving artists the platform they deserve to share their authentic stories 
-                and connect with audiences who truly understand their vision.
-              </p>
-              <p className="fs-5 text-gray-700 mb-0">
-                Our mission is to discover, develop, and promote exceptional talent while maintaining 
-                the highest standards of artistic expression and industry innovation.
-              </p>
-            </div>
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl mb-8 font-electric">Our Mission</h2>
+            <p className="text-lg md:text-xl text-gray-700 mb-4 leading-relaxed">
+              Claim Records is built on the foundation of artistic integrity and creative freedom. 
+              We believe in giving artists the platform they deserve to share their authentic stories 
+              and connect with audiences who truly understand their vision.
+            </p>
+            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+              Our mission is to discover, develop, and promote exceptional talent while maintaining 
+              the highest standards of artistic expression and industry innovation.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Story Section */}
-      <section className="bg-gray-50" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="bg-gray-50 py-16">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-10 mx-auto">
-              <h2 className="h1 mb-5 font-electric text-center">Our Story</h2>
-              <div className="row">
-                <div className="col-md-6 mb-4 mb-md-0">
-                  <h3 className="h4 mb-3 text-primary">The Beginning</h3>
-                  <p className="text-gray-700">
-                    Claim Records was founded with a simple yet powerful vision: to create a space 
-                    where artists can thrive without compromising their creative integrity. We started 
-                    as a small independent label with a passion for discovering raw, unfiltered talent.
-                  </p>
-                </div>
-                <div className="col-md-6">
-                  <h3 className="h4 mb-3 text-primary">Today</h3>
-                  <p className="text-gray-700">
-                    Today, we're proud to represent a diverse roster of artists who push boundaries 
-                    and challenge conventions. From rock and metal to experimental sounds, our artists 
-                    represent the cutting edge of independent music.
-                  </p>
-                </div>
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl md:text-5xl mb-12 font-electric text-center">Our Story</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              <div>
+                <h3 className="text-xl md:text-2xl mb-4 text-primary font-semibold">The Beginning</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Claim Records was founded with a simple yet powerful vision: to create a space 
+                  where artists can thrive without compromising their creative integrity. We started 
+                  as a small independent label with a passion for discovering raw, unfiltered talent.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl md:text-2xl mb-4 text-primary font-semibold">Today</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Today, we're proud to represent a diverse roster of artists who push boundaries 
+                  and challenge conventions. From rock and metal to experimental sounds, our artists 
+                  represent the cutting edge of independent music.
+                </p>
               </div>
             </div>
           </div>
@@ -74,36 +70,36 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="py-16">
         <div className="container">
-          <div className="text-center mb-8">
-            <h2 className="h1 mb-5 font-electric">What We Stand For</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl mb-8 font-electric">What We Stand For</h2>
           </div>
-          <div className="row">
-            <div className="col-md-4 mb-5 mb-md-0 text-center">
-              <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <i className="bi bi-music-note-beamed text-primary" style={{ fontSize: '3rem', lineHeight: '1', display: 'block' }}></i>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="text-center">
+              <div className="mb-6 flex justify-center items-center">
+                <i className="bi bi-music-note-beamed text-primary text-5xl leading-none block"></i>
               </div>
-              <h3 className="h5 mb-3" style={{ fontWeight: '600', color: '#23201f' }}>Artistic Freedom</h3>
-              <p className="text-gray-700" style={{ lineHeight: '1.6', margin: '0' }}>
+              <h3 className="text-lg md:text-xl mb-4 font-semibold text-dark">Artistic Freedom</h3>
+              <p className="text-gray-700 leading-relaxed">
                 We believe artists should have complete creative control over their work and vision.
               </p>
             </div>
-            <div className="col-md-4 mb-5 mb-md-0 text-center">
-              <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <i className="bi bi-people text-primary" style={{ fontSize: '3rem', lineHeight: '1', display: 'block' }}></i>
+            <div className="text-center">
+              <div className="mb-6 flex justify-center items-center">
+                <i className="bi bi-people text-primary text-5xl leading-none block"></i>
               </div>
-              <h3 className="h5 mb-3" style={{ fontWeight: '600', color: '#23201f' }}>Artist Development</h3>
-              <p className="text-gray-700" style={{ lineHeight: '1.6', margin: '0' }}>
+              <h3 className="text-lg md:text-xl mb-4 font-semibold text-dark">Artist Development</h3>
+              <p className="text-gray-700 leading-relaxed">
                 We invest in long-term relationships, helping artists grow and evolve their careers.
               </p>
             </div>
-            <div className="col-md-4 text-center">
-              <div className="mb-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <i className="bi bi-heart text-primary" style={{ fontSize: '3rem', lineHeight: '1', display: 'block' }}></i>
+            <div className="text-center">
+              <div className="mb-6 flex justify-center items-center">
+                <i className="bi bi-heart text-primary text-5xl leading-none block"></i>
               </div>
-              <h3 className="h5 mb-3" style={{ fontWeight: '600', color: '#23201f' }}>Authenticity</h3>
-              <p className="text-gray-700" style={{ lineHeight: '1.6', margin: '0' }}>
+              <h3 className="text-lg md:text-xl mb-4 font-semibold text-dark">Authenticity</h3>
+              <p className="text-gray-700 leading-relaxed">
                 We champion genuine expression and support artists who stay true to themselves.
               </p>
             </div>
@@ -112,21 +108,21 @@ export default function AboutPage() {
       </section>
 
       {/* Featured Artists */}
-      <section className="bg-gray-50" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="bg-gray-50 py-16">
         <div className="container">
-          <h2 className="h1 mb-5 font-electric text-center">Our Artists</h2>
-          <p className="text-center text-gray-700 mb-5 fs-5">
+          <h2 className="text-4xl md:text-5xl mb-6 font-electric text-center">Our Artists</h2>
+          <p className="text-center text-gray-700 mb-12 text-lg md:text-xl">
             Discover the talented artists who make Claim Records what it is today.
           </p>
-          <div className="row mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {artists.slice(0, 4).map((artist) => (
-              <div key={artist.id} className="col-sm-3 mb-3 mb-sm-0">
+              <div key={artist.id}>
                 <ArtistCard artist={artist} variant="card" />
               </div>
             ))}
           </div>
           <div className="text-center">
-            <Link href="/artists" className="btn btn-primary bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 no-underline">
+            <Link href="/artists" className="bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 no-underline inline-block transition-colors">
               View All Artists
             </Link>
           </div>
@@ -134,21 +130,21 @@ export default function AboutPage() {
       </section>
 
       {/* Featured Products - One Row */}
-      <section style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <section className="py-16">
         <div className="container">
-          <h2 className="h1 mb-5 font-electric text-center">Shop Claim Records</h2>
-          <p className="text-center text-gray-700 mb-5 fs-5">
+          <h2 className="text-4xl md:text-5xl mb-6 font-electric text-center">Shop Claim Records</h2>
+          <p className="text-center text-gray-700 mb-12 text-lg md:text-xl">
             Support your favorite artists with official Claim Records merchandise.
           </p>
-          <div className="row mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {featuredProducts.map((product) => (
-              <div key={product.id} className="col-sm-3 mb-3 mb-sm-0">
+              <div key={product.id}>
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
           <div className="text-center">
-            <Link href="/shop" className="btn btn-primary bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 no-underline">
+            <Link href="/shop" className="bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 no-underline inline-block transition-colors">
               Visit Shop
             </Link>
           </div>

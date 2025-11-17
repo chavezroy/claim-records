@@ -14,9 +14,10 @@ interface Post {
 interface PostGridProps {
   posts: Post[];
   columns?: 1 | 2 | 3 | 4;
+  variant?: 'vertical' | 'horizontal';
 }
 
-export default function PostGrid({ posts, columns = 3 }: PostGridProps) {
+export default function PostGrid({ posts, columns = 3, variant = 'vertical' }: PostGridProps) {
   const gridCols = {
     1: 'grid-cols-1',
     2: 'grid-cols-1 md:grid-cols-2',
@@ -32,10 +33,20 @@ export default function PostGrid({ posts, columns = 3 }: PostGridProps) {
     );
   }
 
+  if (variant === 'horizontal') {
+    return (
+      <div className="flex flex-col gap-6">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} variant="horizontal" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className={`grid ${gridCols[columns]} gap-6`}>
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
+        <PostCard key={post.id} post={post} variant="vertical" />
       ))}
     </div>
   );

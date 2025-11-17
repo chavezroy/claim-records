@@ -251,7 +251,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
           scale: 1.0,
         }}
         animate={(autoAnimate || (animateOnHover && isHovered)) ? {
-          rotate: [0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0], // Five shakes: 0° → -3° → +3° → 0° (x5)
+          rotate: [0, -1, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0], // Five shakes: 0° → -1° → +1° → 0° (x5)
           scale: scaleKeyframes, // Scale animation with random values between 1.03-1.05 at each shake peak
         } : {
           x: 0,
@@ -260,7 +260,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
           scale: 1.0,
         }}
         whileHover={animateOnHover && !autoAnimate ? {
-          rotate: [0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0], // Five shakes: 0° → -3° → +3° → 0° (x5)
+          rotate: [0, -1, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0], // Five shakes: 0° → -1° → +1° → 0° (x5)
           scale: scaleKeyframes, // Scale animation with random values between 1.03-1.05 at each shake peak
         } : undefined}
         transition={{

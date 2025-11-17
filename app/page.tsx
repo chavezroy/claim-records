@@ -45,8 +45,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      <FeaturedReleases />
-
       {/* Latest Posts */}
       {latestPosts.length > 0 && (
         <section className="py-12">
@@ -60,10 +58,12 @@ export default async function HomePage() {
                 View All →
               </Link>
             </div>
-            <PostGrid posts={latestPosts} columns={3} />
+            <PostGrid posts={latestPosts} columns={3} variant="horizontal" />
           </div>
         </section>
       )}
+
+      <FeaturedReleases />
     </>
   );
 }
