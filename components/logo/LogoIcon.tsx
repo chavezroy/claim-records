@@ -17,57 +17,41 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
   const [pauseDelay, setPauseDelay] = useState(() => 5 + Math.random() * 5);
   const containerRef = useRef<HTMLDivElement>(null);
   const handContainerRef = useRef<HTMLDivElement>(null);
-  const [transformOrigin, setTransformOrigin] = useState('50% calc(100% + 250px)');
+  const transformOrigin = '50% 100%'; // Bottom center of the image
+  
+  // Generate random scale values for each shake (between 1.03 and 1.05)
+  // Each shake has 2 peaks (-3° and +3°), so we need 10 random values for 5 shakes
+  const scaleValues = useState(() => {
+    const values = [];
+    for (let i = 0; i < 10; i++) {
+      values.push(1.03 + Math.random() * 0.02); // Random between 1.03 and 1.05
+    }
+    return values;
+  })[0];
+  
+  // Create scale keyframes: 1.0 at start/end of each shake, random values at peaks
+  const scaleKeyframes = [
+    1.0, // Start
+    scaleValues[0], // Shake 1 peak 1 (-3°)
+    scaleValues[1], // Shake 1 peak 2 (+3°)
+    1.0, // End shake 1
+    scaleValues[2], // Shake 2 peak 1
+    scaleValues[3], // Shake 2 peak 2
+    1.0, // End shake 2
+    scaleValues[4], // Shake 3 peak 1
+    scaleValues[5], // Shake 3 peak 2
+    1.0, // End shake 3
+    scaleValues[6], // Shake 4 peak 1
+    scaleValues[7], // Shake 4 peak 2
+    1.0, // End shake 4
+    scaleValues[8], // Shake 5 peak 1
+    scaleValues[9], // Shake 5 peak 2
+    1.0, // End shake 5 / Start
+  ];
   
   // Regenerate random delay on each mount for variety
   useEffect(() => {
     setPauseDelay(5 + Math.random() * 5);
-  }, []);
-
-  // Calculate transform origin based on container height
-  useEffect(() => {
-    let lastHeight = 0;
-    let resizeObserver: ResizeObserver | null = null;
-    let rafId: number | null = null;
-    
-    const calculateTransformOrigin = () => {
-      if (!containerRef.current) return;
-      
-      const containerHeight = containerRef.current.offsetHeight;
-      // Only update if height actually changed and is valid
-      if (containerHeight === 0 || containerHeight === lastHeight) return;
-      lastHeight = containerHeight;
-      
-      const originY = containerHeight + 250; // 250px below bottom
-      const originValue = `50% ${originY}px`;
-      setTransformOrigin(originValue);
-      
-      // Set CSS variable for CSS rule to use
-      containerRef.current.style.setProperty('--hand-transform-origin', originValue);
-    };
-
-    // Use setTimeout to ensure DOM is ready after initial render
-    const timeoutId = setTimeout(() => {
-      calculateTransformOrigin();
-      
-      // Recalculate on resize with debouncing
-      resizeObserver = new ResizeObserver(() => {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(calculateTransformOrigin);
-      });
-      
-      if (containerRef.current) {
-        resizeObserver.observe(containerRef.current);
-      }
-    }, 0);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (rafId) cancelAnimationFrame(rafId);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-    };
   }, []);
   return (
     <div 
@@ -159,35 +143,37 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
           x: 0,
           y: 0,
           rotate: 0,
+          scale: 1.0,
         }}
         animate={(autoAnimate || (animateOnHover && isHovered)) ? {
-          y: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0], // Shake at beginning: starts with larger movements
-          rotate: [0, -0.8, 0.8, -0.4, 0.4, -0.2, 0.2, 0], // Shake at beginning - pivots around transform origin
+          rotate: [0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0], // Five shakes: 0° → -3° → +3° → 0° (x5)
+          scale: scaleKeyframes, // Scale animation with random values between 1.03-1.05 at each shake peak
         } : {
           x: 0,
           y: 0,
           rotate: 0,
+          scale: 1.0,
         }}
         whileHover={animateOnHover && !autoAnimate ? {
-          y: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0], // Shake at beginning
-          rotate: [0, -0.8, 0.8, -0.4, 0.4, -0.2, 0.2, 0], // Shake at beginning - pivots around transform origin
+          rotate: [0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0, -3, 3, 0], // Five shakes: 0° → -3° → +3° → 0° (x5)
+          scale: scaleKeyframes, // Scale animation with random values between 1.03-1.05 at each shake peak
         } : undefined}
         transition={{
-          y: {
-            duration: 0.75,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'easeInOut',
-            delay: animationStartDelay - 0.15, // Start when icon entrance ends (icon entrance is 0.6s, animationStartDelay is 0.75s after delayChildren, so subtract 0.15)
-            repeatDelay: pauseDelay, // Random pause between 5-10 seconds
-          },
           rotate: {
-            duration: 0.75,
+            duration: 0.5,
             repeat: Infinity,
             repeatType: 'loop',
-            ease: 'easeInOut',
-            delay: animationStartDelay - 0.15, // Start when icon entrance ends
+            delay: (!autoAnimate && animateOnHover) ? 0 : (animationStartDelay - 0.15), // No delay on header hover, delay for hero auto-animate
             repeatDelay: pauseDelay, // Random pause between 5-10 seconds
+            times: [0, 0.067, 0.133, 0.2, 0.267, 0.333, 0.4, 0.467, 0.533, 0.6, 0.667, 0.733, 0.8, 0.867, 0.933, 1], // Even distribution for 5 shakes within 0.5s
+          },
+          scale: {
+            duration: 0.5,
+            repeat: Infinity,
+            repeatType: 'loop',
+            delay: (!autoAnimate && animateOnHover) ? 0 : (animationStartDelay - 0.15), // No delay on header hover, delay for hero auto-animate
+            repeatDelay: pauseDelay, // Random pause between 5-10 seconds
+            times: [0, 0.067, 0.133, 0.2, 0.267, 0.333, 0.4, 0.467, 0.533, 0.6, 0.667, 0.733, 0.8, 0.867, 0.933, 1], // Even distribution for 5 shakes within 0.5s
           },
         }}
       >

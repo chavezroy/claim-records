@@ -1468,8 +1468,8 @@ footer a:hover.nav-link {
 
 /* Ensure transform origin is applied to hand container for pivot effect */
 .logo-icon-container > [data-framer-component]:nth-child(3) {
-  transform-origin: var(--hand-transform-origin, 50% calc(100% + 100px)) !important;
-  -webkit-transform-origin: var(--hand-transform-origin, 50% calc(100% + 100px)) !important;
+  transform-origin: 50% 100% !important;
+  -webkit-transform-origin: 50% 100% !important;
 }
 
 
