@@ -161,21 +161,30 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
             position: 'absolute',
             inset: 0,
             zIndex: 3,
+            transformOrigin: 'top left',
           }}
           animate={animateOnHover ? (isHovered ? {
             rotate: [0, -1, 1, 0], // Reversed rotation direction
-            transformOrigin: 'bottom left',
+            scaleX: [1, 1.02, 0.98, 1], // Slight horizontal stretch
+            scaleY: [1, 1.02, 0.98, 1], // Slight vertical stretch
+            transformOrigin: 'top left',
           } : undefined) : {
             rotate: [0, -1, 1, 0], // Reversed rotation direction
-            transformOrigin: 'bottom left',
+            scaleX: [1, 1.02, 0.98, 1], // Slight horizontal stretch
+            scaleY: [1, 1.02, 0.98, 1], // Slight vertical stretch
+            transformOrigin: 'top left',
           }}
           whileHover={animateOnHover ? {
             rotate: [0, -1, 1, 0], // Reversed rotation direction
-            transformOrigin: 'bottom left',
+            scaleX: [1, 1.02, 0.98, 1],
+            scaleY: [1, 1.02, 0.98, 1],
+            transformOrigin: 'top left',
           } : undefined}
           whileTap={animateOnHover ? {
             rotate: [0, -1, 1, 0], // Reversed rotation direction
-            transformOrigin: 'bottom left',
+            scaleX: [1, 1.02, 0.98, 1],
+            scaleY: [1, 1.02, 0.98, 1],
+            transformOrigin: 'top left',
           } : undefined}
           transition={{
             duration: 8,
