@@ -83,82 +83,191 @@ export default function CartPage() {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="border rounded mb-3"
                   style={{ 
-                    borderColor: '#e5e7eb',
+                    border: '1px solid #e5e7eb',
                     borderRadius: '6px',
-                    padding: '1.5rem'
+                    padding: '1rem',
+                    marginBottom: '1rem',
+                    backgroundColor: '#ffffff'
                   }}
                 >
-                  {/* Main Container: 3 Sections - Image, Product Info, Price/Controls */}
-                  <div className="d-flex flex-column flex-md-row gap-4 align-items-start align-items-md-center">
-                    {/* Container 1: Product Image */}
-                    <div className="flex-shrink-0" style={{ width: '120px', height: '120px' }}>
+                  {/* Main Row Container: Image | Product Info | Price/Controls */}
+                  <div style={{ 
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '1rem',
+                    alignItems: 'flex-start'
+                  }}>
+                    {/* LEFT SECTION: Product Image */}
+                    <div style={{ 
+                      flexShrink: 0,
+                      width: '120px',
+                      height: '120px'
+                    }}>
                       <Link
                         href={`/shop/${item.productId.replace('-tshirt', '')}`}
                         style={{ display: 'block', width: '100%', height: '100%' }}
                       >
                         <div
-                          className="relative overflow-hidden bg-white border rounded"
-                          style={{ width: '100%', height: '100%' }}
+                          style={{ 
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                            overflow: 'hidden',
+                            backgroundColor: '#ffffff',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '6px'
+                          }}
                         >
                           <CartItemImage item={item} />
                         </div>
                       </Link>
                     </div>
 
-                    {/* Container 2: Product Info */}
-                    <div className="flex-grow-1" style={{ minWidth: 0 }}>
+                    {/* MIDDLE SECTION: Product Details */}
+                    <div style={{ 
+                      flex: '1 1 auto',
+                      minWidth: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem',
+                      paddingLeft: '0.25rem'
+                    }}>
                       <Link
                         href={`/shop/${item.productId.replace('-tshirt', '')}`}
-                        className="text-decoration-none"
+                        style={{ textDecoration: 'none' }}
                       >
-                        <h5 className="mb-1 text-primary hover:text-black transition-colors d-flex align-items-center gap-2" style={{ fontSize: '1.1rem', fontWeight: '600' }}>
-                          <i className="bi bi-music-note-beamed" style={{ fontSize: '0.9rem' }}></i>
-                          <span>{item.artistName || item.name}</span>
-                        </h5>
+                        <div style={{ 
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <i className="bi bi-music-note-beamed" style={{ fontSize: '1rem', color: '#dc2626' }}></i>
+                          <span style={{ 
+                            fontSize: '1.15rem', 
+                            fontWeight: '700', 
+                            color: '#dc2626',
+                            letterSpacing: '0.01em',
+                            lineHeight: '1.4'
+                          }}>
+                            {item.artistName || item.name}
+                          </span>
+                        </div>
                         {item.artistName && (
-                          <p className="text-gray-500 mb-1 d-flex align-items-center gap-2" style={{ fontSize: '0.9rem' }}>
-                            <i className="bi bi-box-seam" style={{ fontSize: '0.8rem' }}></i>
-                            <span>{item.name}</span>
-                          </p>
+                          <div style={{ 
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            marginBottom: '0.5rem'
+                          }}>
+                            <i className="bi bi-box-seam" style={{ fontSize: '0.875rem', color: '#6b7280' }}></i>
+                            <span style={{ 
+                              fontSize: '0.95rem', 
+                              color: '#6b7280',
+                              fontWeight: '400',
+                              lineHeight: '1.5'
+                            }}>
+                              {item.name}
+                            </span>
+                          </div>
                         )}
                       </Link>
                       {item.size && (
-                        <p className="text-gray-500 mb-2 d-flex align-items-center gap-1" style={{ fontSize: '0.85rem' }}>
-                          <i className="bi bi-rulers" style={{ fontSize: '0.75rem' }}></i>
-                          <span>Size: {item.size}</span>
-                        </p>
+                        <div style={{ 
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.375rem',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <i className="bi bi-rulers" style={{ fontSize: '0.875rem', color: '#6b7280' }}></i>
+                          <span style={{ 
+                            fontSize: '0.9rem', 
+                            color: '#6b7280',
+                            fontWeight: '400',
+                            lineHeight: '1.5'
+                          }}>
+                            Size: {item.size}
+                          </span>
+                        </div>
                       )}
-                      <p className="text-black font-medium mb-0 d-flex align-items-center gap-1" style={{ fontSize: '1rem', fontWeight: '500' }}>
-                        <i className="bi bi-tag" style={{ fontSize: '0.85rem' }}></i>
-                        <span>${item.price.toFixed(2)}</span>
-                      </p>
+                      <div style={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.375rem',
+                        marginTop: '0.25rem'
+                      }}>
+                        <i className="bi bi-tag" style={{ fontSize: '0.875rem', color: '#6b7280' }}></i>
+                        <span style={{ 
+                          fontSize: '1.05rem', 
+                          fontWeight: '600', 
+                          color: '#000000',
+                          letterSpacing: '0.01em',
+                          lineHeight: '1.4'
+                        }}>
+                          ${item.price.toFixed(2)}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Container 3: Price/Delete and Quantity Controls */}
-                    <div className="flex-shrink-0 d-flex flex-column" style={{ gap: '0.75rem', alignItems: 'flex-end' }}>
+                    {/* RIGHT SECTION: Price/Delete and Quantity Controls */}
+                    <div style={{ 
+                      flexShrink: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1rem',
+                      alignItems: 'flex-end',
+                      alignSelf: 'flex-start',
+                      paddingLeft: '1rem',
+                      minWidth: '140px'
+                    }}>
                       {/* Top Row: Price and Delete Icon */}
-                      <div className="d-flex align-items-center" style={{ gap: '0.5rem' }}>
-                        <span style={{ fontSize: '1.1rem', fontWeight: '600', lineHeight: '1' }}>
+                      <div style={{ 
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                      }}>
+                        <span style={{ 
+                          fontSize: '1.2rem', 
+                          fontWeight: '700', 
+                          lineHeight: '1.2',
+                          color: '#000000',
+                          letterSpacing: '0.01em'
+                        }}>
                           $ {(item.price * item.quantity).toFixed(2)}
                         </span>
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => {
+                            if (window.confirm(`Are you sure you want to remove "${item.name}" from your cart?`)) {
+                              removeItem(item.id);
+                            }
+                          }}
                           aria-label="Remove item"
                           style={{ 
                             background: 'none',
                             border: 'none',
-                            padding: '0',
+                            padding: '0.25rem',
                             margin: '0',
                             cursor: 'pointer',
-                            color: '#212529',
+                            color: '#9ca3af',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            width: 'fit-content',
-                            height: 'fit-content',
-                            lineHeight: '1'
+                            width: '28px',
+                            height: '28px',
+                            lineHeight: '1',
+                            borderRadius: '4px',
+                            transition: 'background-color 0.2s, color 0.2s'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#fee2e2';
+                            e.currentTarget.style.color = '#dc2626';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.color = '#9ca3af';
                           }}
                         >
                           <i className="bi bi-trash" style={{ fontSize: '1rem' }}></i>
@@ -166,16 +275,30 @@ export default function CartPage() {
                       </div>
                       
                       {/* Bottom Row: Quantity Controls */}
-                      <div className="d-flex align-items-center" style={{ 
-                        gap: '0.5rem',
-                        paddingLeft: '0.5rem',
-                        paddingRight: '0.5rem',
+                      <div style={{ 
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        paddingLeft: '0.75rem',
+                        paddingRight: '0.75rem',
+                        paddingTop: '0.5rem',
+                        paddingBottom: '0.5rem',
                         border: '1px solid #e5e7eb',
-                        borderRadius: '6px',
-                        height: 'fit-content'
+                        borderRadius: '8px',
+                        height: '40px',
+                        backgroundColor: '#ffffff'
                       }}>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => {
+                            if (item.quantity === 1) {
+                              if (window.confirm(`Are you sure you want to remove "${item.name}" from your cart?`)) {
+                                updateQuantity(item.id, item.quantity - 1);
+                              }
+                            } else {
+                              updateQuantity(item.id, item.quantity - 1);
+                            }
+                          }}
                           aria-label="Decrease quantity"
                           style={{ 
                             background: 'none',
@@ -188,20 +311,26 @@ export default function CartPage() {
                             justifyContent: 'center',
                             width: '32px',
                             height: '32px',
-                            lineHeight: '1'
+                            lineHeight: '1',
+                            borderRadius: '4px',
+                            transition: 'background-color 0.2s'
                           }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                          <i className="bi bi-dash-lg" style={{ fontSize: '1.2rem' }}></i>
+                          <i className="bi bi-dash-lg" style={{ fontSize: '1.3rem', color: '#212529', fontWeight: '600' }}></i>
                         </button>
                         <span style={{ 
-                          minWidth: '50px', 
+                          minWidth: '60px', 
                           textAlign: 'center', 
-                          fontSize: '1rem', 
-                          fontWeight: '500',
+                          fontSize: '1.05rem', 
+                          fontWeight: '600',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          lineHeight: '1'
+                          lineHeight: '1',
+                          color: '#000000',
+                          letterSpacing: '0.01em'
                         }}>
                           {item.quantity}
                         </span>
@@ -219,10 +348,14 @@ export default function CartPage() {
                             justifyContent: 'center',
                             width: '32px',
                             height: '32px',
-                            lineHeight: '1'
+                            lineHeight: '1',
+                            borderRadius: '4px',
+                            transition: 'background-color 0.2s'
                           }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                          <i className="bi bi-plus-lg" style={{ fontSize: '1.2rem' }}></i>
+                          <i className="bi bi-plus-lg" style={{ fontSize: '1.3rem', color: '#212529', fontWeight: '600' }}></i>
                         </button>
                       </div>
                     </div>

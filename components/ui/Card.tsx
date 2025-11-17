@@ -9,7 +9,7 @@ type CardProps = {
 
 export default function Card({ href, children, className = '' }: CardProps) {
   const cardContent = (
-    <div className={`card border border-gray-200 rounded overflow-hidden ${className}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+    <div className={`card border border-gray-100 rounded overflow-hidden ${className}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
       {children}
     </div>
   );
