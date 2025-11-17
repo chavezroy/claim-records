@@ -6,10 +6,11 @@ import { motion } from 'framer-motion';
 interface LogoIconProps {
   className?: string;
   animateOnHover?: boolean;
+  isHovered?: boolean;
   animationStartDelay?: number;
 }
 
-export default function LogoIcon({ className = '', animateOnHover = false, animationStartDelay = 0 }: LogoIconProps) {
+export default function LogoIcon({ className = '', animateOnHover = false, isHovered = false, animationStartDelay = 0 }: LogoIconProps) {
   return (
     <div 
       className={`relative logo-icon-container ${className}`}
@@ -30,24 +31,30 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
       
       {/* Lines - second layer */}
       <motion.div
+        data-framer-component
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 2,
           overflow: 'visible',
         }}
-        animate={animateOnHover ? undefined : {
+        animate={animateOnHover ? (isHovered ? {
           scale: [0.97, 1.03, 0.97], // Start at 97% size, grow to 103%, back to 97%
+          rotate: [-2, 2, -2], // Rotate opposite direction
+        } : undefined) : {
+          scale: [0.97, 1.03, 0.97], // Start at 97% size, grow to 103%, back to 97%
+          rotate: [-2, 2, -2], // Rotate opposite direction
         }}
         whileHover={animateOnHover ? {
           scale: [0.97, 1.03, 0.97],
+          rotate: [-2, 2, -2],
         } : undefined}
         transition={{
           duration: 6,
           repeat: Infinity,
           repeatType: 'loop',
           ease: 'easeInOut',
-          delay: animationStartDelay,
+          delay: animationStartDelay + 0.5,
         }}
       >
         <Image
@@ -62,32 +69,37 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
       
       {/* Hand and Flag - grouped (hand is parent, flag is child) */}
       <motion.div
+        data-framer-component
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 3,
         }}
-        animate={animateOnHover ? undefined : {
+        animate={animateOnHover ? (isHovered ? {
           x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
           y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
+          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
+        } : undefined) : {
+          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
+          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
+          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
         }}
         whileHover={animateOnHover ? {
           x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
           y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
+          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
         } : undefined}
         whileTap={animateOnHover ? {
           x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
           y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, -0.3, 0.3, -0.2, 0.2, -0.1, 0.1, 0],
+          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
         } : undefined}
         transition={{
           duration: 1.25,
           repeat: Infinity,
           repeatType: 'loop',
           ease: 'easeInOut',
-          delay: animationStartDelay,
+          delay: animationStartDelay + 0.5,
         }}
       >
         {/* Hand - parent layer */}
@@ -106,6 +118,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
           />
           {/* Shine gradient overlay - clipped to hand image */}
           <motion.div
+            data-framer-component
             style={{
               position: 'absolute',
               inset: 0,
@@ -123,7 +136,9 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
               maskPosition: 'center',
               WebkitMaskPosition: 'center',
             }}
-            animate={animateOnHover ? undefined : {
+            animate={animateOnHover ? (isHovered ? {
+              backgroundPosition: ['200% 200%', '-200% -200%'],
+            } : undefined) : {
               backgroundPosition: ['200% 200%', '-200% -200%'],
             }}
             whileHover={animateOnHover ? {
@@ -134,28 +149,32 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
               repeat: Infinity,
               repeatDelay: 7.5, // Average of 7-9 seconds
               ease: 'easeInOut',
-              delay: animationStartDelay,
+              delay: animationStartDelay + 0.5,
             }}
           />
         </div>
         
         {/* Flag - child layer (moves independently but also affected by hand) */}
         <motion.div
+          data-framer-component
           style={{
             position: 'absolute',
             inset: 0,
             zIndex: 3,
           }}
-          animate={animateOnHover ? undefined : {
-            rotate: [0, 1, -1, 0],
+          animate={animateOnHover ? (isHovered ? {
+            rotate: [0, -1, 1, 0], // Reversed rotation direction
+            transformOrigin: 'bottom left',
+          } : undefined) : {
+            rotate: [0, -1, 1, 0], // Reversed rotation direction
             transformOrigin: 'bottom left',
           }}
           whileHover={animateOnHover ? {
-            rotate: [0, 1, -1, 0],
+            rotate: [0, -1, 1, 0], // Reversed rotation direction
             transformOrigin: 'bottom left',
           } : undefined}
           whileTap={animateOnHover ? {
-            rotate: [0, 1, -1, 0],
+            rotate: [0, -1, 1, 0], // Reversed rotation direction
             transformOrigin: 'bottom left',
           } : undefined}
           transition={{
@@ -163,7 +182,7 @@ export default function LogoIcon({ className = '', animateOnHover = false, anima
             repeat: Infinity,
             repeatType: 'loop',
             ease: 'easeInOut',
-            delay: animationStartDelay,
+            delay: animationStartDelay + 0.5,
           }}
         >
           <Image

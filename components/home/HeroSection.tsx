@@ -34,9 +34,9 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="relative h-[50vh] md:h-screen w-full overflow-hidden">
+    <div className="relative h-[75vh] md:h-screen w-full overflow-hidden">
       <motion.div
-        className="hero-grid absolute inset-0 h-[50vh] md:h-screen w-full"
+        className="hero-grid absolute inset-0 h-[75vh] md:h-screen w-full"
         data-framer-component
         variants={containerVariants}
         initial="hidden"

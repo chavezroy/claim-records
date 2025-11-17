@@ -203,9 +203,9 @@ export default function NotFound() {
           <h1 className="not-found-title">404</h1>
           <p className="not-found-message">Page not found</p>
           <Link href="/" className="not-found-link">
-            Return home
-          </Link>
-        </div>
+        Return home
+      </Link>
+    </div>
       </div>
     </>
   );

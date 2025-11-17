@@ -1383,7 +1383,7 @@ footer a:hover.nav-link {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
+  width: 51px;
   height: 44px;
 }
 
@@ -1394,29 +1394,37 @@ footer a:hover.nav-link {
   align-items: center;
   justify-content: center;
   width: auto;
-  height: 44px;
+  height: 32px;
 }
 
 /* Header logo icon container - maintain aspect ratio at 44px height */
+/* Aspect ratio: 250/215 = 1.163, so at 44px height, width = 44 * 1.163 = ~51px */
 .header-logo-icon .logo-icon-container {
-  width: auto;
+  width: 51px;
   height: 44px;
+  position: relative;
 }
 
 /* Header logo text image */
 .header-logo-text img {
-  height: 44px;
+  height: 32px;
   width: auto;
   object-fit: contain;
   display: block;
 }
 
 /* Header logo Next.js Image wrappers */
-.header-logo-icon > span,
+.header-logo-icon > span {
+  position: relative;
+  width: 51px;
+  height: 44px;
+  display: block;
+}
+
 .header-logo-text > span {
   position: relative;
   width: auto;
-  height: 44px;
+  height: 32px;
   display: block;
 }
 
@@ -1452,6 +1460,7 @@ footer a:hover.nav-link {
 .logo-icon-container {
   width: 300px;
   height: 258px; /* Maintain aspect ratio: 300 * (215/250) = 258 */
+  position: relative;
 }
 
 /* Next.js Image wrapper and image sizing */
@@ -1497,6 +1506,7 @@ footer a:hover.nav-link {
   .logo-icon-container {
     width: 200px;
     height: 172px; /* 200px width / (250/215) aspect ratio = 172px */
+    position: relative;
   }
   
   .hero-logo-text {
