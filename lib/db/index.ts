@@ -82,14 +82,14 @@ export async function closePool(): Promise<void> {
   }
 }
 
-// Health check
-export async function healthCheck(): Promise<boolean> {
+// Health check - returns { connected: boolean, error?: string }
+export async function healthCheck(): Promise<{ connected: boolean; error?: string }> {
   try {
     const result = await query('SELECT 1');
-    return result.rowCount === 1;
-  } catch (error) {
+    return { connected: result.rowCount === 1 };
+  } catch (error: any) {
     console.error('Database health check failed', error);
-    return false;
+    return { connected: false, error: error.message || String(error) };
   }
 }
 

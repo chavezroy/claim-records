@@ -7,7 +7,8 @@ export async function GET() {
   try {
     // Check environment variables
     const hasDatabaseUrl = !!process.env.DATABASE_URL;
-    const hasNextAuthSecret = !!process.env.NEXTAUTH_SECRET;
+    const nextAuthSecret = process.env.NEXTAUTH_SECRET;
+    const hasNextAuthSecret = !!nextAuthSecret && nextAuthSecret.trim() !== '';
     const hasNextAuthUrl = !!process.env.NEXTAUTH_URL;
     
     // Get all environment variable keys (for debugging)
@@ -42,7 +43,9 @@ export async function GET() {
     let dbConnected = false;
     let dbError = null;
     try {
-      dbConnected = await healthCheck();
+      const dbHealth = await healthCheck();
+      dbConnected = dbHealth.connected;
+      dbError = dbHealth.error || null;
     } catch (error: any) {
       dbError = error.message;
     }
