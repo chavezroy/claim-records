@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface LogoIconProps {
   className?: string;
@@ -14,13 +14,63 @@ interface LogoIconProps {
 export default function LogoIcon({ className = '', animateOnHover = false, isHovered = false, animationStartDelay = 0 }: LogoIconProps) {
   // Generate random pause delay between 5-10 seconds
   const [pauseDelay, setPauseDelay] = useState(() => 5 + Math.random() * 5);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const handContainerRef = useRef<HTMLDivElement>(null);
+  const [transformOrigin, setTransformOrigin] = useState('50% calc(100% + 250px)');
   
   // Regenerate random delay on each mount for variety
   useEffect(() => {
     setPauseDelay(5 + Math.random() * 5);
   }, []);
+
+  // Calculate transform origin based on container height
+  useEffect(() => {
+    let lastHeight = 0;
+    let resizeObserver: ResizeObserver | null = null;
+    let rafId: number | null = null;
+    
+    const calculateTransformOrigin = () => {
+      if (!containerRef.current) return;
+      
+      const containerHeight = containerRef.current.offsetHeight;
+      // Only update if height actually changed and is valid
+      if (containerHeight === 0 || containerHeight === lastHeight) return;
+      lastHeight = containerHeight;
+      
+      const originY = containerHeight + 250; // 250px below bottom
+      const originValue = `50% ${originY}px`;
+      setTransformOrigin(originValue);
+      
+      // Set CSS variable for CSS rule to use
+      containerRef.current.style.setProperty('--hand-transform-origin', originValue);
+    };
+
+    // Use setTimeout to ensure DOM is ready after initial render
+    const timeoutId = setTimeout(() => {
+      calculateTransformOrigin();
+      
+      // Recalculate on resize with debouncing
+      resizeObserver = new ResizeObserver(() => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(calculateTransformOrigin);
+      });
+      
+      if (containerRef.current) {
+        resizeObserver.observe(containerRef.current);
+      }
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
   return (
     <div 
+      ref={containerRef}
       className={`relative logo-icon-container ${className}`}
     >
       {/* Background - bottom layer */}
@@ -75,56 +125,47 @@ export default function LogoIcon({ className = '', animateOnHover = false, isHov
         />
       </motion.div>
       
-      {/* Transform origin indicator - purple circle (fixed fulcrum point) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          bottom: 0,
-          width: '5px',
-          height: '5px',
-          backgroundColor: 'purple',
-          borderRadius: '50%',
-          transform: 'translate(-50%, 50%)',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
-      />
-      
       {/* Hand and Flag - grouped (hand is parent, flag is child) */}
       <motion.div
+        ref={handContainerRef}
         data-framer-component
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 3,
-          transformOrigin: 'center bottom',
+          transformOrigin: transformOrigin,
+          WebkitTransformOrigin: transformOrigin,
+          MozTransformOrigin: transformOrigin,
+          msTransformOrigin: transformOrigin,
+          willChange: 'transform',
         }}
-        animate={animateOnHover ? (isHovered ? {
-          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
-          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
-        } : undefined) : {
-          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
-          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
+        initial={{
+          x: 0,
+          y: 0,
+          rotate: 0,
+          scale: 1,
+        }}
+        animate={animateOnHover && isHovered ? {
+          y: [0, 1, -1, 0.5, -0.5, 0.3, -0.3, 0, 0, 1, -1, 0.5, -0.5, 0.3, -0.3, 0], // Play twice
+          rotate: [0, 0.8, -0.8, 0.4, -0.4, 0.2, -0.2, 0, 0, 0.8, -0.8, 0.4, -0.4, 0.2, -0.2, 0], // Play twice - pivots around transform origin
+          scale: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1], // Scale to 105% on second sequence
+        } : {
+          x: 0,
+          y: 0,
+          rotate: 0,
+          scale: 1,
         }}
         whileHover={animateOnHover ? {
-          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
-          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
-        } : undefined}
-        whileTap={animateOnHover ? {
-          x: [0, -1, 1, -0.5, 0.5, -0.3, 0.3, 0],
-          y: [0, 0.5, -0.5, 0.3, -0.3, 0.2, -0.2, 0],
-          rotate: [0, 0.3, -0.3, 0.2, -0.2, 0.1, -0.1, 0], // Reversed rotation direction
+          y: [0, 1, -1, 0.5, -0.5, 0.3, -0.3, 0, 0, 1, -1, 0.5, -0.5, 0.3, -0.3, 0], // Play twice
+          rotate: [0, 0.8, -0.8, 0.4, -0.4, 0.2, -0.2, 0, 0, 0.8, -0.8, 0.4, -0.4, 0.2, -0.2, 0], // Play twice - pivots around transform origin
+          scale: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1], // Scale to 105% on second sequence
         } : undefined}
         transition={{
-          duration: 1.25,
+          duration: 2.5, // Doubled duration for 2 sequences
           repeat: Infinity,
           repeatType: 'loop',
           ease: 'easeInOut',
-          delay: animationStartDelay + 0.5,
+          delay: 0,
           repeatDelay: pauseDelay, // Random pause between 5-10 seconds
         }}
       >
