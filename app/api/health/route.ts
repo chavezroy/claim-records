@@ -61,6 +61,7 @@ export async function GET() {
         databaseUrlInfo,
         relevantEnvKeys, // List of relevant env var keys (without values for security)
         totalEnvKeys: allEnvKeys.length,
+        nextAuthSecretLength: nextAuthSecret ? nextAuthSecret.length : 0, // Debug: check if it's empty
       },
       database: {
         connected: dbConnected,
