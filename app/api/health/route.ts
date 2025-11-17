@@ -23,16 +23,18 @@ export async function GET() {
     let databaseUrlInfo = null;
     if (hasDatabaseUrl) {
       const dbUrl = process.env.DATABASE_URL;
-      try {
-        const url = new URL(dbUrl.replace(/^postgresql:\/\//, 'http://'));
-        databaseUrlInfo = {
-          host: url.hostname,
-          port: url.port || '5432',
-          database: url.pathname.replace('/', ''),
-          hasPassword: !!url.password,
-        };
-      } catch (e) {
-        databaseUrlInfo = { error: 'Invalid URL format' };
+      if (dbUrl) {
+        try {
+          const url = new URL(dbUrl.replace(/^postgresql:\/\//, 'http://'));
+          databaseUrlInfo = {
+            host: url.hostname,
+            port: url.port || '5432',
+            database: url.pathname.replace('/', ''),
+            hasPassword: !!url.password,
+          };
+        } catch (e) {
+          databaseUrlInfo = { error: 'Invalid URL format' };
+        }
       }
     }
     
