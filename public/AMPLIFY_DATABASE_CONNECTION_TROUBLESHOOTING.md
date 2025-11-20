@@ -86,10 +86,12 @@ frontend:
       - .npm/**/*
 ```
 
-**Verification:**
-- Build logs show: `Environment variables written to .env.production`
-- Build logs show: `- Environments: .env.production` (Next.js detected it)
-- Runtime logs show: `DATABASE_URL: 'Set (XXX chars)'` ✅
+**Verification (Verified from BUILD copy.txt - November 20, 2025):**
+- ✅ Build logs show: `Environment variables written to .env.production` (Line 67)
+- ✅ Build logs show: `- Environments: .env.production` (Next.js detected it) (Line 81)
+- ✅ Build logs show: `.env.production` verification confirms `DATABASE_URL=***` written (Lines 69-76)
+- ✅ Runtime logs show: `hasDatabaseUrl: true` in `[AUTH] Configuration` log
+- ⚠️ Note: `[DB]` initialization logs not present in runtime logs (database may not have been queried yet)
 
 ---
 
