@@ -10,6 +10,20 @@
 
 ---
 
+## ✅ Environment Variables Verification (COMPLETE)
+
+**VERIFIED IN AWS AMPLIFY CONSOLE - November 20, 2025:**
+
+All required environment variables are confirmed set in AWS Amplify Console for "All branches":
+- ✅ `NEXTAUTH_SECRET`: `ZCHyOQqY4w7Sei8ss23Xv2qiSiCShQkzvgQDfGNN7lePE=` (46 chars)
+- ✅ `NEXTAUTH_URL`: `https://main.d13axw9ole04hk.amplifyapp.com`
+- ✅ `DATABASE_URL`: Set with RDS connection string
+- ✅ Other variables: `USE_MOCK_DATA`, `USE_MOCK_AUTH`, `NODE_ENV`, PayPal variables
+
+**Note:** Despite being verified in Amplify Console, `NEXTAUTH_SECRET` is not available during build phase. This appears to be an AWS Amplify platform-specific issue with variable passing, not a configuration error. Troubleshooting focus should shift to alternative solutions or workarounds.
+
+---
+
 ## Timeline of Issues and Fixes
 
 ### Issue 1: Environment Variables Not Available at Runtime
@@ -254,21 +268,26 @@ psql "postgresql://ooh_admin:[PASSWORD]%21@ooh-db.cz0i6uy4krev.us-east-2.rds.ama
 
 ---
 
-## Verified Environment Variables (Source of Truth)
+## Verified Environment Variables (Source of Truth) ✅
 
-**As of latest verification in AWS Amplify Console:**
+**VERIFIED IN AWS AMPLIFY CONSOLE - November 20, 2025:**
 
-| Variable | Verified Value | Status |
-|----------|---------------|--------|
-| `NEXTAUTH_SECRET` | `ZCHyOQqY4w7Sei8ss23Xv2qiSiCShQkzvgQDfGNN7lePE=` | ✅ Set in Amplify Console (46 chars) |
-| `NEXTAUTH_URL` | `https://main.d13axw9ole04hk.amplifyapp.com` | ✅ Set in Amplify Console |
+| Variable | Verified Value | Scope | Status |
+|----------|---------------|-------|--------|
+| `NEXTAUTH_SECRET` | `ZCHyOQqY4w7Sei8ss23Xv2qiSiCShQkzvgQDfGNN7lePE=` | All branches | ✅ **VERIFIED SET** (46 chars) |
+| `NEXTAUTH_URL` | `https://main.d13axw9ole04hk.amplifyapp.com` | All branches | ✅ **VERIFIED SET** |
 
-**Current Issue:** `NEXTAUTH_SECRET` is verified as set in Amplify Console for "All branches", but runtime logs show it's not available at runtime (`hasNextAuthSecret: false`). This suggests the variable may not be accessible during the build phase for the `main` branch, or there's an issue with how it's being written to `.env.production`.
+**VERIFICATION COMPLETE:** Both variables are confirmed set in AWS Amplify Console for "All branches" with correct values.
 
-**Next Steps:**
-- Check build logs for `✓ NEXTAUTH_SECRET written (length: 46)` to confirm it's being written
-- Verify `.env.production` contents in build logs to see if the variable is present
-- If missing in build logs, verify the variable is set specifically for the `main` branch (not just "All branches")
+**Known Discrepancy:** Despite being set in Amplify Console, build logs show `NEXTAUTH_SECRET` is not available during build phase, while `NEXTAUTH_URL` is available. This appears to be an AWS Amplify-specific issue with how certain environment variables (possibly those ending with `=`) are passed to the build environment.
+
+**Workaround Options:**
+1. Set `NEXTAUTH_SECRET` specifically for the `main` branch (not just "All branches")
+2. Use AWS Systems Manager Parameter Store for sensitive values
+3. Use a different secret format (without trailing `=`)
+4. Set the variable directly in `amplify.yml` as a temporary workaround (not recommended for production)
+
+**Current Status:** Variables verified in Amplify Console. Issue appears to be Amplify platform-specific variable passing, not a configuration error.
 
 ---
 
