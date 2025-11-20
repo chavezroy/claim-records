@@ -3,12 +3,19 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
-        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
-        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
-        - npm ci
+        - npm ci --cache .npm --prefer-offline
     build:
       commands:
+        # Write environment variables to .env.production for Amplify Hosting Compute runtime
+        # Amplify Console provides variables at build-time, but they need to be in .env.production
+        # for Next.js to bundle them into the Lambda/serverless runtime
+        - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
+        - echo "USE_MOCK_DATA=$USE_MOCK_DATA" >> .env.production
+        - echo "USE_MOCK_AUTH=$USE_MOCK_AUTH" >> .env.production
+        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
+        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
+        - echo "NODE_ENV=$NODE_ENV" >> .env.production
+        - echo "Environment variables written to .env.production"
         - npm run build
   artifacts:
     baseDirectory: .next
@@ -16,6 +23,6 @@ frontend:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
       - .next/cache/**/*
+      - .npm/**/*
 

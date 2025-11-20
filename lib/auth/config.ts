@@ -3,6 +3,24 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { query } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 
+// Log auth configuration state
+function logAuthConfig() {
+  const useMockAuth = process.env.USE_MOCK_AUTH;
+  const hasNextAuthSecret = !!process.env.NEXTAUTH_SECRET;
+  const hasNextAuthUrl = !!process.env.NEXTAUTH_URL;
+  const hasDatabaseUrl = !!process.env.DATABASE_URL;
+  
+  console.log('[AUTH] Configuration:', {
+    USE_MOCK_AUTH: useMockAuth || 'undefined',
+    hasNextAuthSecret,
+    hasNextAuthUrl,
+    hasDatabaseUrl,
+  });
+}
+
+// Initialize logging on module load
+logAuthConfig();
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -17,16 +35,20 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          console.log('[AUTH] Attempting to query user:', credentials.email);
+          
           const result = await query(
             'SELECT * FROM users WHERE email = $1',
             [credentials.email]
           );
 
           if (result.rows.length === 0) {
+            console.log('[AUTH] User query result: Not found');
             return null;
           }
 
           const user = result.rows[0];
+          console.log('[AUTH] User query result: Found');
 
           const isValidPassword = await bcrypt.compare(
             credentials.password,
@@ -34,9 +56,11 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isValidPassword) {
+            console.log('[AUTH] Password validation: Failed');
             return null;
           }
 
+          console.log('[AUTH] Password validation: Success');
           return {
             id: user.id,
             email: user.email,
@@ -44,7 +68,7 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
           };
         } catch (error) {
-          console.error('Auth error:', error);
+          console.error('[AUTH] Auth error:', error);
           return null;
         }
       },
