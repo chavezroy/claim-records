@@ -15,6 +15,9 @@ frontend:
         - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
         - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
         - echo "NODE_ENV=$NODE_ENV" >> .env.production
+        - echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID" >> .env.production
+        - echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET" >> .env.production
+        - echo "PAYPAL_MODE=$PAYPAL_MODE" >> .env.production
         - echo "Environment variables written to .env.production"
         - npm run build
   artifacts:
