@@ -9,16 +9,23 @@ frontend:
         # Write environment variables to .env.production for Amplify Hosting Compute runtime
         # Amplify Console provides variables at build-time, but they need to be in .env.production
         # for Next.js to bundle them into the Lambda/serverless runtime
-        - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
-        - echo "USE_MOCK_DATA=$USE_MOCK_DATA" >> .env.production
-        - echo "USE_MOCK_AUTH=$USE_MOCK_AUTH" >> .env.production
-        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
-        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
-        - echo "NODE_ENV=$NODE_ENV" >> .env.production
-        - echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID" >> .env.production
-        - echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET" >> .env.production
-        - echo "PAYPAL_MODE=$PAYPAL_MODE" >> .env.production
-        - echo "Environment variables written to .env.production"
+        - |
+          echo "Writing environment variables to .env.production..."
+          echo "DATABASE_URL=$DATABASE_URL" >> .env.production
+          echo "USE_MOCK_DATA=$USE_MOCK_DATA" >> .env.production
+          echo "USE_MOCK_AUTH=$USE_MOCK_AUTH" >> .env.production
+          if [ -z "$NEXTAUTH_SECRET" ]; then
+            echo "WARNING: NEXTAUTH_SECRET is not set in Amplify Console environment variables!"
+          else
+            echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
+            echo "✓ NEXTAUTH_SECRET written (length: ${#NEXTAUTH_SECRET})"
+          fi
+          echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
+          echo "NODE_ENV=$NODE_ENV" >> .env.production
+          echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID" >> .env.production
+          echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET" >> .env.production
+          echo "PAYPAL_MODE=$PAYPAL_MODE" >> .env.production
+          echo "Environment variables written to .env.production"
         - npm run build
   artifacts:
     baseDirectory: .next
