@@ -17,9 +17,9 @@ frontend:
           echo "DATABASE_URL=$DATABASE_URL" >> .env.production
           echo "USE_MOCK_DATA=$USE_MOCK_DATA" >> .env.production
           echo "USE_MOCK_AUTH=$USE_MOCK_AUTH" >> .env.production
-          # Trim whitespace from NEXTAUTH_SECRET if present
-          NEXTAUTH_SECRET_TRIMMED=$(echo "$NEXTAUTH_SECRET" | xargs)
-          if [ -z "$NEXTAUTH_SECRET_TRIMMED" ]; then
+          # Extract NEXTAUTH_SECRET from env output (handles spaces in variable name/value)
+          NEXTAUTH_SECRET_RAW=$(env | grep -i "^NEXTAUTH_SECRET" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          if [ -z "$NEXTAUTH_SECRET_RAW" ]; then
             echo "WARNING: NEXTAUTH_SECRET not available from Amplify Console environment variables"
             echo "Using workaround: hardcoded value from verified Amplify Console setting"
             # Workaround: Use verified value from Amplify Console since env var isn't being passed correctly
@@ -27,8 +27,8 @@ frontend:
             echo "NEXTAUTH_SECRET=ZCHyOQqY4w7Sei8ss23Xv2qiSiCShQkzvgQDfGNN7lePE=" >> .env.production
             echo "✓ NEXTAUTH_SECRET written via workaround (length: 46)"
           else
-            echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET_TRIMMED" >> .env.production
-            echo "✓ NEXTAUTH_SECRET written from environment variable (length: ${#NEXTAUTH_SECRET_TRIMMED})"
+            echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET_RAW" >> .env.production
+            echo "✓ NEXTAUTH_SECRET written from environment variable (length: ${#NEXTAUTH_SECRET_RAW})"
           fi
           echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
           echo "NODE_ENV=$NODE_ENV" >> .env.production
