@@ -300,6 +300,174 @@ Since the variable is verified in Amplify Console but not being passed to the bu
 
 ---
 
+## Testing Guide
+
+### Step 1: Verify Build Logs (After Deployment)
+
+Go to **AWS Amplify Console** → Your App → **Build history** → Latest build → **Build logs**
+
+**✅ Look for these success indicators:**
+
+1. **Environment Variables Written:**
+   ```
+   Environment variables written to .env.production
+   ```
+
+2. **NEXTAUTH_SECRET Status:**
+   - ✅ **Success:** `✓ NEXTAUTH_SECRET written via workaround (length: 46)`
+   - ✅ **Alternative:** `✓ NEXTAUTH_SECRET written from environment variable (length: 46)`
+   - ❌ **Failure:** `ERROR: NEXTAUTH_SECRET is not set...`
+
+3. **Next.js Detected .env.production:**
+   ```
+   - Environments: .env.production
+   ```
+
+4. **Build Completed Successfully:**
+   ```
+   ✓ Compiled successfully
+   ✓ Generating static pages (42/42)
+   ## Build completed successfully
+   ```
+
+5. **.env.production Verification:**
+   ```
+   DATABASE_URL=***
+   USE_MOCK_DATA=***
+   USE_MOCK_AUTH=***
+   NEXTAUTH_SECRET=***  ← Should be present!
+   NEXTAUTH_URL=***
+   NODE_ENV=***
+   ```
+
+### Step 2: Test Health Endpoint
+
+**URL:** `https://main.d13axw9ole04hk.amplifyapp.com/api/health`
+
+**✅ Expected Success Response:**
+```json
+{
+  "status": "ok",
+  "environment": {
+    "nodeEnv": "production",
+    "hasDatabaseUrl": true,
+    "hasNextAuthSecret": true,  ← Should be true after workaround
+    "hasNextAuthUrl": true,
+    "nextAuthSecretLength": 46,  ← Should be 46
+    "databaseUrlInfo": {
+      "host": "*.rds.amazonaws.com",
+      "port": "5432",
+      "database": "oohdam",
+      "hasPassword": true
+    }
+  },
+  "database": {
+    "connected": true,  ← Should be true
+    "error": null
+  }
+}
+```
+
+**❌ Failure Indicators:**
+- `hasNextAuthSecret: false` or `nextAuthSecretLength: 0`
+- `database.connected: false` with an error message
+- `hasDatabaseUrl: false`
+
+### Step 3: Check Runtime Logs
+
+Go to **AWS Amplify Console** → Your App → **Monitoring** → **Hosting compute logs**
+
+**✅ Look for these success indicators:**
+
+1. **Database Connection:**
+   ```
+   [DB] All env vars: { 
+     USE_MOCK_DATA: 'false', 
+     USE_MOCK_AUTH: 'false', 
+     DATABASE_URL: 'Set (XXX chars)', 
+     NODE_ENV: 'production'
+   }
+   [DB] Initializing connection: { isRDS: true, hasSSLParam: true, ... }
+   [DB] Connection client created successfully
+   ```
+
+2. **Authentication Configuration:**
+   ```
+   [AUTH] Configuration: { 
+     USE_MOCK_AUTH: 'undefined', 
+     hasNextAuthSecret: true,  ← Should be true
+     nextAuthSecretLength: 46,  ← Should be 46
+     hasNextAuthUrl: true, 
+     nextAuthUrl: 'https://main.d13axw9ole04hk.amplifyapp.com', 
+     hasDatabaseUrl: true 
+   }
+   ```
+
+3. **No Errors:**
+   - ❌ Should NOT see: `[next-auth][error][NO_SECRET]`
+   - ❌ Should NOT see: `[AUTH] ERROR: NEXTAUTH_SECRET is not set!`
+   - ❌ Should NOT see: `[DB] Database query error`
+
+### Step 4: Test Application Functionality
+
+**Test these pages/endpoints:**
+
+1. **Homepage:** `https://main.d13axw9ole04hk.amplifyapp.com/`
+   - ✅ Should load without errors
+   - ✅ Hero grid should display
+   - ✅ Featured releases should show
+
+2. **Artists Page:** `https://main.d13axw9ole04hk.amplifyapp.com/artists`
+   - ✅ Should load artists from database
+   - ✅ No "Failed to fetch" errors
+
+3. **Shop Page:** `https://main.d13axw9ole04hk.amplifyapp.com/shop`
+   - ✅ Should load products from database
+   - ✅ Products should display correctly
+
+4. **News Page:** `https://main.d13axw9ole04hk.amplifyapp.com/news`
+   - ✅ Should load posts from database
+   - ✅ Posts should display correctly
+
+5. **Admin Login:** `https://main.d13axw9ole04hk.amplifyapp.com/admin/login`
+   - ✅ Should load login page (not configuration error)
+   - ✅ Should be able to submit login form
+   - ✅ Should authenticate successfully with valid credentials
+
+6. **Admin Dashboard:** `https://main.d13axw9ole04hk.amplifyapp.com/admin/dashboard`
+   - ✅ Should redirect to login if not authenticated
+   - ✅ Should load dashboard if authenticated
+
+### Step 5: Test Database Queries
+
+**Check CloudWatch Runtime Logs for:**
+
+1. **Successful Queries:**
+   ```
+   [DB] Executed query { text: 'SELECT ...', duration: XXX, rows: X }
+   [DB] Health check passed
+   ```
+
+2. **Authentication Queries:**
+   ```
+   [AUTH] Attempting to query user: user@example.com
+   [AUTH] User query result: Found
+   [AUTH] Password validation: Success
+   ```
+
+### Step 6: Verify Environment Variables in Runtime
+
+**Check the `/api/health` endpoint response for:**
+
+- ✅ `hasDatabaseUrl: true`
+- ✅ `hasNextAuthSecret: true` (after workaround)
+- ✅ `nextAuthSecretLength: 46`
+- ✅ `hasNextAuthUrl: true`
+- ✅ `database.connected: true`
+- ✅ `database.error: null`
+
+---
+
 ## Quick Fix Reference
 
 If database connection fails:
@@ -315,8 +483,8 @@ If database connection fails:
 If `NEXTAUTH_SECRET` is not available at runtime:
 
 1. ✅ Verify variable is set in Amplify Console (see verified values above)
-2. ✅ Check build logs for `✓ NEXTAUTH_SECRET written (length: 46)`
+2. ✅ Check build logs for `✓ NEXTAUTH_SECRET written via workaround (length: 46)`
 3. ✅ Verify `.env.production` contents in build logs show `NEXTAUTH_SECRET=***`
 4. ✅ Check runtime logs for `[AUTH] Configuration:` to see if secret is loaded
-5. ✅ Ensure variable is set for the correct branch (main vs feature branches)
+5. ✅ Test `/api/health` endpoint to verify `hasNextAuthSecret: true`
 
