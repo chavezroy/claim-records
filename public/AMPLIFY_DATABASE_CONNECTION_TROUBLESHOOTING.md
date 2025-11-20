@@ -114,19 +114,23 @@ frontend:
 
 2. **Updated `lib/db/index.ts` to configure SSL:**
    ```typescript
-   const isRDS = dbUrl.includes('rds.amazonaws.com');
-   const hasSSLParam = dbUrl.includes('sslmode');
+   const isRDS = connectionString.includes('rds.amazonaws.com');
+   const hasSSLParam = connectionString.includes('sslmode');
    
    const sslConfig = isRDS || hasSSLParam 
      ? { rejectUnauthorized: false } 
      : undefined;
    
-   client = postgres(dbUrl, { 
-     prepare: false,
-     onnotice: () => {},
+   pool = new Pool({
+     connectionString,
      ssl: sslConfig,
+     max: 20,
+     idleTimeoutMillis: 30000,
+     connectionTimeoutMillis: 30000,
    });
    ```
+   
+   **Note:** Uses `pg` package with `Pool` class. SSL configuration logic matches documented fix.
 
 **Note:** `sslmode=no-verify` is used because RDS uses self-signed certificates. For production, consider using proper certificate validation.
 
