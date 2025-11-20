@@ -10,7 +10,6 @@ interface ImageItem {
   title?: string | null;
   description?: string | null;
   file_path?: string;
-  file_url?: string;
 }
 
 interface ImageGalleryProps {
@@ -19,7 +18,7 @@ interface ImageGalleryProps {
 
 function GalleryImage({ image, onClick }: { image: ImageItem; onClick: () => void }) {
   const [imageError, setImageError] = useState(false);
-  const imageUrl = image.file_url || image.file_path;
+  const imageUrl = image.file_path;
   const imageSrc = (() => {
     if (!imageUrl || imageError || !isValidImageUrl(imageUrl)) {
       return getLoremFlickrUrl(400, 400, 'music,artist,concert', parseInt(image.id.replace(/\D/g, '').slice(0, 8) || '0', 10));
@@ -81,7 +80,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             </button>
             <div className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
               <Image
-                src={selectedImage.file_url || selectedImage.file_path || getLoremFlickrUrl(1200, 675, 'music,artist,concert', parseInt(selectedImage.id.replace(/\D/g, '').slice(0, 8) || '0', 10))}
+                src={selectedImage.file_path || getLoremFlickrUrl(1200, 675, 'music,artist,concert', parseInt(selectedImage.id.replace(/\D/g, '').slice(0, 8) || '0', 10))}
                 alt={selectedImage.title || 'Gallery image'}
                 fill
                 className="object-contain"
