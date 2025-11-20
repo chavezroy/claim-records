@@ -196,7 +196,33 @@ function CheckoutContent() {
       const data = await response.json();
 
       if (formData.payment_method === 'stripe') {
-        router.push(`/checkout/success?order=${data.order.order_number}`);
+        const baseUrl = window.location.origin;
+        const stripeResponse = await fetch('/api/payments/stripe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            order_id: data.order.id,
+            success_url: `${baseUrl}/checkout/success?order=${data.order.order_number}`,
+            cancel_url: `${baseUrl}/checkout/cancel?order=${data.order.order_number}`,
+          }),
+        });
+
+        if (!stripeResponse.ok) {
+          const errorData = await stripeResponse.json();
+          const errorMessage = errorData.details 
+            ? `${errorData.error}: ${errorData.details}` 
+            : errorData.error || 'Failed to create Stripe checkout session';
+          console.error('Stripe API error:', errorData);
+          throw new Error(errorMessage);
+        }
+
+        const stripeData = await stripeResponse.json();
+        
+        if (stripeData.checkout_url) {
+          window.location.href = stripeData.checkout_url;
+        } else {
+          throw new Error('No Stripe checkout URL received');
+        }
       } else if (formData.payment_method === 'paypal') {
         const baseUrl = window.location.origin;
         const paypalResponse = await fetch('/api/payments/paypal', {

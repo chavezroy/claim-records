@@ -15,9 +15,12 @@ function CheckoutSuccessContent() {
   const orderNumber = searchParams.get('order');
   const token = searchParams.get('token');
   const payerId = searchParams.get('PayerID');
+  const sessionId = searchParams.get('session_id');
   
   // PayPal returns with token parameter when user approves
   const isPayPalReturn = !!token;
+  // Stripe returns with session_id parameter
+  const isStripeReturn = !!sessionId;
 
   useEffect(() => {
     const handlePayPalReturn = async () => {
@@ -68,8 +71,20 @@ function CheckoutSuccessContent() {
             orderObj.order_items = orderData.items || [];
             setOrder(orderObj);
           }
+        } else if (isStripeReturn) {
+          // Stripe Checkout return - verify payment via webhook or API
+          // For now, fetch order and check payment status
+          // The webhook should have already updated the order status
+          const orderResponse = await fetch(`/api/orders/number/${orderNumber}`);
+          if (!orderResponse.ok) {
+            throw new Error('Order not found');
+          }
+          const orderData = await orderResponse.json();
+          const orderObj = orderData.order || orderData;
+          orderObj.order_items = orderData.items || [];
+          setOrder(orderObj);
         } else {
-          // Regular order confirmation (not PayPal return)
+          // Regular order confirmation (not PayPal or Stripe return)
           const orderResponse = await fetch(`/api/orders/number/${orderNumber}`);
           if (!orderResponse.ok) {
             throw new Error('Order not found');
@@ -91,7 +106,7 @@ function CheckoutSuccessContent() {
     };
 
     handlePayPalReturn();
-  }, [orderNumber, token, payerId, clearCart]);
+  }, [orderNumber, token, payerId, sessionId, isPayPalReturn, isStripeReturn, clearCart]);
 
   if (loading) {
     return (

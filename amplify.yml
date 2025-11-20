@@ -32,9 +32,46 @@ frontend:
           fi
           echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.production
           echo "NODE_ENV=$NODE_ENV" >> .env.production
-          echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID" >> .env.production
-          echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET" >> .env.production
-          echo "PAYPAL_MODE=$PAYPAL_MODE" >> .env.production
+          # Debug PayPal variables
+          echo "=== Debug: PayPal environment variables ==="
+          env | grep -i "PAYPAL" || echo "No PAYPAL variables found in environment"
+          echo "=== End PayPal Debug ==="
+          # Extract PayPal variables from env output (handles spaces)
+          PAYPAL_CLIENT_ID_RAW=$(env | grep -i "^PAYPAL_CLIENT_ID" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          PAYPAL_CLIENT_SECRET_RAW=$(env | grep -i "^PAYPAL_CLIENT_SECRET" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          PAYPAL_MODE_RAW=$(env | grep -i "^PAYPAL_MODE" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          if [ -z "$PAYPAL_CLIENT_ID_RAW" ] || [ -z "$PAYPAL_CLIENT_SECRET_RAW" ]; then
+            echo "WARNING: PayPal credentials not available from Amplify Console environment variables"
+            echo "PAYPAL_CLIENT_ID=" >> .env.production
+            echo "PAYPAL_CLIENT_SECRET=" >> .env.production
+            echo "PAYPAL_MODE=${PAYPAL_MODE_RAW:-sandbox}" >> .env.production
+            echo "⚠ PayPal credentials not set - PayPal payments will fail"
+          else
+            echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID_RAW" >> .env.production
+            echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET_RAW" >> .env.production
+            echo "PAYPAL_MODE=${PAYPAL_MODE_RAW:-sandbox}" >> .env.production
+            echo "✓ PayPal credentials written from environment variables"
+          fi
+          # Debug Stripe variables
+          echo "=== Debug: Stripe environment variables ==="
+          env | grep -i "STRIPE" || echo "No STRIPE variables found in environment"
+          echo "=== End Stripe Debug ==="
+          # Extract Stripe variables from env output (handles spaces)
+          STRIPE_PUBLISHABLE_KEY_RAW=$(env | grep -i "^STRIPE_PUBLISHABLE_KEY" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          STRIPE_SECRET_KEY_RAW=$(env | grep -i "^STRIPE_SECRET_KEY" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          STRIPE_WEBHOOK_SECRET_RAW=$(env | grep -i "^STRIPE_WEBHOOK_SECRET" | head -1 | cut -d'=' -f2- | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          if [ -z "$STRIPE_SECRET_KEY_RAW" ]; then
+            echo "WARNING: Stripe credentials not available from Amplify Console environment variables"
+            echo "STRIPE_PUBLISHABLE_KEY=" >> .env.production
+            echo "STRIPE_SECRET_KEY=" >> .env.production
+            echo "STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET_RAW:-}" >> .env.production
+            echo "⚠ Stripe credentials not set - Stripe payments will fail"
+          else
+            echo "STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY_RAW" >> .env.production
+            echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY_RAW" >> .env.production
+            echo "STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET_RAW:-}" >> .env.production
+            echo "✓ Stripe credentials written from environment variables"
+          fi
           echo "Environment variables written to .env.production"
           echo "Verifying .env.production contents (without values):"
           grep -E "^[A-Z_]+=" .env.production | sed 's/=.*/=***/' || echo "No .env.production file found"
