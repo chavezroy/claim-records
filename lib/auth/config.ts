@@ -6,20 +6,50 @@ import bcrypt from 'bcryptjs';
 // Log auth configuration state
 function logAuthConfig() {
   const useMockAuth = process.env.USE_MOCK_AUTH;
-  const hasNextAuthSecret = !!process.env.NEXTAUTH_SECRET;
-  const hasNextAuthUrl = !!process.env.NEXTAUTH_URL;
+  const nextAuthSecret = process.env.NEXTAUTH_SECRET;
+  const nextAuthUrl = process.env.NEXTAUTH_URL;
   const hasDatabaseUrl = !!process.env.DATABASE_URL;
   
   console.log('[AUTH] Configuration:', {
     USE_MOCK_AUTH: useMockAuth || 'undefined',
-    hasNextAuthSecret,
-    hasNextAuthUrl,
+    hasNextAuthSecret: !!nextAuthSecret,
+    nextAuthSecretLength: nextAuthSecret ? nextAuthSecret.length : 0,
+    hasNextAuthUrl: !!nextAuthUrl,
+    nextAuthUrl: nextAuthUrl || 'undefined',
     hasDatabaseUrl,
   });
+  
+  // Validate NEXTAUTH_SECRET
+  if (!nextAuthSecret) {
+    console.error('[AUTH] ERROR: NEXTAUTH_SECRET is not set!');
+  } else if (nextAuthSecret.length < 32) {
+    console.error('[AUTH] ERROR: NEXTAUTH_SECRET must be at least 32 characters long!');
+  }
+  
+  // Validate NEXTAUTH_URL
+  if (!nextAuthUrl) {
+    console.error('[AUTH] ERROR: NEXTAUTH_URL is not set!');
+  }
 }
 
 // Initialize logging on module load
 logAuthConfig();
+
+// Validate required environment variables
+const nextAuthSecret = process.env.NEXTAUTH_SECRET;
+const nextAuthUrl = process.env.NEXTAUTH_URL;
+
+if (!nextAuthSecret) {
+  throw new Error('NEXTAUTH_SECRET environment variable is required but not set. Please set it in AWS Amplify Console environment variables.');
+}
+
+if (nextAuthSecret.length < 32) {
+  throw new Error(`NEXTAUTH_SECRET must be at least 32 characters long. Current length: ${nextAuthSecret.length}`);
+}
+
+if (!nextAuthUrl) {
+  console.warn('[AUTH] WARNING: NEXTAUTH_URL is not set. This may cause issues with authentication callbacks.');
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -96,6 +126,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: nextAuthSecret,
+  debug: process.env.NODE_ENV === 'development',
 };
 
