@@ -1,7 +1,12 @@
-import { redirect } from 'next/navigation';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturedReleases from '@/components/home/FeaturedReleases';
 
 export default function HomePage() {
-  // Redirect to coming-soon page during development
-  redirect('/coming-soon');
+  return (
+    <>
+      <HeroSection />
+      <FeaturedReleases />
+    </>
+  );
 }
 

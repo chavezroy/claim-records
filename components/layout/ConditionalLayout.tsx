@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Header from './Header';
 import dynamic from 'next/dynamic';
 
@@ -19,14 +18,11 @@ const Footer = dynamic(() => import('./Footer'), {
 });
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const hideHeaderFooter = pathname === '/coming-soon';
-
   return (
     <>
-      {!hideHeaderFooter && <Header />}
-      <main className={hideHeaderFooter ? 'h-screen' : 'flex-grow'}>{children}</main>
-      {!hideHeaderFooter && <Footer />}
+      <Header />
+      <main className="flex-grow">{children}</main>
+      <Footer />
     </>
   );
 }

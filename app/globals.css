@@ -83,21 +83,11 @@ section {
   z-index: 0;
 }
 
-/* Coming-soon page: 4 rows on mobile */
-.coming-soon .hero-grid {
-  grid-template-rows: repeat(4, 1fr);
-}
-
 /* Desktop: 3 columns, 2 rows */
 @media (min-width: 768px) {
   .hero-grid {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-  }
-  
-  /* Coming-soon page: 4 rows on desktop */
-  .coming-soon .hero-grid {
-    grid-template-rows: repeat(4, 1fr);
   }
 }
 
