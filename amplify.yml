@@ -15,7 +15,9 @@ frontend:
           echo "USE_MOCK_DATA=$USE_MOCK_DATA" >> .env.production
           echo "USE_MOCK_AUTH=$USE_MOCK_AUTH" >> .env.production
           if [ -z "$NEXTAUTH_SECRET" ]; then
-            echo "WARNING: NEXTAUTH_SECRET is not set in Amplify Console environment variables!"
+            echo "ERROR: NEXTAUTH_SECRET is not set in Amplify Console environment variables!"
+            echo "Please set NEXTAUTH_SECRET in AWS Amplify Console → App settings → Environment variables"
+            echo "For branch: main"
           else
             echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.production
             echo "✓ NEXTAUTH_SECRET written (length: ${#NEXTAUTH_SECRET})"
@@ -26,6 +28,8 @@ frontend:
           echo "PAYPAL_CLIENT_SECRET=$PAYPAL_CLIENT_SECRET" >> .env.production
           echo "PAYPAL_MODE=$PAYPAL_MODE" >> .env.production
           echo "Environment variables written to .env.production"
+          echo "Verifying .env.production contents (without values):"
+          grep -E "^[A-Z_]+=" .env.production | sed 's/=.*/=***/' || echo "No .env.production file found"
         - npm run build
   artifacts:
     baseDirectory: .next
