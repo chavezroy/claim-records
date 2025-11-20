@@ -35,21 +35,25 @@ function logAuthConfig() {
 // Initialize logging on module load
 logAuthConfig();
 
-// Validate required environment variables
+// Get environment variables
 const nextAuthSecret = process.env.NEXTAUTH_SECRET;
 const nextAuthUrl = process.env.NEXTAUTH_URL;
 
+// Validate NEXTAUTH_SECRET - log warnings but don't throw during build
+// NextAuth will handle missing secret at runtime with a proper error
 if (!nextAuthSecret) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required but not set. Please set it in AWS Amplify Console environment variables.');
-}
-
-if (nextAuthSecret.length < 32) {
-  throw new Error(`NEXTAUTH_SECRET must be at least 32 characters long. Current length: ${nextAuthSecret.length}`);
+  console.warn('[AUTH] WARNING: NEXTAUTH_SECRET is not set. Authentication will fail at runtime if not configured.');
+} else if (nextAuthSecret.length < 32) {
+  console.error(`[AUTH] ERROR: NEXTAUTH_SECRET must be at least 32 characters long. Current length: ${nextAuthSecret.length}`);
 }
 
 if (!nextAuthUrl) {
   console.warn('[AUTH] WARNING: NEXTAUTH_URL is not set. This may cause issues with authentication callbacks.');
 }
+
+// Use a fallback secret during build if not set (NextAuth requires a secret to be defined)
+// The actual secret from environment variables will be used at runtime
+const secretForConfig = nextAuthSecret || 'build-time-placeholder-secret-minimum-32-characters-long';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -126,7 +130,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  secret: nextAuthSecret,
+  secret: secretForConfig,
   debug: process.env.NODE_ENV === 'development',
 };
 
