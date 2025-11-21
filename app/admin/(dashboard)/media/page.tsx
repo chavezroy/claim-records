@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { query } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth/session';
 import MediaUpload from '@/components/admin/MediaUpload';
+import MediaItemActions from '@/components/admin/MediaItemActions';
 
 export default async function AdminMediaPage() {
   await requireAdmin();
@@ -56,10 +57,22 @@ export default async function AdminMediaPage() {
                     {media.file_type} • {media.mime_type || 'Unknown type'}
                     {media.file_size && ` • ${(media.file_size / 1024).toFixed(2)} KB`}
                   </p>
+                  {media.alt_text && (
+                    <p className="mt-1 text-xs text-gray-400 italic">
+                      Alt: {media.alt_text}
+                    </p>
+                  )}
                     </div>
                 </div>
-                <div className="ml-5 shrink-0 text-sm text-gray-500">
-                  {new Date(media.created_at).toLocaleDateString()}
+                <div className="ml-5 shrink-0 flex items-center space-x-4">
+                  <div className="text-sm text-gray-500">
+                    {new Date(media.created_at).toLocaleDateString()}
+                  </div>
+                  <MediaItemActions
+                    mediaId={media.id}
+                    originalFilename={media.original_filename}
+                    altText={media.alt_text}
+                  />
                 </div>
               </div>
             </li>
