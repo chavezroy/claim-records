@@ -117,7 +117,7 @@ export default async function AdminDashboard() {
                         style={{ transform: 'translateX(-50%)' }}
                       />
                     )}
-                    <div className="relative flex space-x-6 pl-4">
+                    <div className="relative flex space-x-6" style={{ paddingLeft: '20px' }}>
                       <div className="flex-shrink-0 flex items-center">
                         <div className="h-2 w-2 rounded-full bg-gray-400"></div>
                       </div>
