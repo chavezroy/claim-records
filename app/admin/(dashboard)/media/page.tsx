@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { query } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth/session';
+import MediaUpload from '@/components/admin/MediaUpload';
 
 export default async function AdminMediaPage() {
   await requireAdmin();
@@ -13,13 +14,9 @@ export default async function AdminMediaPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
-        <button
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700"
-          disabled
-        >
-          Upload Media (Coming Soon)
-        </button>
       </div>
+
+      <MediaUpload />
 
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <ul className="divide-y divide-gray-200">
@@ -32,7 +29,7 @@ export default async function AdminMediaPage() {
               <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-8 flex-1 min-w-0">
                     {isImage && media.file_path && (
-                      <div className="flex-shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
+                      <div className="shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
                         <div className="h-16 w-16 relative rounded-md overflow-hidden bg-gray-100">
                           <Image
                             src={media.file_path}
@@ -45,7 +42,7 @@ export default async function AdminMediaPage() {
                       </div>
                     )}
                     {!isImage && (
-                      <div className="flex-shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
+                      <div className="shrink-0" style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem' }}>
                         <div className="h-16 w-16 rounded-md bg-gray-100 flex items-center justify-center">
                           <i className="bi bi-file-earmark text-2xl text-gray-400"></i>
                         </div>
@@ -61,7 +58,7 @@ export default async function AdminMediaPage() {
                   </p>
                     </div>
                 </div>
-                <div className="ml-5 flex-shrink-0 text-sm text-gray-500">
+                <div className="ml-5 shrink-0 text-sm text-gray-500">
                   {new Date(media.created_at).toLocaleDateString()}
                 </div>
               </div>

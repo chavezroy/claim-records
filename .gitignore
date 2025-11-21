@@ -37,3 +37,7 @@ next-env.d.ts
 # static html prototype
 /www
 
+# uploaded media files
+/public/uploads/*
+!/public/uploads/.gitkeep
+
