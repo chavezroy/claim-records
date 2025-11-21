@@ -3,10 +3,19 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Artist {
   id: string;
   name: string;
+}
+
+interface MediaItem {
+  id: string;
+  file_path: string;
+  original_filename: string;
+  mime_type: string | null;
+  file_type: string;
 }
 
 export default function NewProductPage() {
@@ -14,6 +23,8 @@ export default function NewProductPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [images, setImages] = useState<MediaItem[]>([]);
+  const [selectedImageIds, setSelectedImageIds] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -30,7 +41,7 @@ export default function NewProductPage() {
     expiry_days: '',
   });
 
-  // Fetch artists on mount
+  // Fetch artists and images on mount
   useEffect(() => {
     const fetchArtists = async () => {
       try {
@@ -43,7 +54,21 @@ export default function NewProductPage() {
         console.error('Error fetching artists:', err);
       }
     };
+
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/media?file_type=image&limit=50');
+        if (response.ok) {
+          const data = await response.json();
+          setImages(data.media || []);
+        }
+      } catch (err) {
+        console.error('Error fetching images:', err);
+      }
+    };
+
     fetchArtists();
+    fetchImages();
   }, []);
 
   // Auto-generate slug from name
@@ -93,6 +118,28 @@ export default function NewProductPage() {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create product');
+      }
+
+      // Associate images with product if any selected
+      if (selectedImageIds.length > 0 && data.product?.id) {
+        try {
+          const imageResponse = await fetch(`/api/products/${data.product.id}/images`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              media_ids: selectedImageIds,
+            }),
+          });
+
+          if (!imageResponse.ok) {
+            console.error('Failed to associate images with product');
+          }
+        } catch (imgErr) {
+          console.error('Error associating images:', imgErr);
+          // Don't fail the whole operation if image association fails
+        }
       }
 
       router.push('/admin/products');
@@ -298,6 +345,74 @@ export default function NewProductPage() {
               />
             </div>
           )}
+
+          {/* Product Images */}
+          <div className="border-t border-gray-200 pt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-4">
+              Product Images
+            </label>
+            {images.length === 0 ? (
+              <p className="text-sm text-gray-500 mb-4">
+                No images available. Add images to the media library first.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 max-h-96 overflow-y-auto p-4 border border-gray-200 rounded-md">
+                {images.map((image) => {
+                  const isSelected = selectedImageIds.includes(image.id);
+                  const isImage = image.file_type?.toLowerCase().includes('image') || 
+                                 image.mime_type?.startsWith('image/');
+                  
+                  return (
+                    <div
+                      key={image.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedImageIds(selectedImageIds.filter(id => id !== image.id));
+                        } else {
+                          setSelectedImageIds([...selectedImageIds, image.id]);
+                        }
+                      }}
+                      className={`relative aspect-square cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
+                        isSelected 
+                          ? 'border-indigo-600 ring-2 ring-indigo-500' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      {isImage && image.file_path ? (
+                        <>
+                          <Image
+                            src={image.file_path}
+                            alt={image.original_filename}
+                            fill
+                            className="object-cover"
+                            sizes="150px"
+                          />
+                          {isSelected && (
+                            <div className="absolute inset-0 bg-indigo-600 bg-opacity-20 flex items-center justify-center">
+                              <div className="bg-indigo-600 text-white rounded-full p-1">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                          <i className="bi bi-file-earmark text-2xl text-gray-400"></i>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {selectedImageIds.length > 0 && (
+              <p className="mt-2 text-sm text-gray-500">
+                {selectedImageIds.length} image{selectedImageIds.length !== 1 ? 's' : ''} selected
+              </p>
+            )}
+          </div>
 
           {/* Digital Product Fields */}
           {formData.product_type === 'digital' && (
